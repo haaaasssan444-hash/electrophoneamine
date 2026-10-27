@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="تصفح جميع الهواتف المتوفرة لدى ElectrophoneAmine، واكتشف الموديلات والمواصفات والأثمنة بالدرهم.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ar_MA">
+  <meta property="og:site_name" content="ElectrophoneAmine">
+  <meta property="og:title" content="جميع الهواتف المتوفرة | ElectrophoneAmine">
+  <meta property="og:description" content="تصفح الهواتف المتوفرة واكتشف الموديلات والمواصفات والأثمنة بالدرهم.">
+  <meta name="twitter:card" content="summary">
+  <title>جميع الهواتف المتوفرة | ElectrophoneAmine</title>
+  <link rel="stylesheet" href="../frontend/css/style.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-inner">
+      <a class="logo" href="../index.html">Electrophone<span>Amine</span></a>
+      <nav class="nav-links" aria-label="تصفية الهواتف">
+        <a class="active" href="#" data-filter="all">الكل</a>
+        <a href="#" data-filter="iphone">iPhone</a>
+        <a href="#" data-filter="samsung">Samsung</a>
+        <a href="#" data-filter="redmi">Redmi</a>
+        <a href="#" data-filter="oppo">Oppo</a>
+        <a href="#" data-filter="poco">POCO</a>
+        <a href="#" data-filter="xiaomi">Xiaomi</a>
+        <a href="#" data-filter="honor">HONOR</a>
+        <a href="#" data-filter="infinix">Infinix</a>
+        <a href="#" data-filter="vivo">vivo</a>
+      </nav>
+      <form class="search-box" role="search">
+        <input id="productSearch" type="search" placeholder="قلب على هاتف..." aria-label="قلب على هاتف" autocomplete="off">
+        <button type="submit" aria-label="بحث">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
+        </button>
+      </form>
+      <div class="nav-actions">
+        <a class="admin-link" href="../index.html">الرئيسية</a>
+        <a class="cart-btn" href="../panier/index.html">🛒 السلة <span id="cartCount">0</span></a>
+        
+      </div>
+    </div>
+  </header>
+  <main class="container">
+    <div class="section-heading">
+      <h1>جميع الهواتف</h1>
+      <span id="productCount" class="product-count"></span>
+    </div>
+    <div id="products" class="products-grid" aria-live="polite"></div>
+  </main>
+  <div id="productModal" class="modal" role="dialog" aria-modal="true" aria-label="تفاصيل الهاتف" onclick="if(event.target===this)closeModal()">
+    <div class="modal-content">
+      <button class="close" type="button" aria-label="إغلاق" onclick="closeModal()">×</button>
+      <div id="modalBody"></div>
+    </div>
+    <div id="imageLightbox" class="image-lightbox" role="dialog" aria-modal="true" aria-label="عرض صورة الهاتف" hidden>
+      <button class="lightbox-close" type="button" aria-label="إغلاق الصورة المكبرة" data-lightbox-close>×</button>
+      <button class="lightbox-step lightbox-previous" type="button" aria-label="الصورة السابقة" data-lightbox-step="-1">‹</button>
+      <img id="lightboxImage" class="lightbox-image" alt="">
+      <button class="lightbox-step lightbox-next" type="button" aria-label="الصورة التالية" data-lightbox-step="1">›</button>
+      <span id="lightboxCounter" class="lightbox-counter" aria-live="polite"></span>
+    </div>
+  </div>
+  <script src="../frontend/js/store.js"></script>
+  <script src="../frontend/js/main.js"></script>
+</body>
+</html>

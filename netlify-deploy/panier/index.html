@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>السلة ديالك - ElectrophoneAmine</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Tajawal',sans-serif}
+:root{--yellow:#f5c518;--yellow-dark:#d9a900;--ink:#242424;--muted:#777;--line:#eee5c8;--cream:#fffdf5}
+body{background:linear-gradient(180deg,#fff9e5 0,#fff 320px);color:var(--ink);min-height:100vh}
+.top-bar{position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:14px max(20px,calc((100vw - 1100px)/2));background:rgba(255,255,255,.94);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.logo{font-weight:900;letter-spacing:.2px;color:var(--ink)}
+.logo span{color:var(--yellow-dark)}
+.btn-home{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);color:#514515;padding:10px 16px;border-radius:12px;text-decoration:none;font-weight:800;font-size:14px;transition:transform .2s,border-color .2s,background .2s}
+.btn-home:hover{background:#fff5cf;border-color:var(--yellow-dark);transform:translateY(-1px)}
+.container{max-width:1100px;margin:38px auto;padding:0 20px 50px;display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,.85fr);gap:22px;align-items:start}
+.card{background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 14px 36px rgba(64,52,10,.07)}
+.card-head{padding:19px 22px;border-bottom:1px solid #f3eedf;background:linear-gradient(110deg,#fffdf5,#fff);display:flex;justify-content:space-between;align-items:center}
+.title{font-weight:900;font-size:19px;display:flex;gap:9px;align-items:center}
+.item{display:flex;gap:16px;padding:19px 22px;border-bottom:1px solid #f3eedf;align-items:center;transition:background .2s}
+.item:hover{background:#fffdf7}
+.item:last-child{border:none}
+.item img{width:88px;height:88px;flex:none;object-fit:contain;background:linear-gradient(145deg,#fffdf5,#fff5cf);border:1px solid #f3ecd5;border-radius:16px;padding:8px}
+.item-info{flex:1;min-width:0}
+.item-info h3{font-size:16px;font-weight:900;line-height:1.4;margin-bottom:3px}
+.item-info small{color:var(--muted);font-size:12px}
+.price{font-weight:900;color:#977500}
+.qty{display:flex;align-items:center;gap:9px;margin-top:9px}
+.qty button{width:30px;height:30px;border-radius:9px;border:1px solid var(--line);background:#fff9df;color:#594800;cursor:pointer;font-weight:900;transition:background .2s,transform .2s}
+.qty button:hover{background:#ffedaa;transform:translateY(-1px)}
+.remove{width:36px;height:36px;flex:none;border-radius:11px;border:1px solid #f3d9d5;background:#fff7f5;color:#c13b2a;cursor:pointer;transition:background .2s}
+.remove:hover{background:#ffe7e2}
+.summary{position:sticky;top:86px;height:fit-content}
+.summary .card-head{background:linear-gradient(110deg,#fff6d6,#fffdf5)}
+.sum-row{display:flex;justify-content:space-between;gap:14px;padding:11px 20px;color:var(--muted);font-size:14px}
+.sum-row.total{color:var(--ink);font-weight:900;font-size:19px;border-top:1px dashed #e8ddb7;margin-top:8px;padding-top:17px}
+.btn{width:100%;border:none;border-radius:13px;padding:13px;font-size:14px;font-weight:900;cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s}
+.btn-primary{background:linear-gradient(100deg,var(--yellow),#ffdf60);color:#292400;margin:14px 0 4px;box-shadow:0 8px 18px rgba(217,169,0,.18)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 11px 24px rgba(217,169,0,.28)}
+.btn-ghost{background:#fff;border:1px solid var(--line);color:#665500;margin-top:9px}
+.btn-ghost:hover{background:#fff8df;border-color:#e9d27b}
+.badge{background:#fff4c2;color:#655000;padding:6px 11px;border-radius:20px;font-size:12px;font-weight:800}
+.empty{text-align:center;padding:64px 20px;color:var(--muted)}
+.empty>div:first-child{width:76px;height:76px;display:grid;place-items:center;margin:0 auto 14px;border-radius:24px;background:#fff4c2}
+.empty h3{color:var(--ink);font-size:22px}
+@media(max-width:800px){.container{grid-template-columns:1fr;margin:25px auto;padding:0 16px 38px}.summary{position:static}}
+@media(max-width:520px){.top-bar{padding:12px 14px}.container{gap:14px}.card{border-radius:18px}.card-head{padding:15px 16px}.item{gap:11px;padding:14px 13px}.item img{width:68px;height:68px;border-radius:13px}.item-info h3{font-size:14px}.remove{width:32px;height:32px}.summary .card-head{padding:16px}.empty{padding:48px 16px}}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="logo">Electrophone<span>Amine</span>.ma</div>
+  <a href="../index.html" class="btn-home">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    العودة للرئيسية
+  </a>
+</div>
+
+<div class="container" id="app">
+</div>
+
+<script src="../frontend/js/store.js"></script>
+<script>
+const store = window.ElectrophoneStore;
+let cart = readCart();
+
+function readCart() {
+  const saved = localStorage.getItem('cart');
+  if (!saved) return [];
+  const items = JSON.parse(saved);
+  if (!Array.isArray(items)) throw new Error('بيانات السلة المخزنة غير صالحة.');
+  return items;
+}
+
+function save() {
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function calcTotal() {
+  return cart.reduce((sum, product) => sum + (Number(product.price) || 0) * (Number(product.qty) || 1), 0);
+}
+
+function syncCartPrices() {
+  const prices = new Map(store.getProducts().map(product => [String(product.id), Number(product.price) || 0]));
+  let changed = false;
+  cart = cart.map(item => {
+    if (item.productType === 'accessory') return item;
+    const price = prices.get(String(item.id));
+    if (price === undefined || Number(item.price) === price) return item;
+    changed = true;
+    return { ...item, price };
+  });
+  if (changed) save();
+}
+
+function formatPrice(price) {
+  return `${(Number(price) || 0).toLocaleString('fr-MA')} DH`;
+}
+
+function render() {
+  const app = document.getElementById('app');
+  if (cart.length === 0) {
+    app.innerHTML = `<div class="card" style="grid-column:1/-1"><div class="empty"><div style="font-size:48px">🛒</div><h3>السلة خاوية</h3><p style="margin:10px 0">زيد شي هواتف باش تطلب</p><a href="../index.html" class="btn-home" style="margin-top:10px;justify-content:center">العودة للمتجر</a></div></div>`;
+    return;
+  }
+
+  const itemsHtml = cart.map((product, index) => {
+    const name = store.escapeHTML(product.name || 'هاتف');
+    const image = store.escapeHTML(store.resolveImage(product.img || ''));
+    const storage = store.escapeHTML(product.storage || '');
+    return `
+      <div class="item">
+        ${image ? `<img src="${image}" alt="${name}" onerror="this.hidden=true">` : ''}
+        <div class="item-info">
+          <h3>${name}</h3>
+          <small>${storage ? `${storage} • ` : ''}${store.escapeHTML(product.condition || 'متوفر')} ✅</small>
+          <div class="price" style="margin-top:6px">${formatPrice(product.price)}</div>
+          <div class="qty">
+            <button type="button" aria-label="نقص الكمية" onclick="changeQty(${index},-1)">-</button>
+            <span class="badge">${Number(product.qty) || 1}</span>
+            <button type="button" aria-label="زيد الكمية" onclick="changeQty(${index},1)">+</button>
+          </div>
+        </div>
+        <button class="remove" type="button" aria-label="حذف ${name}" onclick="removeItem(${index})">✕</button>
+      </div>
+    `;
+  }).join('');
+  const itemCount = cart.reduce((sum, product) => sum + (Number(product.qty) || 1), 0);
+  const total = formatPrice(calcTotal());
+
+  app.innerHTML = `
+    <div class="card">
+      <div class="card-head">
+        <div class="title">🛒 السلة ديالك</div>
+        <span class="badge">${itemCount} منتوج</span>
+      </div>
+      ${itemsHtml}
+    </div>
+    <div class="card summary">
+      <div class="card-head"><div class="title">ملخص الطلب</div></div>
+      <div class="sum-row"><span>المجموع الجزئي</span><span>${total}</span></div>
+      <div class="sum-row"><span>التوصيل</span><span style="color:#2ecc71">مجانا</span></div>
+      <div class="sum-row total"><span>المجموع</span><span>${total}</span></div>
+      <div style="padding:0 18px 18px">
+        <button class="btn btn-primary" type="button" onclick="orderWhatsApp()">اطلب عبر واتساب 📲</button>
+        <button class="btn btn-ghost" type="button" onclick="clearCart()">مسح السلة 🗑️</button>
+        <a href="../index.html" class="btn btn-ghost" style="display:flex;justify-content:center;text-decoration:none;align-items:center">+ زيد منتوجات</a>
+      </div>
+    </div>
+  `;
+}
+
+function changeQty(index, difference) {
+  cart[index].qty = Math.max(1, (Number(cart[index].qty) || 1) + difference);
+  save();
+  render();
+}
+
+function removeItem(index) {
+  cart.splice(index, 1);
+  save();
+  render();
+}
+
+function clearCart() {
+  if (!window.confirm('تمسح السلة؟')) return;
+  cart = [];
+  save();
+  render();
+}
+
+function orderWhatsApp() {
+  const phone = (localStorage.getItem('shopWhatsAppPhone') || '').replace(/\D/g, '');
+  if (!/^\d{8,15}$/.test(phone)) {
+    window.alert('رقم واتساب ديال المحل مازال ما تحددش. تواصل مع المحل أو عاود من بعد.');
+    return;
+  }
+  const lines = cart.map(product =>
+    `- ${product.name || 'هاتف'} - ${formatPrice(product.price)} x${Number(product.qty) || 1}`
+  );
+  const message = ['سلام، بغيت نطلب:', ...lines, '', `المجموع: ${formatPrice(calcTotal())}`].join('\n');
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank', 'noopener');
+}
+
+window.addEventListener('storage', event => {
+  if (event.key === 'cart') {
+    cart = readCart();
+    render();
+  } else if (event.key === 'productsData' || event.key === 'electrophone_products') {
+    syncCartPrices();
+    render();
+  }
+});
+
+syncCartPrices();
+render();
+</script>
+</body>
+</html>

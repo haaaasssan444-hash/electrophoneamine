@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="لوحة إدارة متجر ElectrophoneAmine.">
+  <title>لوحة التحكم | ElectrophoneAmine</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-page">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">📱 ElectrophoneAmine</a>
+    <nav class="menu" aria-label="القائمة الرئيسية">
+      <a class="active" href="index.html">🏠 لوحة التحكم</a>
+      <a href="../index.html">👀 شوف المتجر</a>
+      <a href="../panier/index.html">🛒 السلة</a>
+    </nav>
+    <button id="logout" class="logout" type="button">تسجيل الخروج</button>
+  </aside>
+
+  <main class="main">
+    <header class="page-heading">
+      <div>
+        <p class="eyebrow">إدارة المتجر</p>
+        <h1>مرحبا أمين 👋</h1>
+        <p>نظرة سريعة على المتجر والمنتجات ديالك.</p>
+      </div>
+      <span class="status">● المتجر مربوط</span>
+    </header>
+
+    <section class="stats" aria-label="إحصائيات المتجر">
+      <article class="stat"><span>📱 إجمالي المنتجات</span><strong id="totalProducts">0</strong></article>
+      <article class="stat"><span>👥 زوار الموقع</span><strong id="siteVisitors">0</strong></article>
+      <article class="stat"><span>🛒 إجمالي الطلبات</span><strong id="totalOrders">0</strong></article>
+      <article class="stat"><span>💰 قيمة المخزون</span><strong id="inventoryValue">0 DH</strong></article>
+    </section>
+
+    <section class="card section-card">
+      <div class="card-head">
+        <div><span class="section-kicker">الكتالوج</span><h2>📱 نشر هاتف جديد</h2></div>
+        <span>كيبان مباشرة فالمتجر</span>
+      </div>
+      <form id="productForm" class="product-form form-grid">
+        <input id="productId" type="hidden">
+        <div class="field">
+          <label for="brand">الماركة</label>
+          <select id="brand" required>
+            <option value="">اختار الماركة</option><option>iPhone</option><option>Samsung</option>
+            <option>Redmi</option><option>Xiaomi</option><option>Oppo</option><option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label for="model">الموديل</label><input id="model" type="text" placeholder="مثال: 15 Pro Max" required></div>
+        <div class="field">
+          <label for="storage">التخزين</label>
+          <select id="storage" required><option value="">اختار التخزين</option><option>64GB</option><option>128GB</option><option>256GB</option><option>512GB</option><option>1TB</option></select>
+        </div>
+        <div class="field">
+          <label for="ram">الرام</label>
+          <select id="ram" required><option value="">اختار الرام</option><option>4GB</option><option>6GB</option><option>8GB</option><option>12GB</option><option>16GB</option></select>
+        </div>
+        <div class="field"><label for="condition">الحالة</label><input id="condition" type="text" value="متوفر" required></div>
+        <div class="field"><label for="price">الثمن (DH)</label><input id="price" type="number" min="1" step="1" required></div>
+        <div class="field"><label for="oldPrice">الثمن القديم (اختياري؛ كيتحسب تلقائياً إلا سالا الثمن بـ00)</label><input id="oldPrice" type="number" min="1" step="1"></div>
+        <div class="field"><label for="quantity">الكمية</label><input id="quantity" type="number" min="0" step="1" value="1" required></div>
+        <div class="field">
+          <label for="phoneImageFile">اختار صورة الهاتف من الجهاز</label>
+          <input id="phoneImageFile" type="file" accept="image/*">
+        </div>
+        <div class="field">
+          <label for="image">أو رابط الصورة (اختياري)</label>
+          <input id="image" type="url" placeholder="https://...">
+        </div>
+        <div class="field field-wide">
+          <p class="image-storage-note">الصورة المختارة كتتحفظ فهاد المتصفح فقط؛ باش تبان للزوار من أجهزة أخرى خاص رفعها لتخزين سحابي مشترك.</p>
+          <img id="phoneImagePreview" class="image-preview" alt="معاينة صورة الهاتف" hidden>
+        </div>
+        <div class="field field-wide"><label for="description">وصف إضافي (اختياري)</label><textarea id="description" rows="2" placeholder="معلومات إضافية على الهاتف"></textarea></div>
+        <div class="form-submit field-wide">
+          <button id="phoneSubmit" class="save" type="submit">نشر الهاتف ✅</button>
+          <button id="cancelPhoneEdit" class="cancel-button" type="button" hidden>إلغاء التعديل</button>
+          <p id="phoneMessage" class="form-message" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </section>
+
+    <section class="card section-card">
+      <div class="card-head">
+        <div><span class="section-kicker">الكتالوج</span><h2>🎧 نشر إكسسوارات</h2></div>
+        <span>شواحن، سماعات، كوابل، باور بانك وكفرات</span>
+      </div>
+      <form id="accessoryForm" class="product-form form-grid">
+        <input id="accessoryId" type="hidden">
+        <div class="field">
+          <label for="accessoryType">النوع</label>
+          <select id="accessoryType" required>
+            <option value="">اختار النوع</option><option>شاحن</option><option>سماعات</option>
+            <option>كوابل</option><option>باور بانك</option><option>كفرات</option><option>أخرى</option>
+          </select>
+        </div>
+        <div class="field"><label for="accessoryName">الاسم</label><input id="accessoryName" type="text" placeholder="مثال: شاحن سريع USB-C" required></div>
+        <div class="field"><label for="accessoryPrice">الثمن (DH)</label><input id="accessoryPrice" type="number" min="1" step="1" required></div>
+        <div class="field"><label for="accessoryQuantity">الكمية</label><input id="accessoryQuantity" type="number" min="0" step="1" value="1" required></div>
+        <div class="field">
+          <label for="accessoryImageFile">اختار صورة الإكسسوار من الجهاز</label>
+          <input id="accessoryImageFile" type="file" accept="image/*">
+        </div>
+        <div class="field">
+          <label for="accessoryImage">أو رابط الصورة (اختياري)</label>
+          <input id="accessoryImage" type="url" placeholder="https://...">
+        </div>
+        <div class="field field-wide">
+          <p class="image-storage-note">الصورة المختارة كتتحفظ فهاد المتصفح فقط؛ باش تبان للزوار من أجهزة أخرى خاص رفعها لتخزين سحابي مشترك.</p>
+          <img id="accessoryImagePreview" class="image-preview" alt="معاينة صورة الإكسسوار" hidden>
+        </div>
+        <div class="form-submit field-wide">
+          <button id="accessorySubmit" class="save" type="submit">نشر الإكسسوار ✅</button>
+          <button id="cancelAccessoryEdit" class="cancel-button" type="button" hidden>إلغاء التعديل</button>
+          <p id="accessoryMessage" class="form-message" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </section>
+
+    <section class="analytics-layout">
+      <section class="card analytics-card">
+        <div class="card-head">
+          <div><span class="section-kicker">الأداء</span><h2>📊 إحصائيات المنتجات</h2></div>
+          <span id="catalogCount">0 منتج</span>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>المنتج</th><th>عدد الطلبات</th><th>عدد المشاهدات</th><th>الكمية</th><th>حذف / تعديل</th></tr></thead>
+            <tbody id="analyticsRows"></tbody>
+          </table>
+        </div>
+        <p id="emptyAnalytics" class="empty-list" hidden>ما كاين حتى منتج منشور دابا.</p>
+      </section>
+
+      <aside class="card visitor-card" aria-label="إحصائيات الزوار">
+        <div class="card-head"><div><span class="section-kicker">الزيارات</span><h2>👥 الزوار</h2></div></div>
+        <div class="visitor-stat"><span>اليوم</span><strong id="visitorsToday">0</strong></div>
+        <div class="visitor-stat"><span>هاد الأسبوع</span><strong id="visitorsWeek">0</strong></div>
+        <p class="visitor-note">عدد الزيارات المسجلة فهاد المتصفح.</p>
+      </aside>
+    </section>
+
+    <section class="card settings-card">
+      <div class="card-head"><div><span class="section-kicker">التواصل</span><h2>📲 حسابات التواصل الاجتماعي</h2></div></div>
+      <form id="settingsForm" class="product-form">
+        <div class="social-settings-grid">
+          <div>
+            <label for="shopPhone">واتساب: الرقم الدولي (اختياري)</label>
+            <input id="shopPhone" type="tel" inputmode="numeric" placeholder="212600000000" pattern="[+]?[0-9]{8,15}">
+          </div>
+          <div>
+            <label for="instagramUrl">رابط إنستغرام (اختياري)</label>
+            <input id="instagramUrl" type="url" placeholder="https://instagram.com/username">
+          </div>
+          <div>
+            <label for="facebookUrl">رابط فيسبوك (اختياري)</label>
+            <input id="facebookUrl" type="url" placeholder="https://facebook.com/username">
+          </div>
+        </div>
+        <button class="save settings-save" type="submit">حفظ حسابات التواصل</button>
+        <p id="settingsMessage" class="form-message" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <script src="../frontend/js/store.js"></script>
+  <script src="config/password.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

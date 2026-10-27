@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="اكتشف الهواتف والإكسسوارات المتوفرة لدى ElectrophoneAmine، تعرّف على المواصفات والأثمنة بالدرهم، واطلب عبر واتساب.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ar_MA">
+  <meta property="og:site_name" content="ElectrophoneAmine">
+  <meta property="og:title" content="هواتف للبيع وأثمنة بالدرهم | ElectrophoneAmine">
+  <meta property="og:description" content="اكتشف الهواتف والإكسسوارات المتوفرة، تعرّف على المواصفات والأثمنة، واطلب عبر واتساب.">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="هواتف للبيع وأثمنة بالدرهم | ElectrophoneAmine">
+  <meta name="twitter:description" content="اكتشف الهواتف والإكسسوارات المتوفرة، تعرّف على المواصفات والأثمنة، واطلب عبر واتساب.">
+  <title>هواتف للبيع وأثمنة بالدرهم | ElectrophoneAmine</title>
+  <link rel="stylesheet" href="frontend/css/style.css">
+</head>
+<body>
+  <div class="store-navigation">
+    <header class="navbar">
+      <div class="nav-inner">
+        <a class="logo" href="index.html" aria-label="ElectrophoneAmine الصفحة الرئيسية">Electrophone<span>Amine</span></a>
+        <div class="catalog-nav">
+        <nav class="nav-links phone-filters" aria-label="تصفية الهواتف">
+          <a class="active" href="#" data-filter="all">الكل</a>
+          <a href="#" data-filter="iphone">iPhone</a>
+          <a href="#" data-filter="samsung">Samsung</a>
+          <a href="#" data-filter="redmi">Redmi</a>
+          <a href="#" data-filter="oppo">Oppo</a>
+          <a href="#" data-filter="poco">POCO</a>
+          <a href="#" data-filter="xiaomi">Xiaomi</a>
+          <a href="#" data-filter="honor">HONOR</a>
+          <a href="#" data-filter="infinix">Infinix</a>
+          <a href="#" data-filter="vivo">vivo</a>
+        </nav>
+        <nav class="nav-links accessory-filters" aria-label="تصفية الإكسسوارات" hidden>
+          <a class="active" href="#" data-accessory-filter="all">الكل</a>
+          <a href="#" data-accessory-filter="headphones">السماعات</a>
+          <a href="#" data-accessory-filter="chargers">الشواحن</a>
+          <a href="#" data-accessory-filter="cables">الكابلات</a>
+          <a href="#" data-accessory-filter="airpods">AirPods</a>
+        </nav>
+        </div>
+        <form class="search-box" role="search">
+          <input id="productSearch" type="search" placeholder="قلب على هاتف أو إكسسوار..." aria-label="قلب على هاتف أو إكسسوار" autocomplete="off">
+          <button type="submit" aria-label="بحث">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
+          </button>
+        </form>
+        <div class="nav-actions">
+          <a class="admin-link" href="salle/index.html">جميع الهواتف</a>
+          <a class="cart-btn" href="panier/index.html">🛒 السلة <span id="cartCount">0</span></a>
+          <a class="admin-link" href="admin/login.html">لوحة التحكم</a>
+        </div>
+      </div>
+    </header>
+    <nav class="catalog-tabs-bar" aria-label="أقسام المتجر">
+      <div class="catalog-tabs">
+        <a class="active" href="#phoneSection" data-catalog="phones" aria-current="page">الهواتف</a>
+        <a href="#accessorySection" data-catalog="accessories">الإكسسوارات</a>
+      </div>
+    </nav>
+  </div>
+
+  <main>
+    <section class="hero">
+      <h1>اختار هاتفك بكل ثقة</h1>
+      <p>تصفح الهواتف والإكسسوارات المتوفرة، شوف المواصفات والثمن بالدرهم، وتواصل معنا لطلبك عبر واتساب.</p>
+      <a class="hero-location-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.563091%2C-7.557610" target="_blank" rel="noopener noreferrer">
+        <span class="hero-location-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+        </span>
+        <span class="hero-location-copy">
+          <strong>زور المحل</strong>
+          <span>شوف موقعنا على Google Maps</span>
+        </span>
+        <span class="hero-location-arrow" aria-hidden="true">←</span>
+      </a>
+    </section>
+    <section id="phoneSection" class="container" aria-label="الهواتف المتوفرة">
+      <div class="section-heading">
+        <h2>هواتفنا</h2>
+        <span id="productCount" class="product-count"></span>
+      </div>
+      <div id="products" class="products-grid" aria-live="polite"></div>
+    </section>
+    <section id="accessorySection" class="container accessories-section" aria-label="الإكسسوارات المتوفرة" hidden>
+      <div class="section-heading">
+        <h2>إكسسوارات الهاتف</h2>
+        <span id="accessoryCount" class="product-count"></span>
+      </div>
+      <div id="accessories" class="products-grid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer class="contact-footer">
+    <div class="contact-footer-inner">
+      <div class="contact-copy">
+        <span class="contact-eyebrow">باقي عندك شي سؤال؟</span>
+        <h2>تواصل معنا</h2>
+        <p>تبعنا ولا راسلنا عبر حساباتنا الرسمية.</p>
+      </div>
+      <nav id="socialLinks" class="social-links" aria-label="حسابات التواصل الاجتماعي"></nav>
+    </div>
+    <section class="location-section" aria-labelledby="locationTitle">
+      <div class="location-heading">
+        <div>
+          <span class="contact-eyebrow">مرحبا بكم</span>
+          <h2 id="locationTitle">موقع المحل على Google Maps</h2>
+          <p>33.563091, -7.557610</p>
+        </div>
+        <a class="location-link" href="https://www.google.com/maps/search/?api=1&amp;query=33.563091%2C-7.557610" target="_blank" rel="noopener noreferrer">وصل للمحل على الخريطة</a>
+      </div>
+      <iframe
+        class="location-map"
+        src="https://www.google.com/maps?q=33.563091,-7.557610&amp;z=16&amp;output=embed"
+        title="خريطة موقع المحل"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen>
+      </iframe>
+    </section>
+    <div class="footer-bottom">© ElectrophoneAmine — جميع الحقوق محفوظة</div>
+  </footer>
+
+  <div id="productModal" class="modal" role="dialog" aria-modal="true" aria-label="تفاصيل المنتج" onclick="if(event.target===this)closeModal()">
+    <div class="modal-content">
+      <button class="close" type="button" aria-label="إغلاق" onclick="closeModal()">×</button>
+      <div id="modalBody"></div>
+    </div>
+    <div id="imageLightbox" class="image-lightbox" role="dialog" aria-modal="true" aria-label="عرض صورة المنتج" hidden>
+      <button class="lightbox-close" type="button" aria-label="إغلاق الصورة المكبرة" data-lightbox-close>×</button>
+      <button class="lightbox-step lightbox-previous" type="button" aria-label="الصورة السابقة" data-lightbox-step="-1">‹</button>
+      <img id="lightboxImage" class="lightbox-image" alt="">
+      <button class="lightbox-step lightbox-next" type="button" aria-label="الصورة التالية" data-lightbox-step="1">›</button>
+      <span id="lightboxCounter" class="lightbox-counter" aria-live="polite"></span>
+    </div>
+  </div>
+  <script src="frontend/js/store.js"></script>
+  <script src="frontend/js/main.js"></script>
+</body>
+</html>
