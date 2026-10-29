@@ -509,10 +509,14 @@ window.addEventListener('products:updated', event => {
 });
 
 async function loadSharedCatalog() {
-  const synced = await store.syncCatalogFromServer();
   products = store.getProducts();
+  if (products.length === 0 && typeof store.getSeedProducts === 'function') {
+    products = store.saveProducts(store.getSeedProducts());
+  }
   accessories = readArray('electrophone_accessories', 'بيانات الإكسسوارات المخزنة غير صالحة.');
-  if (!synced) await store.saveCatalogToServer(products, accessories);
+  const synced = await store.syncCatalogFromServer();
+  if (!synced && window.location.protocol !== 'file:') await store.saveCatalogToServer(products, accessories);
+  products = store.getProducts();
   render();
 }
 

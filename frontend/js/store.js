@@ -1780,6 +1780,7 @@
   }
 
   async function syncCatalogFromServer() {
+    if (window.location.protocol === 'file:') return false;
     try {
       const response = await fetch('/api/catalog', { cache: 'no-store' });
       if (!response.ok) return false;
@@ -1808,6 +1809,7 @@
   }
 
   async function saveCatalogToServer(productsToSave = getProducts(), accessoriesToSave = null) {
+    if (window.location.protocol === 'file:') return false;
     try {
       const accessories = accessoriesToSave === null
         ? JSON.parse(localStorage.getItem('electrophone_accessories') || '[]')
@@ -1823,6 +1825,11 @@
     }
   }
 
-  window.ElectrophoneStore = { getProducts, saveProducts, saveCatalogToServer, syncCatalogFromServer, escapeHTML, resolveImage };
+  function getSeedProducts() {
+    return PRICED_SEED_PRODUCTS.map(product => ({ ...product, images: Array.isArray(product.images) ? [...product.images] : undefined }))
+      .filter(product => product.price !== undefined);
+  }
+
+  window.ElectrophoneStore = { getProducts, getSeedProducts, saveProducts, saveCatalogToServer, syncCatalogFromServer, escapeHTML, resolveImage };
   void syncCatalogFromServer();
 })();
