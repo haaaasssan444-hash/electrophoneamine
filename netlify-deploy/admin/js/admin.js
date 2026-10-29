@@ -92,6 +92,13 @@ $("productForm").addEventListener("submit", async event => {
   products = [product, ...products];
   try { products = store.saveProducts(products); }
   catch (_) { $("phoneSubmit").disabled = false; message("phoneMessage", "ما قدرناش نحفظو الهاتف والصورة؛ جرب صورة أصغر.", true); return; }
+  try {
+    if (window.ElectrophoneCloud) await window.ElectrophoneCloud.saveSharedCatalog(products, accessories);
+  } catch (error) {
+    $("phoneSubmit").disabled = false;
+    message("phoneMessage", "تزاد الهاتف محليًا ولكن ما قدرناش نرسلو للسحابة: " + (error.message || error), true);
+    return;
+  }
   $("phoneSubmit").disabled = false;
   resetPhone();
   window.dispatchEvent(new CustomEvent("products:updated", { detail: products }));
@@ -116,6 +123,13 @@ $("accessoryForm").addEventListener("submit", async event => {
   accessories = [accessory, ...accessories];
   try { localStorage.setItem("electrophone_accessories", JSON.stringify(accessories)); }
   catch (_) { $("accessorySubmit").disabled = false; message("accessoryMessage", "ما قدرناش نحفظو الإكسسوار والصورة؛ جرب صورة أصغر.", true); return; }
+  try {
+    if (window.ElectrophoneCloud) await window.ElectrophoneCloud.saveSharedCatalog(products, accessories);
+  } catch (error) {
+    $("accessorySubmit").disabled = false;
+    message("accessoryMessage", "تزاد الإكسسوار محليًا ولكن ما قدرناش نرسلو للسحابة: " + (error.message || error), true);
+    return;
+  }
   $("accessorySubmit").disabled = false;
   window.dispatchEvent(new CustomEvent("accessories:updated", { detail: accessories }));
   resetAccessory();
