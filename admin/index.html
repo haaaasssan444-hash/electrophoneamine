@@ -9,7 +9,7 @@
   <meta http-equiv="Expires" content="0">
   <meta name="description" content="لوحة إضافة منتجات متجر ElectrophoneAmine.">
   <title>إضافة منتجات | ElectrophoneAmine</title>
-  <link rel="stylesheet" href="css/admin.css?v=20261029c">
+  <link rel="stylesheet" href="css/admin.css?v=d7617ef">
 </head>
 <body class="admin-page">
   <aside class="sidebar">
@@ -20,13 +20,21 @@
     </nav>
     <button id="logout" class="logout" type="button">تسجيل الخروج</button>
   </aside>
-  <main class="main">
+  <main class="main management-main">
+    <header class="store-admin-header"><a class="store-brand" href="../index.html">Electrophone<span>Amine</span></a><nav><a href="#phonesManage" class="active">الهواتف</a><a href="#accessoriesManage">الإكسسوارات</a><a href="#phoneFormCard">إضافة هاتف</a><a href="#accessoryFormCard">إضافة إكسسوار</a></nav><button id="logoutTop" class="logout" type="button">تسجيل الخروج</button></header>
     <header class="page-heading">
-      <div><p class="eyebrow">إدارة المنتجات</p><h1>مرحبا أمين 👋</h1><p>أضف هواتف وإكسسوارات جديدة للمتجر.</p></div>
-      <span class="status">● إضافة منتجات فقط</span>
+      <div><p class="eyebrow">إدارة المتجر</p><h1>مرحبا أمين 👋</h1><p>عدّل أسماء الهواتف، ثمنها، معلوماتها، واحذف المنتجات.</p></div>
+      <span class="status">● متصل بالسحابة</span>
     </header>
 
-    <section class="card section-card">
+    <section class="management-grid" id="phonesManage">
+      <div class="card management-card"><div class="card-head"><div><span class="section-kicker">الهواتف</span><h2>إدارة الهواتف</h2></div><span id="phoneManageCount">0 هاتف</span></div><div id="phoneManageList" class="management-list"></div></div>
+    </section>
+    <section class="management-grid" id="accessoriesManage">
+      <div class="card management-card"><div class="card-head"><div><span class="section-kicker">الإكسسوارات</span><h2>إدارة الإكسسوارات</h2></div><span id="accessoryManageCount">0 إكسسوار</span></div><div id="accessoryManageList" class="management-list"></div></div>
+    </section>
+
+    <section class="card section-card" id="phoneFormCard">
       <div class="card-head"><div><span class="section-kicker">الكتالوج</span><h2>📱 إضافة هاتف جديد</h2></div><span>كيبان مباشرة فالمتجر</span></div>
       <form id="productForm" class="product-form form-grid">
         <input id="productId" type="hidden">
@@ -46,7 +54,7 @@
       </form>
     </section>
 
-    <section class="card section-card">
+    <section class="card section-card" id="accessoryFormCard">
       <div class="card-head"><div><span class="section-kicker">الكتالوج</span><h2>🎧 إضافة إكسسوار جديد</h2></div><span>شواحن، سماعات، كوابل، كفرات</span></div>
       <form id="accessoryForm" class="product-form form-grid">
         <input id="accessoryId" type="hidden">
@@ -67,6 +75,6 @@
   <script src="../frontend/js/cloud-catalog.js?v=cc9fb76"></script>
   <script src="config/password.js?v=20261029c"></script>
   <script src="js/auth.js?v=20261029c"></script>
-  <script src="js/admin.js?v=20261029c"></script>
+  <script src="js/admin.js?v=d7617ef"></script>
 </body>
 </html>
