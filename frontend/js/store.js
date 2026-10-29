@@ -15,6 +15,7 @@
   const MORE_NEW_INVENTORY_SEED_KEY = 'electrophone_more_new_inventory_20261027_v1';
   const LATEST_INVENTORY_SEED_KEY = 'electrophone_latest_inventory_20261027_v1';
   const POCO_INVENTORY_SEED_KEY = 'electrophone_poco_inventory_20261027_v1';
+  const POCO_PRICE_UPDATE_KEY = 'electrophone_poco_256_1850_20261029_v1';
   const OPPO_A73_SEED_KEY = 'electrophone_oppo_a73_128_6_20261027_v1';
   const FJ_STAR_FJ_A6_SEED_KEY = 'electrophone_accessory_fj_star_fj_a6_20261027_v1';
   const JBL_980BT_SEED_KEY = 'electrophone_accessory_980bt_20261027_v1';
@@ -660,7 +661,7 @@
       storage: '256GB',
       ram: '8GB',
       name: 'POCO 256GB - RAM 8GB',
-      price: 2200,
+      price: 1850,
       img: 'asset:phones/poco-256-8-marble-back.jpg',
       images: [
         'asset:phones/poco-256-8-marble-back.jpg',
@@ -1147,6 +1148,17 @@
       saveProducts([pocoProduct, ...products]);
     }
     localStorage.setItem(POCO_INVENTORY_SEED_KEY, 'true');
+  }
+
+  if (!localStorage.getItem(POCO_PRICE_UPDATE_KEY)) {
+    const products = getProducts();
+    const updatedProducts = products.map(product =>
+      String(product.id) === 'phone-poco-256-8-20261027'
+        ? { ...product, price: 1850 }
+        : product
+    );
+    saveProducts(updatedProducts);
+    localStorage.setItem(POCO_PRICE_UPDATE_KEY, 'true');
   }
 
   if (!localStorage.getItem(OPPO_A73_SEED_KEY)) {
