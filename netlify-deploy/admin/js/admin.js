@@ -517,3 +517,4 @@ render();
 void loadSharedCatalog();
 loadServerAnalytics();
 window.setInterval(loadServerAnalytics, 30000);
+window.setInterval(loadSharedCatalog, 30000);
