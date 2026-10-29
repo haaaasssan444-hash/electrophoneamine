@@ -290,7 +290,8 @@ phoneForm.addEventListener('submit', async event => {
     : [product, ...products];
   try {
     products = store.saveProducts(products);
-    await store.saveCatalogToServer(products, accessories);
+    const cloudSaved = await store.saveCatalogToServer(products, accessories);
+    if (!cloudSaved) throw new Error('ما تمش التزامن السحابي، ولكن تبدلات المتصفح المحلي فقط.');
   } catch (error) {
     phoneMessage('ما قدرناش نحفظو المنتج والصورة. مساحة التخزين المحلية عامرة؛ جرب صورة أصغر أو نقص من عدد الصور.', true);
     $('phoneSubmit').disabled = false;
@@ -423,9 +424,11 @@ $('analyticsRows').addEventListener('click', event => {
     products = products.filter(entry => String(entry.id) !== button.dataset.delete);
     products = store.saveProducts(products);
   }
-  void store.saveCatalogToServer(products, accessories);
-  render();
-});
+  store.saveCatalogToServer(products, accessories).then(saved => {
+    if (type === 'accessory') accessoryMessage(saved ? 'تبدل الإكسسواري وتزامن بنجاح ✅' : 'تبدل الإكسسوار محلياً فقط؛ التزامن السحابي ما عملش.', !saved);
+    else phoneMessage(saved ? 'تبدل المنتج وتزامن بنجاح ✅' : 'تبدل المنتج محلياً فقط؛ التزامن السحابي ما عملش.', !saved);
+    render();
+  });
 
 $('cancelPhoneEdit').addEventListener('click', () => {
   resetPhoneForm();

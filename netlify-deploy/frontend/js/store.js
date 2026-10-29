@@ -1787,13 +1787,14 @@
       if (!catalog || typeof catalog !== 'object') return false;
       if (!catalog.updatedAt) return false;
       let changed = false;
-      if (Array.isArray(catalog.products) && catalog.products.length > 0) {
+      if (Array.isArray(catalog.products)) {
         saveProducts(catalog.products);
         changed = true;
       }
-      if (Array.isArray(catalog.accessories) && catalog.accessories.length > 0) {
+      if (Array.isArray(catalog.accessories)) {
         localStorage.setItem('electrophone_accessories', JSON.stringify(catalog.accessories));
         window.dispatchEvent(new CustomEvent('accessories:updated', { detail: catalog.accessories }));
+        changed = true;
       }
       return changed;
     } catch (_) {
