@@ -37,7 +37,7 @@ body{
 .hero h1{font-size:36px;font-weight:900;letter-spacing:-1px;color:var(--ink)}
 .hero h1::after{content:"";display:block;width:62px;height:5px;margin:13px auto 0;border-radius:5px;background:linear-gradient(90deg,var(--yellow-dark),#ffe477)}
 .hero p{color:var(--muted);margin-top:13px;font-weight:600;font-size:15px}
-.hero-location-link{display:inline-flex;align-items:center;gap:12px;margin-top:24px;padding:10px 16px 10px 13px;border:1px solid #ead27b;border-radius:18px;background:rgba(255,255,255,.88);box-shadow:0 8px 24px rgba(128,101,0,.1);color:var(--ink);text-align:right;text-decoration:none;transition:transform .2s,box-shadow .2s,border-color .2s}
+.hero-location-link{display:inline-flex;align-items:center;gap:12px;margin-top:24px;padding:10px 16px 10px 13px;border:1px solid #ead27b;border-radius:18px;background:rgba(255,255,255,.88);box-shadow:0 8px 24px rgba(128,101,0,.1);color:var(--ink);text-align:right;text-decoration:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:transform .2s,box-shadow .2s,border-color .2s}
 .hero-location-link:hover{transform:translateY(-2px);border-color:var(--yellow-dark);box-shadow:0 12px 28px rgba(128,101,0,.16)}
 .hero-location-icon{display:grid;place-items:center;flex:none;width:42px;height:42px;border-radius:14px;background:#fff3bf;color:#806500}
 .hero-location-icon svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
@@ -69,7 +69,7 @@ body{
 .location-heading{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:14px}
 .location-heading h2{font-size:20px;font-weight:900;margin-top:3px}
 .location-heading p{color:var(--muted);font-size:13px;margin-top:4px;direction:ltr;text-align:right}
-.location-link{display:inline-flex;align-items:center;justify-content:center;padding:11px 16px;border-radius:12px;background:var(--yellow);color:var(--ink);text-decoration:none;font-weight:900;font-size:13px}
+.location-link{display:inline-flex;align-items:center;justify-content:center;padding:11px 16px;border-radius:12px;background:var(--yellow);color:var(--ink);text-decoration:none;font-weight:900;font-size:13px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .location-link:hover{background:#ffdc59}
 .location-map{display:block;width:100%;height:320px;border:1px solid #eee5c8;border-radius:16px;background:#fff}
 .footer-bottom{padding:13px 20px;text-align:center;color:#777;border-top:1px solid #eee5c8;font-size:11px}
