@@ -22,7 +22,7 @@ exports.handler = async event => {
     const store = getStore(STORE_NAME);
 
     if (event.httpMethod === 'GET') {
-      const catalog = (await store.get(DATA_KEY, { type: 'json' })) || { products: [], accessories: [], updatedAt: null };
+      const catalog = (await store.get(DATA_KEY, { type: 'json' })) || { products: [], accessories: [], updatedAt: null, catalogInitialized: false };
       return { statusCode: 200, headers, body: JSON.stringify(catalog) };
     }
 
@@ -38,7 +38,8 @@ exports.handler = async event => {
     const catalog = {
       products: body.products,
       accessories: body.accessories,
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
+      catalogInitialized: true
     };
     await store.setJSON(DATA_KEY, catalog);
     return { statusCode: 200, headers, body: JSON.stringify(catalog) };

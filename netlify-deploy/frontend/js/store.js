@@ -1785,7 +1785,7 @@
       if (!response.ok) return false;
       const catalog = await response.json();
       if (!catalog || typeof catalog !== 'object') return false;
-      if (!catalog.updatedAt) return false;
+      if (!catalog.updatedAt || catalog.catalogInitialized !== true) return false;
       let changed = false;
       if (Array.isArray(catalog.products)) {
         saveProducts(catalog.products);
