@@ -60,6 +60,16 @@ function recordVisit() {
   const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
   visitsByDate[date] = (Number(visitsByDate[date]) || 0) + 1;
   localStorage.setItem(historyKey, JSON.stringify(visitsByDate));
+
+  const sessionKey = `analytics_visit_${date}`;
+  if (!sessionStorage.getItem(sessionKey)) {
+    sessionStorage.setItem(sessionKey, '1');
+    fetch('/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'visit' })
+    }).catch(() => {});
+  }
 }
 
 function recordProductView(product) {
@@ -72,6 +82,12 @@ function recordProductView(product) {
   const viewKey = `${product.productType || 'phone'}:${product.id}`;
   views[viewKey] = (Number(views[viewKey]) || 0) + 1;
   localStorage.setItem(key, JSON.stringify(views));
+
+  fetch('/api/track', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type: 'view', itemType: product.productType || 'phone', itemId: product.id })
+  }).catch(() => {});
 }
 
 function productById(id, type) {
@@ -549,8 +565,48 @@ window.addEventListener('products:updated', event => {
   renderPhoneCards();
 });
 
+function injectProductStructuredData() {
+  const items = products.filter(productHasPrice).map((product, index) => {
+    const image = store.resolveImage(product.img || '');
+    const absoluteImage = image ? new URL(image, window.location.origin + '/').href : undefined;
+    return {
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'Product',
+        name: product.name || 'هاتف',
+        description: product.desc || product.summary || '',
+        sku: String(product.id),
+        brand: { '@type': 'Brand', name: product.brand || 'ElectrophoneAmine' },
+        ...(absoluteImage ? { image: absoluteImage } : {}),
+        offers: {
+          '@type': 'Offer',
+          url: 'https://marketphone.shop/',
+          priceCurrency: 'MAD',
+          price: Number(product.price),
+          availability: Number(product.quantity) > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+          seller: { '@type': 'Organization', name: 'ElectrophoneAmine' }
+        }
+      }
+    };
+  });
+
+  if (!items.length) return;
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  script.textContent = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'هواتف متوفرة لدى ElectrophoneAmine',
+    numberOfItems: items.length,
+    itemListElement: items
+  });
+  document.head.appendChild(script);
+}
+
 syncCartPrices();
 recordVisit();
 renderPhoneCards();
 renderAccessoryCards();
 renderSocialLinks();
+injectProductStructuredData();

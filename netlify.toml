@@ -1,2 +1,13 @@
 [build]
   publish = "netlify-deploy"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/analytics"
+  to = "/.netlify/functions/analytics"
+  status = 200
+
+[[redirects]]
+  from = "/api/track"
+  to = "/.netlify/functions/analytics"
+  status = 200

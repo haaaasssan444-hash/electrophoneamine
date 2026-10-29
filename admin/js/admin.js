@@ -1,6 +1,7 @@
 const store = window.ElectrophoneStore;
 let products = store.getProducts();
 let accessories = readArray('electrophone_accessories', 'بيانات الإكسسوارات المخزنة غير صالحة.');
+let serverAnalytics = null;
 
 const $ = id => document.getElementById(id);
 const phoneForm = $('productForm');
@@ -55,6 +56,15 @@ function getVisitorTotals() {
     date >= weekStartKey && date <= todayKey ? total + (Number(count) || 0) : total, 0
   );
   return { todayCount, weekCount };
+}
+
+async function loadServerAnalytics() {
+  try {
+    const response = await fetch('/api/analytics', { cache: 'no-store' });
+    if (!response.ok) return;
+    serverAnalytics = await response.json();
+    render();
+  } catch (_) {}
 }
 
 function inventoryQuantity(item) {
@@ -148,14 +158,26 @@ function render() {
   });
 
   $('totalProducts').textContent = catalog.length.toLocaleString('fr-MA');
-  $('siteVisitors').textContent = (Number(localStorage.getItem('site_visitors')) || 0).toLocaleString('fr-MA');
+  const sharedVisitorTotal = serverAnalytics && Number.isFinite(Number(serverAnalytics.visitorsTotal))
+    ? Number(serverAnalytics.visitorsTotal)
+    : (Number(localStorage.getItem('site_visitors')) || 0);
+  $('siteVisitors').textContent = sharedVisitorTotal.toLocaleString('fr-MA');
   $('totalOrders').textContent = cart.reduce((sum, item) => sum + (Number(item.qty) || 1), 0).toLocaleString('fr-MA');
   const inventoryValue = catalog.reduce((sum, item) =>
     sum + (Number(item.price) || 0) * inventoryQuantity(item), 0
   );
   $('inventoryValue').textContent = `${inventoryValue.toLocaleString('fr-MA')} DH`;
-  $('visitorsToday').textContent = visitorTotals.todayCount.toLocaleString('fr-MA');
-  $('visitorsWeek').textContent = visitorTotals.weekCount.toLocaleString('fr-MA');
+  if (serverAnalytics && serverAnalytics.visitorsDaily) {
+    const todayUtc = `${new Date().getUTCFullYear()}-${String(new Date().getUTCMonth() + 1).padStart(2, '0')}-${String(new Date().getUTCDate()).padStart(2, '0')}`;
+    const serverToday = Number(serverAnalytics.visitorsDaily[todayUtc]) || 0;
+    $('visitorsToday').textContent = serverToday.toLocaleString('fr-MA');
+    const weekKeys = Object.keys(serverAnalytics.visitorsDaily).sort();
+    const serverWeek = weekKeys.slice(-7).reduce((sum, key) => sum + (Number(serverAnalytics.visitorsDaily[key]) || 0), 0);
+    $('visitorsWeek').textContent = serverWeek.toLocaleString('fr-MA');
+  } else {
+    $('visitorsToday').textContent = visitorTotals.todayCount.toLocaleString('fr-MA');
+    $('visitorsWeek').textContent = visitorTotals.weekCount.toLocaleString('fr-MA');
+  }
   $('catalogCount').textContent = `${catalog.length} منتج`;
 
   $('emptyAnalytics').hidden = catalog.length > 0;
@@ -168,7 +190,7 @@ function render() {
       <tr>
         <td><span class="table-product-name">${name}</span><small class="table-product-type">${label}</small></td>
         <td>${(orderCounts.get(key) || 0).toLocaleString('fr-MA')}</td>
-        <td>${(Number(views[key]) || 0).toLocaleString('fr-MA')}</td>
+        <td>${(serverAnalytics?.views?.[key]?.total ?? Number(views[key]) || 0).toLocaleString('fr-MA')}</td>
         <td>${inventoryQuantity(item).toLocaleString('fr-MA')}</td>
         <td class="table-actions">
           <button class="edit-button" type="button" data-edit="${store.escapeHTML(item.id)}" data-type="${type}">تعديل</button>
@@ -481,3 +503,5 @@ window.addEventListener('products:updated', event => {
 });
 
 render();
+loadServerAnalytics();
+window.setInterval(loadServerAnalytics, 30000);

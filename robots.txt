@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /panier/
+
+Sitemap: https://marketphone.shop/sitemap.xml
