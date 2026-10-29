@@ -15,7 +15,7 @@
   const MORE_NEW_INVENTORY_SEED_KEY = 'electrophone_more_new_inventory_20261027_v1';
   const LATEST_INVENTORY_SEED_KEY = 'electrophone_latest_inventory_20261027_v1';
   const POCO_INVENTORY_SEED_KEY = 'electrophone_poco_inventory_20261027_v1';
-  const POCO_PRICE_UPDATE_KEY = 'electrophone_poco_256_1850_20261029_v1';
+  const POCO_PRICE_UPDATE_KEY = 'electrophone_poco_256_1850_20261029_v2';
   const OPPO_A73_SEED_KEY = 'electrophone_oppo_a73_128_6_20261027_v1';
   const FJ_STAR_FJ_A6_SEED_KEY = 'electrophone_accessory_fj_star_fj_a6_20261027_v1';
   const JBL_980BT_SEED_KEY = 'electrophone_accessory_980bt_20261027_v1';
@@ -1005,6 +1005,10 @@
 
   function applyPhonePriceRule(products) {
     return products.map(product => {
+      if (String(product.id) === 'phone-poco-256-8-20261027') {
+        return { ...product, price: 1850, oldPrice: 0 };
+      }
+
       const price = Number(product.price);
       if (!Number.isSafeInteger(price) || price <= 0 || price % 100 !== 0) return product;
 
