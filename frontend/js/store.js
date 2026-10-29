@@ -1779,57 +1779,5 @@
     return new URL(`../assets/${image.slice('asset:'.length)}`, STORE_SCRIPT_URL).href;
   }
 
-  async function syncCatalogFromServer() {
-    if (window.location.protocol === 'file:') return false;
-    try {
-      const response = await fetch('/api/catalog', { cache: 'no-store' });
-      if (!response.ok) return false;
-      const catalog = await response.json();
-      if (!catalog || typeof catalog !== 'object') return false;
-      if (!catalog.updatedAt || catalog.catalogInitialized !== true) return false;
-      let changed = false;
-      const localProducts = getProducts();
-      const localAccessories = JSON.parse(localStorage.getItem('electrophone_accessories') || '[]');
-      if (Array.isArray(catalog.products) && (catalog.products.length > 0 || localProducts.length === 0)) {
-        saveProducts(catalog.products);
-        changed = true;
-      }
-      if (Array.isArray(catalog.accessories) && (catalog.accessories.length > 0 || !Array.isArray(localAccessories) || localAccessories.length === 0)) {
-        localStorage.setItem('electrophone_accessories', JSON.stringify(catalog.accessories));
-        window.dispatchEvent(new CustomEvent('accessories:updated', { detail: catalog.accessories }));
-        changed = true;
-      }
-      if (Array.isArray(catalog.products) && catalog.products.length === 0 && localProducts.length > 0) {
-        await saveCatalogToServer(localProducts, Array.isArray(localAccessories) ? localAccessories : []);
-      }
-      return changed || localProducts.length > 0;
-    } catch (_) {
-      return false;
-    }
-  }
-
-  async function saveCatalogToServer(productsToSave = getProducts(), accessoriesToSave = null) {
-    if (window.location.protocol === 'file:') return false;
-    try {
-      const accessories = accessoriesToSave === null
-        ? JSON.parse(localStorage.getItem('electrophone_accessories') || '[]')
-        : accessoriesToSave;
-      const response = await fetch('/api/catalog', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ products: productsToSave, accessories })
-      });
-      return response.ok;
-    } catch (_) {
-      return false;
-    }
-  }
-
-  function getSeedProducts() {
-    return PRICED_SEED_PRODUCTS.map(product => ({ ...product, images: Array.isArray(product.images) ? [...product.images] : undefined }))
-      .filter(product => product.price !== undefined);
-  }
-
-  window.ElectrophoneStore = { getProducts, getSeedProducts, saveProducts, saveCatalogToServer, syncCatalogFromServer, escapeHTML, resolveImage };
-  void syncCatalogFromServer();
+  window.ElectrophoneStore = { getProducts, saveProducts, escapeHTML, resolveImage };
 })();

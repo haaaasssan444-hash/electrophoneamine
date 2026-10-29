@@ -11,8 +11,3 @@
   from = "/api/track"
   to = "/.netlify/functions/analytics"
   status = 200
-
-[[redirects]]
-  from = "/api/catalog"
-  to = "/.netlify/functions/catalog"
-  status = 200
