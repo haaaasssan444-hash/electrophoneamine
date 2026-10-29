@@ -510,9 +510,9 @@ window.addEventListener('products:updated', event => {
 
 async function loadSharedCatalog() {
   const synced = await store.syncCatalogFromServer();
-  if (!synced) await store.saveCatalogToServer(products, accessories);
   products = store.getProducts();
   accessories = readArray('electrophone_accessories', 'بيانات الإكسسوارات المخزنة غير صالحة.');
+  if (!synced) await store.saveCatalogToServer(products, accessories);
   render();
 }
 

@@ -1787,16 +1787,21 @@
       if (!catalog || typeof catalog !== 'object') return false;
       if (!catalog.updatedAt || catalog.catalogInitialized !== true) return false;
       let changed = false;
-      if (Array.isArray(catalog.products)) {
+      const localProducts = getProducts();
+      const localAccessories = JSON.parse(localStorage.getItem('electrophone_accessories') || '[]');
+      if (Array.isArray(catalog.products) && (catalog.products.length > 0 || localProducts.length === 0)) {
         saveProducts(catalog.products);
         changed = true;
       }
-      if (Array.isArray(catalog.accessories)) {
+      if (Array.isArray(catalog.accessories) && (catalog.accessories.length > 0 || !Array.isArray(localAccessories) || localAccessories.length === 0)) {
         localStorage.setItem('electrophone_accessories', JSON.stringify(catalog.accessories));
         window.dispatchEvent(new CustomEvent('accessories:updated', { detail: catalog.accessories }));
         changed = true;
       }
-      return changed;
+      if (Array.isArray(catalog.products) && catalog.products.length === 0 && localProducts.length > 0) {
+        await saveCatalogToServer(localProducts, Array.isArray(localAccessories) ? localAccessories : []);
+      }
+      return changed || localProducts.length > 0;
     } catch (_) {
       return false;
     }
