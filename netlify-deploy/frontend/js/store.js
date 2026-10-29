@@ -1779,5 +1779,45 @@
     return new URL(`../assets/${image.slice('asset:'.length)}`, STORE_SCRIPT_URL).href;
   }
 
-  window.ElectrophoneStore = { getProducts, saveProducts, escapeHTML, resolveImage };
+  async function syncCatalogFromServer() {
+    try {
+      const response = await fetch('/api/catalog', { cache: 'no-store' });
+      if (!response.ok) return false;
+      const catalog = await response.json();
+      if (!catalog || typeof catalog !== 'object') return false;
+      if (!catalog.updatedAt) return false;
+      let changed = false;
+      if (Array.isArray(catalog.products)) {
+        saveProducts(catalog.products);
+        changed = true;
+      }
+      if (Array.isArray(catalog.accessories)) {
+        localStorage.setItem('electrophone_accessories', JSON.stringify(catalog.accessories));
+        window.dispatchEvent(new CustomEvent('accessories:updated', { detail: catalog.accessories }));
+        changed = true;
+      }
+      return changed;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  async function saveCatalogToServer(productsToSave = getProducts(), accessoriesToSave = null) {
+    try {
+      const accessories = accessoriesToSave === null
+        ? JSON.parse(localStorage.getItem('electrophone_accessories') || '[]')
+        : accessoriesToSave;
+      const response = await fetch('/api/catalog', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ products: productsToSave, accessories })
+      });
+      return response.ok;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  window.ElectrophoneStore = { getProducts, saveProducts, saveCatalogToServer, syncCatalogFromServer, escapeHTML, resolveImage };
+  void syncCatalogFromServer();
 })();

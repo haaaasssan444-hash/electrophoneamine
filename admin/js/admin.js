@@ -290,6 +290,7 @@ phoneForm.addEventListener('submit', async event => {
     : [product, ...products];
   try {
     products = store.saveProducts(products);
+    await store.saveCatalogToServer(products, accessories);
   } catch (error) {
     phoneMessage('ما قدرناش نحفظو المنتج والصورة. مساحة التخزين المحلية عامرة؛ جرب صورة أصغر أو نقص من عدد الصور.', true);
     $('phoneSubmit').disabled = false;
@@ -346,6 +347,7 @@ accessoryForm.addEventListener('submit', async event => {
     : [accessory, ...accessories];
   try {
     localStorage.setItem('electrophone_accessories', JSON.stringify(accessories));
+    await store.saveCatalogToServer(products, accessories);
   } catch (error) {
     accessoryMessage('ما قدرناش نحفظو الإكسسوار والصورة. مساحة التخزين المحلية عامرة؛ جرب صورة أصغر أو نقص من عدد الصور.', true);
     $('accessorySubmit').disabled = false;
@@ -421,6 +423,7 @@ $('analyticsRows').addEventListener('click', event => {
     products = products.filter(entry => String(entry.id) !== button.dataset.delete);
     products = store.saveProducts(products);
   }
+  void store.saveCatalogToServer(products, accessories);
   render();
 });
 
@@ -502,6 +505,15 @@ window.addEventListener('products:updated', event => {
   render();
 });
 
+async function loadSharedCatalog() {
+  const synced = await store.syncCatalogFromServer();
+  if (!synced) await store.saveCatalogToServer(products, accessories);
+  products = store.getProducts();
+  accessories = readArray('electrophone_accessories', 'بيانات الإكسسوارات المخزنة غير صالحة.');
+  render();
+}
+
 render();
+void loadSharedCatalog();
 loadServerAnalytics();
 window.setInterval(loadServerAnalytics, 30000);
