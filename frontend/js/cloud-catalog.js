@@ -34,7 +34,17 @@
   async function loadSharedCatalog() {
     const phones = await fetchTable('phone_products');
     const accessories = await fetchTable('accessory_products');
-    if (window.ElectrophoneStore) {
+
+    if (!phones.length && !accessories.length) {
+      const localPhones = JSON.parse(localStorage.getItem('productsData') || '[]');
+      const localAccessories = JSON.parse(localStorage.getItem('electrophone_accessories') || '[]');
+      if (Array.isArray(localPhones) && localPhones.length || Array.isArray(localAccessories) && localAccessories.length) {
+        await saveSharedCatalog(localPhones, localAccessories);
+      }
+      return;
+    }
+
+    if (phones.length && window.ElectrophoneStore) {
       window.ElectrophoneStore.saveProducts(phones);
     }
     localStorage.setItem('electrophone_accessories', JSON.stringify(accessories));
