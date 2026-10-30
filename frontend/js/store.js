@@ -14,6 +14,7 @@
   const NEW_INVENTORY_SEED_KEY = 'electrophone_new_inventory_20261027_v1';
   const MORE_NEW_INVENTORY_SEED_KEY = 'electrophone_more_new_inventory_20261027_v1';
   const LATEST_INVENTORY_SEED_KEY = 'electrophone_latest_inventory_20261027_v1';
+  const NEW_OCTOBER_29_INVENTORY_SEED_KEY = 'electrophone_new_inventory_20261029_v1';
   const POCO_INVENTORY_SEED_KEY = 'electrophone_poco_inventory_20261027_v1';
   const POCO_PRICE_UPDATE_KEY = 'electrophone_poco_256_1850_20261029_v2';
   const OPPO_A73_SEED_KEY = 'electrophone_oppo_a73_128_6_20261027_v1';
@@ -675,6 +676,69 @@
     }
   ];
 
+  const NEW_OCTOBER_29_INVENTORY_PRODUCTS = [
+    {
+      id: 'phone-iphone-17-pro-max-1tb-100-battery-20261029',
+      brand: 'iphone',
+      model: '17 Pro Max',
+      storage: '1TB',
+      ram: '12GB',
+      name: 'iPhone 17 Pro Max 1TB - 100% Battery',
+      price: 15000,
+      oldPrice: 0,
+      img: 'asset:phones/iphone-17-pro-max-1tb-100-battery-1.jpg',
+      images: [
+        'asset:phones/iphone-17-pro-max-1tb-100-battery-1.jpg',
+        'asset:phones/iphone-17-pro-max-1tb-100-battery-2.jpg',
+        'asset:phones/iphone-17-pro-max-1tb-100-battery-3.jpg'
+      ],
+      condition: 'متوفر',
+      quantity: 1,
+      summary: '1TB • رام 12GB • بطارية 100%',
+      desc: 'iPhone 17 Pro Max بسعة 1TB، رام 12GB، وصحة بطارية 100%.'
+    },
+    {
+      id: 'phone-samsung-s24-ultra-256gb-12ram-20261029',
+      brand: 'samsung',
+      model: 'Galaxy S24 Ultra',
+      storage: '256GB',
+      ram: '12GB',
+      name: 'Samsung Galaxy S24 Ultra 256GB - RAM 12GB',
+      price: 6500,
+      oldPrice: 0,
+      img: 'asset:phones/samsung-s24-ultra-256gb-12ram-1.jpg',
+      images: [
+        'asset:phones/samsung-s24-ultra-256gb-12ram-1.jpg',
+        'asset:phones/samsung-s24-ultra-256gb-12ram-2.jpg',
+        'asset:phones/samsung-s24-ultra-256gb-12ram-3.jpg'
+      ],
+      condition: 'متوفر',
+      quantity: 1,
+      summary: '256GB • رام 12GB',
+      desc: 'Samsung Galaxy S24 Ultra بسعة 256GB وذاكرة RAM 12GB.'
+    },
+    {
+      id: 'phone-samsung-s22-ultra-512gb-20261029',
+      brand: 'samsung',
+      model: 'Galaxy S22 Ultra',
+      storage: '512GB',
+      ram: '12GB',
+      name: 'Samsung Galaxy S22 Ultra 512GB',
+      price: 4800,
+      oldPrice: 0,
+      img: 'asset:phones/samsung-s22-ultra-512gb-1.jpg',
+      images: [
+        'asset:phones/samsung-s22-ultra-512gb-1.jpg',
+        'asset:phones/samsung-s22-ultra-512gb-2.jpg',
+        'asset:phones/samsung-s22-ultra-512gb-3.jpg'
+      ],
+      condition: 'متوفر',
+      quantity: 1,
+      summary: '512GB • رام 12GB',
+      desc: 'Samsung Galaxy S22 Ultra بسعة 512GB.'
+    }
+  ];
+
   const STOCK_PHONE_PRODUCTS = [
     {
       id: 'stock-iphone-13-256-blue-76',
@@ -958,7 +1022,7 @@
     { slug: 'smsng-pink', brand: 'samsung', model: '', name: 'Samsung - Pink (تحديد الموديل مطلوب)', summary: 'هاتف Samsung؛ اللون الوردي حسب اسم المجلد، والموديل غير محدد', note: 'حدد الموديل والسعة والذاكرة من إعدادات الهاتف قبل النشر.' },
     { slug: 'smsng-s21-fe', brand: 'samsung', model: 'Galaxy S21 FE', name: 'Samsung Galaxy S21 FE', summary: 'موديل S21 FE حسب اسم المجلد', note: 'تحقق من السعة والذاكرة ورقم الطراز.' },
     { slug: 'vivo', brand: 'vivo', model: '', name: 'vivo - تحديد الموديل مطلوب', summary: 'هاتف vivo؛ الموديل ما تحددش فاسم المجلد', note: 'حدد الموديل والسعة والذاكرة من إعدادات الهاتف قبل النشر.' },
-    { slug: 'vivo-5g', brand: 'vivo', model: '', name: 'vivo 5G - تحديد الموديل مطلوب', summary: 'مجلد vivo 5G ما فيه حتى صورة؛ الموديل غير محدد', note: 'زيد صور الهاتف وحدد الموديل والسعة والذاكرة قبل عرض المنتج.' , imageCount: 0 },
+    { slug: 'vivo-5g', brand: 'vivo', model: '', name: 'vivo 5G - تحديد الموديل مطلوب', summary: 'صور الهاتف حسب مجلد vivo 5G؛ الموديل غير محدد', note: 'حدد الموديل والسعة والذاكرة من إعدادات الهاتف.' },
     { slug: 'xiomi-11-lite-5g', brand: 'xiaomi', model: '11 Lite 5G', name: 'Xiaomi 11 Lite 5G', summary: 'موديل 11 Lite 5G حسب اسم المجلد', note: 'تحقق من نسخة الجهاز والسعة والذاكرة من الإعدادات.' },
     { slug: 'xr-64-85', brand: 'iphone', model: 'XR', storage: '64GB', name: 'iPhone XR 64GB', summary: '64GB • صحة البطارية 85% حسب اسم المجلد', note: 'تحقق من السعة وصحة البطارية من إعدادات الهاتف قبل النشر.' }
   ];
@@ -1000,13 +1064,22 @@
     ...MORE_PHONE_PRODUCTS,
     ...NEW_INVENTORY_PRODUCTS,
     ...MORE_NEW_INVENTORY_PRODUCTS,
-    ...LATEST_INVENTORY_PRODUCTS
+    ...LATEST_INVENTORY_PRODUCTS,
+    ...NEW_OCTOBER_29_INVENTORY_PRODUCTS
   ];
 
   function applyPhonePriceRule(products) {
     return products.map(product => {
+      const exactPriceIds = new Set([
+        'phone-iphone-17-pro-max-1tb-100-battery-20261029',
+        'phone-samsung-s24-ultra-256gb-12ram-20261029',
+        'phone-samsung-s22-ultra-512gb-20261029'
+      ]);
       if (String(product.id) === 'phone-poco-256-8-20261027') {
         return { ...product, price: 1850, oldPrice: 0 };
+      }
+      if (exactPriceIds.has(String(product.id))) {
+        return { ...product, oldPrice: 0 };
       }
 
       const price = Number(product.price);
@@ -1143,6 +1216,14 @@
     const newProducts = LATEST_INVENTORY_PRODUCTS.filter(product => !existingIds.has(String(product.id)));
     if (newProducts.length) saveProducts([...newProducts, ...products]);
     localStorage.setItem(LATEST_INVENTORY_SEED_KEY, 'true');
+  }
+
+  if (!localStorage.getItem(NEW_OCTOBER_29_INVENTORY_SEED_KEY)) {
+    const products = getProducts();
+    const existingIds = new Set(products.map(product => String(product.id)));
+    const newProducts = NEW_OCTOBER_29_INVENTORY_PRODUCTS.filter(product => !existingIds.has(String(product.id)));
+    if (newProducts.length) saveProducts([...newProducts, ...products]);
+    localStorage.setItem(NEW_OCTOBER_29_INVENTORY_SEED_KEY, 'true');
   }
 
   if (!localStorage.getItem(POCO_INVENTORY_SEED_KEY)) {
@@ -1779,5 +1860,11 @@
     return new URL(`../assets/${image.slice('asset:'.length)}`, STORE_SCRIPT_URL).href;
   }
 
-  window.ElectrophoneStore = { getProducts, saveProducts, escapeHTML, resolveImage };
+  window.ElectrophoneStore = {
+    getProducts,
+    saveProducts,
+    escapeHTML,
+    resolveImage,
+    getSeedProducts: () => PRICED_SEED_PRODUCTS
+  };
 })();
