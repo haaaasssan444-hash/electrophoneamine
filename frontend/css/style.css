@@ -52,7 +52,8 @@ body{
 .section-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
 .section-heading h1,.section-heading h2{font-size:24px;font-weight:900}
 .accessories-section{padding-top:10px}
-.accessory-card .badge{background:var(--red);color:var(--ink)}
+.badge{background:#ef4444;color:#fff;border-color:#ef4444}
+.accessory-card .badge{background:#ef4444;color:#fff;border-color:#ef4444}
 .card-img-wrap:focus-visible{outline:2px solid var(--red-dark);outline-offset:3px}
 .product-count{color:var(--muted);font-size:14px}
 .contact-footer{margin-top:8px;background:var(--surface-soft);border-top:1px solid #fee2e2}
@@ -136,7 +137,7 @@ body{
 .card-img-wrap img{width:72%;height:80%;object-fit:contain;filter:drop-shadow(0 12px 18px rgba(127,29,29,.12));transition:transform .4s}
 .product-card:hover .card-img-wrap img{transform:scale(1.1) rotate(-2deg)}
 
-.badge{position:absolute;top:12px;left:12px;background:var(--red);color:var(--ink);border:1px solid rgba(220,38,38,0.25);padding:5px 11px;border-radius:20px;font-size:11px;font-weight:800;z-index:2}
+.badge{position:absolute;top:12px;left:12px;background:#ef4444;color:#fff;border:1px solid #ef4444;padding:5px 11px;border-radius:20px;font-size:11px;font-weight:800;z-index:2}
 
 .card-info{padding:14px 6px 2px;position:relative;z-index:2;display:flex;flex:1;flex-direction:column}
 .card-info h3{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;min-height:2.6em;overflow:hidden;font-size:16px;font-weight:800;line-height:1.3}
