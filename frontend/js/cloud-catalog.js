@@ -26,7 +26,8 @@
     if (error) throw error;
     for (const row of data || []) {
       if (!ids.includes(String(row.id))) {
-        await client.from(table).delete().eq('id', row.id);
+        const { error: deleteError } = await client.from(table).delete().eq('id', row.id);
+        if (deleteError) throw deleteError;
       }
     }
   }
@@ -44,17 +45,8 @@
       return;
     }
 
-    if (phones.length && window.ElectrophoneStore) {
-      const seeds = typeof window.ElectrophoneStore.getSeedProducts === 'function'
-        ? window.ElectrophoneStore.getSeedProducts()
-        : [];
-      const existingIds = new Set(phones.map(phone => String(phone.id)));
-      const missingSeeds = seeds.filter(seed => !existingIds.has(String(seed.id)));
-      const mergedPhones = missingSeeds.length ? [...phones, ...missingSeeds] : phones;
-      window.ElectrophoneStore.saveProducts(mergedPhones);
-      if (missingSeeds.length) {
-        await saveSharedCatalog(mergedPhones, accessories);
-      }
+    if (window.ElectrophoneStore) {
+      window.ElectrophoneStore.saveProducts(phones);
     }
     localStorage.setItem('electrophone_accessories', JSON.stringify(accessories));
     window.dispatchEvent(new CustomEvent('accessories:updated', { detail: accessories }));

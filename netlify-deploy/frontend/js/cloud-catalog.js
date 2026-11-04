@@ -26,7 +26,8 @@
     if (error) throw error;
     for (const row of data || []) {
       if (!ids.includes(String(row.id))) {
-        await client.from(table).delete().eq('id', row.id);
+        const { error: deleteError } = await client.from(table).delete().eq('id', row.id);
+        if (deleteError) throw deleteError;
       }
     }
   }
@@ -44,7 +45,7 @@
       return;
     }
 
-    if (phones.length && window.ElectrophoneStore) {
+    if (window.ElectrophoneStore) {
       window.ElectrophoneStore.saveProducts(phones);
     }
     localStorage.setItem('electrophone_accessories', JSON.stringify(accessories));
