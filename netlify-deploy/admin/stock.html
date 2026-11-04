@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>Gestion du stock | Electrophone Amine</title>
+  <link rel="stylesheet" href="css/admin.css?v=stock-v1">
+</head>
+<body class="admin-page stock-page">
+  <main class="main management-main">
+    <header class="store-admin-header">
+      <a class="store-brand" href="../index.html">Electrophone<span>Amine</span></a>
+      <nav><a href="index.html">Produits</a><a href="stock.html" class="active">Stock</a></nav>
+      <button id="logoutTop" class="logout" type="button">Déconnexion</button>
+    </header>
+    <header class="page-heading">
+      <div><p class="eyebrow">Gestion du stock</p><h1>Tableau de bord du magasin</h1><p>Suivi complet des quantités, de la valeur du catalogue et des indicateurs du magasin.</p></div>
+      <span class="status">● Données cloud</span>
+    </header>
+    <section class="stock-grid">
+      <article class="stock-stat"><span>Unités en stock</span><strong id="stockUnits">0</strong><small id="stockUnitsNote">Toutes catégories</small></article>
+      <article class="stock-stat"><span>Valeur du stock</span><strong id="stockValue">0 DH</strong><small>Prix de vente actuels</small></article>
+      <article class="stock-stat"><span>Produits épuisés</span><strong id="stockOut">0</strong><small>Quantité égale à 0</small></article>
+      <article class="stock-stat"><span>Visiteurs du magasin</span><strong id="visitorTotal">0</strong><small id="visitorToday">Aujourd’hui : 0</small></article>
+    </section>
+    <section class="stock-layout"><div class="stock-breakdown">
+      <article class="stock-breakdown-item"><span>Produits téléphones</span><strong id="phoneCount">0</strong></article>
+      <article class="stock-breakdown-item"><span>Accessoires</span><strong id="accessoryCount">0</strong></article>
+      <article class="stock-breakdown-item"><span>Panier actuel</span><strong id="cartSummary">0 articles</strong></article>
+    </div></section>
+    <section class="stock-layout"><article class="stock-card">
+      <div class="stock-card-head">
+        <div><span class="section-kicker">Inventaire</span><h2>Gestion des quantités</h2></div>
+        <div class="stock-toolbar">
+          <select id="stockFilter" class="stock-filter"><option value="all">Tous les produits</option><option value="phone">Téléphones</option><option value="accessory">Accessoires</option><option value="low">Stock faible</option><option value="out">Épuisés</option></select>
+          <input id="stockSearch" class="stock-search" type="search" placeholder="Rechercher un produit">
+          <button id="saveStock" class="stock-save" type="button">Enregistrer</button>
+        </div>
+      </div>
+      <p id="stockMessage" class="stock-message" style="padding:0 16px"></p>
+      <div class="stock-table-wrap"><table class="stock-table"><thead><tr><th>Produit</th><th>Catégorie</th><th>Prix</th><th>Quantité</th><th>Valeur stock</th><th>État</th></tr></thead><tbody id="stockTableBody"></tbody></table></div>
+    </article></section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../frontend/js/store.js?v=20261104a"></script>
+  <script src="../frontend/js/supabase-config.js?v=20261029c"></script>
+  <script src="../frontend/js/cloud-catalog.js?v=20261104d"></script>
+  <script src="config/password.js?v=20261029c"></script>
+  <script src="js/auth.js?v=20261029c"></script>
+  <script src="js/stock.js?v=stock-v1"></script>
+</body>
+</html>
