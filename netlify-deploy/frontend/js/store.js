@@ -25,6 +25,7 @@
   const AWDA_BL_A9_SEED_KEY = 'electrophone_accessory_awda_bl_a9_20261027_v1';
   const P9_PRO_MAX_SEED_KEY = 'electrophone_accessory_p9_pro_max_20261027_v1';
   const P9_PRO_MAX_WHITE_SEED_KEY = 'electrophone_accessory_p9_pro_max_white_20261027_v1';
+  const REAR_IMAGE_PRIMARY_UPDATE_KEY = 'electrophone_phone_rear_image_primary_20261104_v1';
   const CAT_EAR_VIV_23M_SEED_KEY = 'electrophone_accessory_cat_ear_viv_23m_20261027_v1';
   const SMART_CHARGER_45W_SEED_KEY = 'electrophone_accessory_smart_charger_45w_20261027_v1';
   const OHAYO_Q24_SEED_KEY = 'electrophone_accessory_ohayo_q24_20261027_v1';
@@ -1924,6 +1925,28 @@
   if (!localStorage.getItem(WHATSAPP_PHONE_UPDATE_KEY)) {
     localStorage.setItem('shopWhatsAppPhone', DEFAULT_WHATSAPP_PHONE);
     localStorage.setItem(WHATSAPP_PHONE_UPDATE_KEY, 'true');
+  }
+
+  if (!localStorage.getItem(REAR_IMAGE_PRIMARY_UPDATE_KEY)) {
+    const products = getProducts();
+    let updated = false;
+    const updatedProducts = products.map(product => {
+      const images = Array.isArray(product.images) ? product.images : [];
+      if (!images.length) return product;
+
+      const rearImage = images.find(image => /(?:-back|-angle)\.(?:jpg|jpeg|png|webp)$/i.test(String(image)))
+        || null;
+      if (!rearImage) return product;
+
+      updated = true;
+      return {
+        ...product,
+        img: rearImage,
+        images: [rearImage, ...images.filter(image => image !== rearImage)]
+      };
+    });
+    if (updated) saveProducts(updatedProducts);
+    localStorage.setItem(REAR_IMAGE_PRIMARY_UPDATE_KEY, 'true');
   }
 
   const products = getProducts();
