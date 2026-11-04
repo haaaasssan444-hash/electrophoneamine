@@ -13,7 +13,8 @@ body{
 .nav-actions{display:flex;align-items:center;gap:10px}
 .admin-link{color:#555;text-decoration:none;font-weight:700;font-size:13px}
 .admin-link:hover{color:var(--red-dark)}
-.logo{color:var(--ink);text-decoration:none;font-weight:900;font-size:22px}.logo span{color:var(--red-dark)}
+.logo{display:inline-flex;align-items:center;flex-shrink:0;text-decoration:none}
+.logo img{display:block;width:48px;height:48px;border-radius:50%;object-fit:cover;box-shadow:0 3px 14px rgba(15,23,42,.16)}
 .catalog-nav{min-width:0}
 .catalog-tabs-bar{display:flex;justify-content:center;padding:9px 16px;background:rgba(255,253,245,.98);border-bottom:1px solid #fee2e2}
 .catalog-tabs,.nav-links{display:flex;align-items:center;gap:8px;min-width:0}
@@ -199,7 +200,7 @@ body{
   .logo{order:1}
   .nav-actions{order:2;margin-inline-start:auto}
   .search-box{order:3;flex:1 0 100%;width:100%}
-  .logo{font-size:19px}
+  .logo img{width:42px;height:42px}
   .catalog-nav{order:4;width:100%}
   .nav-links{width:100%;gap:18px;padding:4px 0}
   .nav-links a{white-space:nowrap}
