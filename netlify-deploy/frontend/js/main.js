@@ -579,7 +579,7 @@ function injectProductStructuredData() {
         name: product.name || 'Téléphone',
         description: product.desc || product.summary || '',
         sku: String(product.id),
-        brand: { '@type': 'Brand', name: product.brand || 'ElectrophoneAmine' },
+        brand: { '@type': 'Brand', name: product.brand || 'Electrophone Amine' },
         ...(absoluteImage ? { image: absoluteImage } : {}),
         offers: {
           '@type': 'Offer',
@@ -587,7 +587,7 @@ function injectProductStructuredData() {
           priceCurrency: 'MAD',
           price: Number(product.price),
           availability: Number(product.quantity) > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-          seller: { '@type': 'Organization', name: 'ElectrophoneAmine' }
+          seller: { '@type': 'Organization', name: 'Electrophone Amine' }
         }
       }
     };
@@ -599,7 +599,7 @@ function injectProductStructuredData() {
   script.textContent = JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: 'Téléphones disponibles chez ElectrophoneAmine',
+    name: 'Téléphones disponibles chez Electrophone Amine',
     numberOfItems: items.length,
     itemListElement: items
   });
