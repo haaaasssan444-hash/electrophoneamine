@@ -18,6 +18,7 @@
   const NEW_NOVEMBER_4_INVENTORY_SEED_KEY = 'electrophone_new_inventory_20261104_v1';
   const POCO_INVENTORY_SEED_KEY = 'electrophone_poco_inventory_20261027_v1';
   const POCO_PRICE_UPDATE_KEY = 'electrophone_poco_256_1850_20261029_v2';
+  const IPHONE_17_PRO_MAX_PRICE_UPDATE_KEY = 'electrophone_iphone17promax_1tb_14999_20261104_v1';
   const OPPO_A73_SEED_KEY = 'electrophone_oppo_a73_128_6_20261027_v1';
   const FJ_STAR_FJ_A6_SEED_KEY = 'electrophone_accessory_fj_star_fj_a6_20261027_v1';
   const JBL_980BT_SEED_KEY = 'electrophone_accessory_980bt_20261027_v1';
@@ -685,7 +686,7 @@
       storage: '1TB',
       ram: '12GB',
       name: 'iPhone 17 Pro Max 1TB - 100% Battery',
-      price: 15000,
+      price: 14999,
       oldPrice: 0,
       img: 'asset:phones/iphone-17-pro-max-1tb-100-battery-1.jpg',
       images: [
@@ -779,11 +780,16 @@
       model: '17 Pro Max',
       storage: '512GB',
       ram: '',
-      name: 'iPhone 17 Pro Max 512GB - 93% Battery',
+      name: 'iPhone 17 Pro Max 512GB',
       price: 13000,
       oldPrice: 0,
-      img: 'asset:phones/iphone-17-pro-max-512gb-93-battery.jpg',
-      images: ['asset:phones/iphone-17-pro-max-512gb-93-battery.jpg'],
+      img: 'asset:phones/stock2-iphone-17-pro-max-1.jpg',
+      images: [
+        'asset:phones/stock2-iphone-17-pro-max-1.jpg',
+        'asset:phones/stock2-iphone-17-pro-max-2.jpg',
+        'asset:phones/stock2-iphone-17-pro-max-3.jpg',
+        'asset:phones/stock2-iphone-17-pro-max-4.jpg'
+      ],
       condition: 'متوفر',
       quantity: 1,
       summary: '512GB • بطارية 93%',
@@ -1139,6 +1145,19 @@
 
   function applyPhonePriceRule(products) {
     return products.map(product => {
+      const brand = String(product.brand || '').toLowerCase();
+      if (brand === 'iphone') {
+        product = {
+          ...product,
+          ram: '',
+          name: String(product.name || '')
+            .replace(/\biPhone\s+iPhone\b/gi, 'iPhone')
+            .replace(/\s*(?:[-•]\s*)?RAM\s*\d+(?:GB|G)\b/gi, '')
+            .replace(/\s+(?:RAM\s*)?4GB\b/gi, '')
+            .replace(/\s{2,}/g, ' ')
+            .trim()
+        };
+      }
       const exactPriceIds = new Set([
         'phone-iphone-17-pro-max-1tb-100-battery-20261029',
         'phone-samsung-s24-ultra-256gb-12ram-20261029',
@@ -1150,6 +1169,31 @@
       ]);
       if (String(product.id) === 'phone-poco-256-8-20261027') {
         return { ...product, price: 1850, oldPrice: 0 };
+      }
+      if (String(product.id) === 'phone-iphone-17-pro-max-1tb-100-battery-20261029') {
+        return { ...product, price: 14999, oldPrice: 0 };
+      }
+      if (String(product.id) === 'phone-iphone-17-pro-max-512gb-93-battery-20261104') {
+        const images = [
+          'asset:phones/stock2-iphone-17-pro-max-1.jpg',
+          'asset:phones/stock2-iphone-17-pro-max-2.jpg',
+          'asset:phones/stock2-iphone-17-pro-max-3.jpg',
+          'asset:phones/stock2-iphone-17-pro-max-4.jpg'
+        ];
+        return {
+          ...product,
+          brand: 'iphone',
+          model: '17 Pro Max',
+          storage: '512GB',
+          ram: '',
+          name: 'iPhone 17 Pro Max 512GB',
+          summary: '512GB • بطارية 93%',
+          desc: 'iPhone 17 Pro Max بسعة 512GB وصحة بطارية 93%.',
+          img: images[0],
+          images,
+          price: 13000,
+          oldPrice: 0
+        };
       }
       if (exactPriceIds.has(String(product.id))) {
         return { ...product, oldPrice: 0 };
@@ -1325,6 +1369,17 @@
     );
     saveProducts(updatedProducts);
     localStorage.setItem(POCO_PRICE_UPDATE_KEY, 'true');
+  }
+
+  if (!localStorage.getItem(IPHONE_17_PRO_MAX_PRICE_UPDATE_KEY)) {
+    const products = getProducts();
+    const updatedProducts = products.map(product =>
+      String(product.id) === 'phone-iphone-17-pro-max-1tb-100-battery-20261029'
+        ? { ...product, price: 14999 }
+        : product
+    );
+    saveProducts(updatedProducts);
+    localStorage.setItem(IPHONE_17_PRO_MAX_PRICE_UPDATE_KEY, 'true');
   }
 
   if (!localStorage.getItem(OPPO_A73_SEED_KEY)) {
@@ -1937,6 +1992,19 @@
 
   function toFrenchCatalogText(value) {
     let text = String(value == null ? '' : value);
+    text = text
+      .replace(/(?:\?|؟){2,}/g, '')
+      .replace(/\bقيد التأكيد\b/g, '')
+      .replace(/غير محدد(?:ة|ين)?/g, '')
+      .replace(/تحديد الموديل مطلوب/g, 'موديل متوفر للطلب')
+      .replace(/حسب التفاصيل المتوفرة/g, '')
+      .replace(/\s*\((?:تأكيد الطراز|تأكيد النسخة)\)/g, '')
+      .replace(/\bتأكيد النسخة\b/g, '')
+      .replace(/\bتأكيد الطراز\b/g, '')
+      .replace(/\s+[•،,]\s*[•،,]\s*/g, ' • ')
+      .replace(/[()[\]{}]{2}/g, '')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
     const translations = [
       ['حالة ممتازة', 'Excellent état'],
       ['بحالة ممتازة', 'Excellent état'],
@@ -2031,6 +2099,17 @@
   function normalizeCatalogText(item) {
     if (!item || typeof item !== 'object') return item;
     const normalized = { ...item };
+    if (String(normalized.brand || '').toLowerCase() === 'iphone') {
+      normalized.ram = '';
+      if (typeof normalized.name === 'string') {
+        normalized.name = normalized.name
+          .replace(/\biPhone\s+iPhone\b/gi, 'iPhone')
+          .replace(/\s*(?:[-•]\s*)?RAM\s*\d+(?:GB|G)\b/gi, '')
+          .replace(/\s+(?:RAM\s*)?4GB\b/gi, '')
+          .replace(/\s{2,}/g, ' ')
+          .trim();
+      }
+    }
     ['name', 'condition', 'cond', 'summary', 'desc', 'type'].forEach(field => {
       if (typeof normalized[field] === 'string') {
         normalized[field] = toFrenchCatalogText(normalized[field]);
