@@ -34,7 +34,7 @@
   const SAMSUNG_25W_CHARGER_SEED_KEY = 'electrophone_accessory_samsung_25w_charger_20261027_v1';
   const UIRON_CR34_CHARGER_SEED_KEY = 'electrophone_accessory_uiron_cr34_charger_20261027_v1';
   const HEADPHONE_PACKAGE_IMAGE_ORDER_KEY = 'electrophone_headphone_package_image_order_v1';
-  const PHONE_PRICE_RULE_KEY = 'electrophone_phone_price_ending_00_v1';
+  const PHONE_PRICE_RULE_KEY = 'electrophone_phone_price_ending_00_v2';
   const FEATURED_IMAGE_UPDATE_KEY = 'electrophone_iphone16_primary_image_v1';
   const INVENTORY_IMAGE_UPDATE_KEY = 'electrophone_inventory_images_20261027_v1';
   const SOCIAL_DEFAULTS_KEY = 'electrophone_social_defaults_v1';
@@ -782,7 +782,7 @@
       storage: '512GB',
       ram: '',
       name: 'iPhone 17 Pro Max 512GB',
-      price: 13000,
+      price: 12999,
       oldPrice: 0,
       img: 'asset:phones/stock2-iphone-17-pro-max-1.jpg',
       images: [
@@ -1197,6 +1197,10 @@
         };
       }
       if (exactPriceIds.has(String(product.id))) {
+        const exactPrice = Number(product.price);
+        if (Number.isSafeInteger(exactPrice) && exactPrice > 0 && exactPrice % 100 === 0) {
+          return { ...product, price: exactPrice - 1, oldPrice: 0 };
+        }
         return { ...product, oldPrice: 0 };
       }
 
