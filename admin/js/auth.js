@@ -13,7 +13,7 @@ if (!isLoginPage) {
 
 async function hashAccessCode(value) {
   if (!window.crypto || !window.crypto.subtle) {
-    throw new Error('المتصفح ما كيدعمش التحقق من الكود. افتح الموقع عبر HTTPS أو localhost.');
+    throw new Error('Votre navigateur ne prend pas en charge la vérification du code. Utilisez HTTPS ou localhost.');
   }
   const salt = Uint8Array.from(
     ADMIN_ACCESS_CODE.salt.match(/.{2}/g),
@@ -51,10 +51,10 @@ if (loginForm) {
         return;
       }
       input.value = '';
-      error.textContent = '❌ كود الدخول غير صحيح.';
+      error.textContent = '❌ Code d’accès incorrect.';
       input.focus();
     } catch (exception) {
-      error.textContent = exception.message || 'وقع مشكل فتحقق من الكود.';
+      error.textContent = exception.message || 'Une erreur est survenue. Vérifiez le code.';
     }
   });
 }

@@ -45,7 +45,16 @@
     }
 
     if (phones.length && window.ElectrophoneStore) {
-      window.ElectrophoneStore.saveProducts(phones);
+      const seeds = typeof window.ElectrophoneStore.getSeedProducts === 'function'
+        ? window.ElectrophoneStore.getSeedProducts()
+        : [];
+      const existingIds = new Set(phones.map(phone => String(phone.id)));
+      const missingSeeds = seeds.filter(seed => !existingIds.has(String(seed.id)));
+      const mergedPhones = missingSeeds.length ? [...phones, ...missingSeeds] : phones;
+      window.ElectrophoneStore.saveProducts(mergedPhones);
+      if (missingSeeds.length) {
+        await saveSharedCatalog(mergedPhones, accessories);
+      }
     }
     localStorage.setItem('electrophone_accessories', JSON.stringify(accessories));
     window.dispatchEvent(new CustomEvent('accessories:updated', { detail: accessories }));

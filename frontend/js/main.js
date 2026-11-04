@@ -22,11 +22,11 @@ function readArray(key, errorMessage) {
 }
 
 function readAccessories() {
-  return readArray('electrophone_accessories', 'بيانات الإكسسوارات المخزنة غير صالحة.');
+  return readArray('electrophone_accessories', 'Données des accessoires stockées non valides.');
 }
 
 function readCart() {
-  return readArray('cart', 'بيانات السلة المخزنة غير صالحة.');
+  return readArray('cart', 'Données du panier stockées non valides.');
 }
 
 function saveCart() {
@@ -140,40 +140,40 @@ function renderPhoneCards() {
   if ($('cartCount')) {
     $('cartCount').textContent = cart.reduce((total, item) => total + (Number(item.qty) || 1), 0);
   }
-  if ($('productCount')) $('productCount').textContent = `${searched.length} هاتف`;
+  if ($('productCount')) $('productCount').textContent = `${searched.length} téléphone${searched.length > 1 ? 's' : ''}`;
 
   if (searched.length === 0) {
-    grid.innerHTML = `<p class="empty-products">${searchQuery ? 'ما لقيناش هاتف بهاد البحث.' : 'ما كايناش هواتف فهاد التصنيف دابا.'}</p>`;
+    grid.innerHTML = `<p class="empty-products">${searchQuery ? 'Aucun téléphone ne correspond à cette recherche.' : 'Aucun téléphone dans cette catégorie pour le moment.'}</p>`;
     return;
   }
 
   grid.innerHTML = searched.map(product => {
     const id = store.escapeHTML(product.id);
-    const safeName = store.escapeHTML(product.name || 'هاتف');
+    const safeName = store.escapeHTML(store.toFrenchCatalogText ? store.toFrenchCatalogText(product.name || 'Téléphone') : (product.name || 'Téléphone'));
     const safeImg = store.escapeHTML(store.resolveImage(product.img || ''));
     const price = productHasPrice(product) ? Number(product.price) : null;
     const oldPrice = Number(product.oldPrice) || 0;
     const priceMarkup = price === null
-      ? '<span class="price">الثمن قريباً</span>'
+      ? '<span class="price">Prix bientôt disponible</span>'
       : `<span class="price">${price.toLocaleString('fr-MA')} DH</span>`;
     return `
       <article class="product-card">
         <div class="card-img-wrap" data-open-product="${id}" data-type="phone" role="button" tabindex="0">
-          <span class="badge">${store.escapeHTML(product.condition || product.cond || 'متوفر')}</span>
+          <span class="badge">${store.escapeHTML(store.toFrenchCatalogText ? store.toFrenchCatalogText(product.condition || product.cond || 'Disponible') : (product.condition || product.cond || 'Disponible'))}</span>
           ${safeImg ? `<img src="${safeImg}" alt="${safeName}" loading="lazy" onerror="this.hidden=true">` : ''}
         </div>
         <div class="card-info">
           <h3>${safeName}</h3>
-          ${product.summary ? `<p class="desc">${store.escapeHTML(product.summary)}</p>` : ''}
+          ${product.summary ? `<p class="desc">${store.escapeHTML(store.toFrenchCatalogText ? store.toFrenchCatalogText(product.summary) : product.summary)}</p>` : ''}
           <div class="price-row">
             ${priceMarkup}
             ${price !== null && oldPrice > price ? `<span class="old-price">${oldPrice.toLocaleString('fr-MA')} DH</span>` : ''}
           </div>
           <div class="product-actions">
             ${price === null
-              ? `<button class="btn-whatsapp" type="button" data-order-product="${id}" data-type="phone">سول على الثمن واتساب</button>`
-              : `<button class="btn-buy" type="button" data-add-product="${id}" data-type="phone">أضف للسلة 🛒</button>
-                 <button class="btn-whatsapp" type="button" data-order-product="${id}" data-type="phone">طلب واتساب</button>`}
+              ? `<button class="btn-whatsapp" type="button" data-order-product="${id}" data-type="phone">Demander le prix sur WhatsApp</button>`
+              : `<button class="btn-buy" type="button" data-add-product="${id}" data-type="phone">Ajouter au panier 🛒</button>
+                 <button class="btn-whatsapp" type="button" data-order-product="${id}" data-type="phone">Commander sur WhatsApp</button>`}
           </div>
         </div>
       </article>
@@ -188,28 +188,28 @@ function renderAccessoryCards() {
     ? accessories
     : accessories.filter(accessory => accessoryMatchesCategory(accessory, currentAccessoryFilter));
   const searched = filtered.filter(matchesSearch);
-  if ($('accessoryCount')) $('accessoryCount').textContent = `${searched.length} إكسسوار`;
+  if ($('accessoryCount')) $('accessoryCount').textContent = `${searched.length} accessoire${searched.length > 1 ? 's' : ''}`;
   if (!searched.length) {
-    grid.innerHTML = `<p class="empty-products">${searchQuery ? 'ما لقيناش إكسسوار بهاد البحث.' : 'ما كايناش إكسسوارات منشورة دابا.'}</p>`;
+    grid.innerHTML = `<p class="empty-products">${searchQuery ? 'Aucun accessoire ne correspond à cette recherche.' : 'Aucun accessoire publié pour le moment.'}</p>`;
     return;
   }
 
   grid.innerHTML = searched.map(accessory => {
     const id = store.escapeHTML(accessory.id);
-    const name = store.escapeHTML(accessory.name || 'إكسسوار');
+    const name = store.escapeHTML(store.toFrenchCatalogText ? store.toFrenchCatalogText(accessory.name || 'Accessoire') : (accessory.name || 'Accessoire'));
     const image = store.escapeHTML(store.resolveImage(accessory.img || ''));
     return `
       <article class="product-card accessory-card">
         <div class="card-img-wrap" data-open-product="${id}" data-type="accessory" role="button" tabindex="0">
-          <span class="badge">${store.escapeHTML(accessory.type || 'إكسسوار')}</span>
+          <span class="badge">${store.escapeHTML(store.toFrenchCatalogText ? store.toFrenchCatalogText(accessory.type || 'Accessoire') : (accessory.type || 'Accessoire'))}</span>
           ${image ? `<img src="${image}" alt="${name}" loading="lazy" onerror="this.hidden=true">` : ''}
         </div>
         <div class="card-info">
           <h3>${name}</h3>
           <div class="price-row"><span class="price">${(Number(accessory.price) || 0).toLocaleString('fr-MA')} DH</span></div>
           <div class="product-actions">
-            <button class="btn-buy" type="button" data-add-product="${id}" data-type="accessory">أضف للسلة 🛒</button>
-            <button class="btn-whatsapp" type="button" data-order-product="${id}" data-type="accessory">طلب واتساب</button>
+            <button class="btn-buy" type="button" data-add-product="${id}" data-type="accessory">Ajouter au panier 🛒</button>
+            <button class="btn-whatsapp" type="button" data-order-product="${id}" data-type="accessory">Commander sur WhatsApp</button>
           </div>
         </div>
       </article>
@@ -228,9 +228,9 @@ function accessoryMatchesCategory(accessory, category) {
   let accessoryCategory = '';
 
   if (includesAny(['airpods', 'airpod', 'ايربودز', 'ايربود'])) accessoryCategory = 'airpods';
-  else if (includesAny(['شاحن', 'charger'])) accessoryCategory = 'chargers';
-  else if (includesAny(['كابل', 'cable'])) accessoryCategory = 'cables';
-  else if (includesAny(['سماعة', 'سماعات', 'headphone', 'headset', 'earphone'])) accessoryCategory = 'headphones';
+  else if (includesAny(['شاحن', 'charger', 'chargeur'])) accessoryCategory = 'chargers';
+  else if (includesAny(['كابل', 'cable', 'câble'])) accessoryCategory = 'cables';
+  else if (includesAny(['سماعة', 'سماعات', 'headphone', 'headset', 'earphone', 'casque'])) accessoryCategory = 'headphones';
   return accessoryCategory === category;
 }
 
@@ -261,7 +261,7 @@ function renderSocialLinks() {
   const links = [];
   const phone = (localStorage.getItem('shopWhatsAppPhone') || '').replace(/\D/g, '');
   if (/^\d{8,15}$/.test(phone)) {
-    links.push({ label: 'واتساب', icon: '◉', url: `https://wa.me/${phone}`, className: 'social-whatsapp' });
+    links.push({ label: 'WhatsApp', icon: '◉', url: `https://wa.me/${phone}`, className: 'social-whatsapp' });
   }
 
   const saved = localStorage.getItem('electrophone_social_links');
@@ -270,8 +270,8 @@ function renderSocialLinks() {
     throw new Error('بيانات حسابات التواصل المخزنة غير صالحة.');
   }
   [
-    { key: 'instagram', label: 'إنستغرام', icon: '◎', className: 'social-instagram' },
-    { key: 'facebook', label: 'فيسبوك', icon: 'f', className: 'social-facebook' }
+    { key: 'instagram', label: 'Instagram', icon: '◎', className: 'social-instagram' },
+    { key: 'facebook', label: 'Facebook', icon: 'f', className: 'social-facebook' }
   ].forEach(profile => {
     const value = String(profiles[profile.key] || '').trim();
     if (!value) return;
@@ -314,7 +314,7 @@ function addToCart(id, type = 'phone') {
   const product = productById(id, type);
   if (!product) return;
   if (!productHasPrice(product)) {
-    window.alert('الثمن مازال ما تحددش لهاد الهاتف. تواصل معنا عبر واتساب لمعرفة الثمن.');
+    window.alert('Le prix de ce téléphone n’est pas encore disponible. Contactez-nous sur WhatsApp pour connaître le prix.');
     return;
   }
   const existing = cart.find(item =>
@@ -336,16 +336,18 @@ function orderProductWhatsApp(id, type = 'phone') {
 
   const phone = (localStorage.getItem('shopWhatsAppPhone') || '').replace(/\D/g, '');
   if (!/^\d{8,15}$/.test(phone)) {
-    window.alert('رقم واتساب ديال المحل مازال ما تحددش. تواصل مع المحل أو عاود من بعد.');
+    window.alert('Le numéro WhatsApp du magasin n’est pas encore configuré. Veuillez réessayer plus tard.');
     return;
   }
 
-  const name = product.name || product.type || 'منتج';
+  const name = store.toFrenchCatalogText
+    ? store.toFrenchCatalogText(product.name || product.type || 'Produit')
+    : (product.name || product.type || 'Produit');
   const message = [
-    'سلام، بغيت نطلب هاد المنتج:',
+    'Bonjour, je souhaite commander ce produit :',
     `- ${name}`,
-    `- الثمن: ${productHasPrice(product) ? `${Number(product.price).toLocaleString('fr-MA')} DH` : 'يرجى إخباري بالثمن'}`,
-    `- الكمية: 1`
+    `- Prix : ${productHasPrice(product) ? `${Number(product.price).toLocaleString('fr-MA')} DH` : 'Veuillez me communiquer le prix'}`,
+    `- Quantité : 1`
   ].join('\n');
   window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank', 'noopener');
 }
@@ -355,12 +357,12 @@ function openModal(id, type = 'phone') {
   if (!product || !$('modalBody')) return;
   recordProductView({ ...product, productType: type });
 
-  const safeName = store.escapeHTML(product.name || 'منتج');
-  const safeDesc = store.escapeHTML(product.desc || product.type || 'منتج متوفر لدى المحل.');
+  const safeName = store.escapeHTML(store.toFrenchCatalogText ? store.toFrenchCatalogText(product.name || 'Produit') : (product.name || 'Produit'));
+  const safeDesc = store.escapeHTML(store.toFrenchCatalogText ? store.toFrenchCatalogText(product.desc || product.type || 'Produit disponible dans le magasin.') : (product.desc || product.type || 'Produit disponible dans le magasin.'));
   const price = productHasPrice(product) ? Number(product.price) : null;
   const oldPrice = Number(product.oldPrice) || 0;
   const priceMarkup = price === null
-    ? '<span class="price">الثمن قريباً</span>'
+    ? '<span class="price">Prix bientôt disponible</span>'
     : `<span class="price">${price.toLocaleString('fr-MA')} DH</span>`;
   const imageSources = Array.isArray(product.images) && product.images.length
     ? product.images
@@ -372,14 +374,14 @@ function openModal(id, type = 'phone') {
       ${safeImages.length ? `
         <div class="modal-image-gallery">
           <div class="modal-gallery-heading">
-            <strong>صور المنتج</strong>
-            <span>${safeImages.length} ${safeImages.length === 1 ? 'صورة' : 'صور'}</span>
+            <strong>Photos du produit</strong>
+            <span>${safeImages.length} ${safeImages.length === 1 ? 'photo' : 'photos'}</span>
           </div>
-          <p class="modal-gallery-hint">اضغط على أي صورة باش تشوفها مكبّرة</p>
-          <div class="modal-photo-grid" role="group" aria-label="جميع صور المنتج">
+          <p class="modal-gallery-hint">Cliquez sur une photo pour l’agrandir</p>
+          <div class="modal-photo-grid" role="group" aria-label="Toutes les photos du produit">
             ${safeImages.map((image, index) => `
-              <button class="modal-photo-tile" type="button" data-lightbox-open="${index}" aria-label="تكبير الصورة ${index + 1}">
-                <img src="${image}" alt="${safeName} - صورة ${index + 1}" loading="eager">
+              <button class="modal-photo-tile" type="button" data-lightbox-open="${index}" aria-label="Agrandir la photo ${index + 1}">
+                <img src="${image}" alt="${safeName} - photo ${index + 1}" loading="eager">
                 <span class="modal-photo-number">${index + 1}</span>
               </button>
             `).join('')}
@@ -395,9 +397,9 @@ function openModal(id, type = 'phone') {
         </div>
         <div class="product-actions">
           ${price === null
-            ? `<button class="btn-whatsapp" type="button" data-order-product="${store.escapeHTML(product.id)}" data-type="${type}">سول على الثمن واتساب</button>`
-            : `<button class="btn-buy" type="button" data-add-product="${store.escapeHTML(product.id)}" data-type="${type}">أضف للسلة 🛒</button>
-               <button class="btn-whatsapp" type="button" data-order-product="${store.escapeHTML(product.id)}" data-type="${type}">طلب واتساب</button>`}
+            ? `<button class="btn-whatsapp" type="button" data-order-product="${store.escapeHTML(product.id)}" data-type="${type}">Demander le prix sur WhatsApp</button>`
+            : `<button class="btn-buy" type="button" data-add-product="${store.escapeHTML(product.id)}" data-type="${type}">Ajouter au panier 🛒</button>
+               <button class="btn-whatsapp" type="button" data-order-product="${store.escapeHTML(product.id)}" data-type="${type}">Commander sur WhatsApp</button>`}
         </div>
       </div>
     </div>
@@ -413,7 +415,7 @@ function showLightboxImage(index) {
   const counter = $('lightboxCounter');
   if (!lightbox || !image || !counter) return;
   image.src = currentLightboxImages[currentLightboxIndex];
-  image.alt = `صورة المنتج ${currentLightboxIndex + 1}`;
+  image.alt = `Photo du produit ${currentLightboxIndex + 1}`;
   counter.textContent = `${currentLightboxIndex + 1} / ${currentLightboxImages.length}`;
   lightbox.hidden = false;
 }
@@ -574,7 +576,7 @@ function injectProductStructuredData() {
       position: index + 1,
       item: {
         '@type': 'Product',
-        name: product.name || 'هاتف',
+        name: product.name || 'Téléphone',
         description: product.desc || product.summary || '',
         sku: String(product.id),
         brand: { '@type': 'Brand', name: product.brand || 'ElectrophoneAmine' },
@@ -597,7 +599,7 @@ function injectProductStructuredData() {
   script.textContent = JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: 'هواتف متوفرة لدى ElectrophoneAmine',
+    name: 'Téléphones disponibles chez ElectrophoneAmine',
     numberOfItems: items.length,
     itemListElement: items
   });

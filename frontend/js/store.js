@@ -15,6 +15,7 @@
   const MORE_NEW_INVENTORY_SEED_KEY = 'electrophone_more_new_inventory_20261027_v1';
   const LATEST_INVENTORY_SEED_KEY = 'electrophone_latest_inventory_20261027_v1';
   const NEW_OCTOBER_29_INVENTORY_SEED_KEY = 'electrophone_new_inventory_20261029_v1';
+  const NEW_NOVEMBER_4_INVENTORY_SEED_KEY = 'electrophone_new_inventory_20261104_v1';
   const POCO_INVENTORY_SEED_KEY = 'electrophone_poco_inventory_20261027_v1';
   const POCO_PRICE_UPDATE_KEY = 'electrophone_poco_256_1850_20261029_v2';
   const OPPO_A73_SEED_KEY = 'electrophone_oppo_a73_128_6_20261027_v1';
@@ -739,6 +740,73 @@
     }
   ];
 
+  const NEW_NOVEMBER_4_INVENTORY_PRODUCTS = [
+    {
+      id: 'phone-iphone-17-air-1tb-98-battery-20261104',
+      brand: 'iphone',
+      model: '17 Air',
+      storage: '1TB',
+      ram: '',
+      name: 'iPhone 17 Air 1TB - 98% Battery',
+      price: 8500,
+      oldPrice: 0,
+      img: 'asset:phones/iphone-17-air-1tb-98-battery.jpg',
+      images: ['asset:phones/iphone-17-air-1tb-98-battery.jpg'],
+      condition: 'متوفر',
+      quantity: 1,
+      summary: '1TB • بطارية 98%',
+      desc: 'iPhone 17 Air بسعة 1TB وصحة بطارية 98%.'
+    },
+    {
+      id: 'phone-iphone-17-normal-512gb-100-battery-20261104',
+      brand: 'iphone',
+      model: '17 Normal',
+      storage: '512GB',
+      ram: '',
+      name: 'iPhone 17 Normal 512GB - 100% Battery',
+      price: 9500,
+      oldPrice: 0,
+      img: 'asset:phones/iphone-17-normal-512gb-100-battery.jpg',
+      images: ['asset:phones/iphone-17-normal-512gb-100-battery.jpg'],
+      condition: 'متوفر',
+      quantity: 1,
+      summary: '512GB • بطارية 100%',
+      desc: 'iPhone 17 Normal بسعة 512GB وصحة بطارية 100%.'
+    },
+    {
+      id: 'phone-iphone-17-pro-max-512gb-93-battery-20261104',
+      brand: 'iphone',
+      model: '17 Pro Max',
+      storage: '512GB',
+      ram: '',
+      name: 'iPhone 17 Pro Max 512GB - 93% Battery',
+      price: 13000,
+      oldPrice: 0,
+      img: 'asset:phones/iphone-17-pro-max-512gb-93-battery.jpg',
+      images: ['asset:phones/iphone-17-pro-max-512gb-93-battery.jpg'],
+      condition: 'متوفر',
+      quantity: 1,
+      summary: '512GB • بطارية 93%',
+      desc: 'iPhone 17 Pro Max بسعة 512GB وصحة بطارية 93%.'
+    },
+    {
+      id: 'phone-iphone-18-pro-max-1tb-100-battery-20261104',
+      brand: 'iphone',
+      model: '18 Pro Max',
+      storage: '1TB',
+      ram: '',
+      name: 'iPhone 18 Pro Max 1TB - 100% Battery',
+      price: 21500,
+      oldPrice: 0,
+      img: 'asset:phones/iphone-18-pro-max-1tb-100-battery.jpg',
+      images: ['asset:phones/iphone-18-pro-max-1tb-100-battery.jpg'],
+      condition: 'متوفر',
+      quantity: 1,
+      summary: '1TB • بطارية 100%',
+      desc: 'iPhone 18 Pro Max بسعة 1TB وصحة بطارية 100%.'
+    }
+  ];
+
   const STOCK_PHONE_PRODUCTS = [
     {
       id: 'stock-iphone-13-256-blue-76',
@@ -1065,7 +1133,8 @@
     ...NEW_INVENTORY_PRODUCTS,
     ...MORE_NEW_INVENTORY_PRODUCTS,
     ...LATEST_INVENTORY_PRODUCTS,
-    ...NEW_OCTOBER_29_INVENTORY_PRODUCTS
+    ...NEW_OCTOBER_29_INVENTORY_PRODUCTS,
+    ...NEW_NOVEMBER_4_INVENTORY_PRODUCTS
   ];
 
   function applyPhonePriceRule(products) {
@@ -1073,7 +1142,11 @@
       const exactPriceIds = new Set([
         'phone-iphone-17-pro-max-1tb-100-battery-20261029',
         'phone-samsung-s24-ultra-256gb-12ram-20261029',
-        'phone-samsung-s22-ultra-512gb-20261029'
+        'phone-samsung-s22-ultra-512gb-20261029',
+        'phone-iphone-17-air-1tb-98-battery-20261104',
+        'phone-iphone-17-normal-512gb-100-battery-20261104',
+        'phone-iphone-17-pro-max-512gb-93-battery-20261104',
+        'phone-iphone-18-pro-max-1tb-100-battery-20261104'
       ]);
       if (String(product.id) === 'phone-poco-256-8-20261027') {
         return { ...product, price: 1850, oldPrice: 0 };
@@ -1224,6 +1297,14 @@
     const newProducts = NEW_OCTOBER_29_INVENTORY_PRODUCTS.filter(product => !existingIds.has(String(product.id)));
     if (newProducts.length) saveProducts([...newProducts, ...products]);
     localStorage.setItem(NEW_OCTOBER_29_INVENTORY_SEED_KEY, 'true');
+  }
+
+  if (!localStorage.getItem(NEW_NOVEMBER_4_INVENTORY_SEED_KEY)) {
+    const products = getProducts();
+    const existingIds = new Set(products.map(product => String(product.id)));
+    const newProducts = NEW_NOVEMBER_4_INVENTORY_PRODUCTS.filter(product => !existingIds.has(String(product.id)));
+    if (newProducts.length) saveProducts([...newProducts, ...products]);
+    localStorage.setItem(NEW_NOVEMBER_4_INVENTORY_SEED_KEY, 'true');
   }
 
   if (!localStorage.getItem(POCO_INVENTORY_SEED_KEY)) {
@@ -1819,7 +1900,7 @@
           throw new Error('بيانات المنتجات القديمة المخزنة غير صالحة.');
         }
         saveProducts(migratedProducts);
-        return migratedProducts;
+        return migratedProducts.map(normalizeCatalogText);
       }
       saveProducts([]);
       return [];
@@ -1829,14 +1910,14 @@
     if (!Array.isArray(products) || products.some(product => !product || typeof product !== 'object')) {
       throw new Error('بيانات المنتجات المخزنة غير صالحة.');
     }
-    return products;
+    return products.map(normalizeCatalogText);
   }
 
   function saveProducts(products) {
     if (!Array.isArray(products)) {
       throw new TypeError('قائمة المنتجات غير صالحة.');
     }
-    const normalizedProducts = applyPhonePriceRule(products);
+    const normalizedProducts = applyPhonePriceRule(products.map(normalizeCatalogText));
     const serialized = JSON.stringify(normalizedProducts);
     localStorage.setItem(KEY, serialized);
     localStorage.setItem('electrophone_products', serialized);
@@ -1854,6 +1935,110 @@
     })[character]);
   }
 
+  function toFrenchCatalogText(value) {
+    let text = String(value == null ? '' : value);
+    const translations = [
+      ['حالة ممتازة', 'Excellent état'],
+      ['بحالة ممتازة', 'Excellent état'],
+      ['مستعمل نظيف', 'Occasion propre'],
+      ['جديد تماماً', 'Neuf'],
+      ['جديد تماما', 'Neuf'],
+      ['فالعلبة الأصلية', 'Dans la boîte d’origine'],
+      ['في العلبة الأصلية', 'Dans la boîte d’origine'],
+      ['العلبة الأصلية', 'boîte d’origine'],
+      ['صحة البطارية', 'état de santé de la batterie'],
+      ['بطارية أصلية', 'batterie d’origine'],
+      ['بطارية', 'batterie'],
+      ['باللون', 'en couleur'],
+      ['اللون', 'couleur'],
+      ['أبيض ذهبي', 'blanc doré'],
+      ['أبيض ذهبي', 'blanc doré'],
+      ['أبيض', 'blanc'],
+      ['أسود', 'noir'],
+      ['أزرق', 'bleu'],
+      ['رمادي', 'gris'],
+      ['ذهبي', 'doré'],
+      ['فضي', 'argenté'],
+      ['فضي', 'argenté'],
+      ['أخضر', 'vert'],
+      ['أحمر', 'rouge'],
+      ['وردي', 'rose'],
+      ['أرجواني', 'violet'],
+      ['متوفر', 'Disponible'],
+      ['جديد', 'Neuf'],
+      ['مستعمل', 'Occasion'],
+      ['نظيف', 'propre'],
+      ['ضمان المحل', 'garantie du magasin'],
+      ['ضمان', 'garantie'],
+      ['الأيام', 'jours'],
+      ['يوم', 'jour'],
+      ['للفحص', 'pour vérification'],
+      ['السعر', 'Prix'],
+      ['درهم', 'DH'],
+      ['توصيل', 'livraison'],
+      ['الدفع عند الاستلام', 'paiement à la livraison'],
+      ['معاه كابل أصلي', 'livré avec un câble d’origine'],
+      ['معاه', 'livré avec'],
+      ['معه', 'livré avec'],
+      ['فاتورة', 'facture'],
+      ['فاتورت', 'facture'],
+      ['كابل أصلي', 'câble d’origine'],
+      ['كابل', 'câble'],
+      ['شاحن سيارة سريع', 'Chargeur rapide allume-cigare'],
+      ['شاحن سيارة', 'Chargeur allume-cigare'],
+      ['شاحن', 'chargeur'],
+      ['سماعات', 'écouteurs'],
+      ['سماعة', 'écouteur'],
+      ['لاسلكي', 'sans fil'],
+      ['مرفق', 'inclus'],
+      ['فعل', 'Dans'],
+      ['خاوي', 'effacé'],
+      ['خدامين', 'fonctionnels'],
+      ['خدامة', 'fonctionnelle'],
+      ['خدام', 'fonctionnel'],
+      ['ما تفتحش وما تصلحش', 'jamais ouvert ni réparé'],
+      ['جيدة جدا', 'très bon état'],
+      ['جيد جدا', 'très bon état'],
+      ['حالة جيدة', 'Bon état'],
+      ['حالة', 'État'],
+      ['شاشة', 'écran'],
+      ['معالج', 'processeur'],
+      ['كاميرا', 'caméra'],
+      ['وسعة', 'de capacité'],
+      ['بسعة', 'de capacité'],
+      ['وكابل', 'et câble'],
+      ['ومعاه', 'et livré avec'],
+      ['والهاتف مفتوح لجميع الشبكات', 'et téléphone débloqué pour tous les réseaux'],
+      ['الهاتف مفتوح لجميع الشبكات', 'téléphone débloqué pour tous les réseaux'],
+      ['iCloud نقي', 'iCloud effacé'],
+      ['حسب معلومات المنتج', 'selon les informations du produit'],
+      ['يتضمن', 'Inclut'],
+      ['عرض خاص', 'offre spéciale'],
+      ['مثل الصور', 'tel que sur les photos'],
+      ['حسب الصور', 'tel que sur les photos'],
+      ['المنتج', 'produit'],
+      ['ملحق', 'accessoire']
+    ];
+    translations.forEach(([arabic, french]) => {
+      text = text.split(arabic).join(french);
+    });
+    return text.replace(/\bبيانات\b/g, 'données')
+      .replace(/\bبيانات المنتجات المخزنة غير صالحة\./g, 'Données des produits stockés non valides.')
+      .replace(/\bغير صالح\./g, 'non valide.')
+      .trim();
+  }
+
+  function normalizeCatalogText(item) {
+    if (!item || typeof item !== 'object') return item;
+    const normalized = { ...item };
+    ['name', 'condition', 'cond', 'summary', 'desc', 'type'].forEach(field => {
+      if (typeof normalized[field] === 'string') {
+        normalized[field] = toFrenchCatalogText(normalized[field]);
+      }
+    });
+    return normalized;
+  }
+
   function resolveImage(image) {
     if (typeof image !== 'string' || !image.startsWith('asset:')) return image || '';
     if (!STORE_SCRIPT_URL) throw new Error('تعذر تحديد مسار صورة المنتج.');
@@ -1864,6 +2049,8 @@
     getProducts,
     saveProducts,
     escapeHTML,
+    toFrenchCatalogText,
+    normalizeCatalogText,
     resolveImage,
     getSeedProducts: () => PRICED_SEED_PRODUCTS
   };

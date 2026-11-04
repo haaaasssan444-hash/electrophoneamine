@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="fr" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,74 +7,74 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="description" content="لوحة إضافة منتجات متجر ElectrophoneAmine.">
-  <title>إضافة منتجات | ElectrophoneAmine</title>
+  <meta name="description" content="Administration des produits du magasin ElectrophoneAmine.">
+  <title>Gestion des produits | ElectrophoneAmine</title>
   <link rel="stylesheet" href="css/admin.css?v=d7617ef">
 </head>
 <body class="admin-page">
   <aside class="sidebar">
     <a class="brand" href="../index.html">📱 ElectrophoneAmine</a>
-    <nav class="menu" aria-label="القائمة الرئيسية">
-      <a class="active" href="index.html">➕ إضافة منتجات</a>
-      <a href="../index.html">👀 شوف المتجر</a>
+    <nav class="menu" aria-label="Menu principal">
+      <a class="active" href="index.html">➕ Ajouter des produits</a>
+      <a href="../index.html">👀 Voir la boutique</a>
     </nav>
-    <button id="logout" class="logout" type="button">تسجيل الخروج</button>
+    <button id="logout" class="logout" type="button">Déconnexion</button>
   </aside>
   <main class="main management-main">
-    <header class="store-admin-header"><a class="store-brand" href="../index.html">Electrophone<span>Amine</span></a><nav><a href="#phonesManage" class="active">الهواتف</a><a href="#accessoriesManage">الإكسسوارات</a><a href="#phoneFormCard">إضافة هاتف</a><a href="#accessoryFormCard">إضافة إكسسوار</a></nav><button id="logoutTop" class="logout" type="button">تسجيل الخروج</button></header>
+    <header class="store-admin-header"><a class="store-brand" href="../index.html">Electrophone<span>Amine</span></a><nav><a href="#phonesManage" class="active">Téléphones</a><a href="#accessoriesManage">Accessoires</a><a href="#phoneFormCard">Ajouter un téléphone</a><a href="#accessoryFormCard">Ajouter un accessoire</a></nav><button id="logoutTop" class="logout" type="button">Déconnexion</button></header>
     <header class="page-heading">
-      <div><p class="eyebrow">إدارة المتجر</p><h1>مرحبا أمين 👋</h1><p>عدّل أسماء الهواتف، ثمنها، معلوماتها، واحذف المنتجات.</p></div>
-      <span class="status">● متصل بالسحابة</span>
+      <div><p class="eyebrow">Gestion du magasin</p><h1>Bienvenue Amine 👋</h1><p>Modifiez les noms, les prix, les informations et supprimez les produits.</p></div>
+      <span class="status">● Connecté au cloud</span>
     </header>
 
     <section class="management-grid" id="phonesManage">
-      <div class="card management-card"><div class="card-head"><div><span class="section-kicker">الهواتف</span><h2>إدارة الهواتف</h2></div><span id="phoneManageCount">0 هاتف</span></div><div id="phoneManageList" class="management-list"></div></div>
+      <div class="card management-card"><div class="card-head"><div><span class="section-kicker">Téléphones</span><h2>Gestion des téléphones</h2></div><span id="phoneManageCount">0 téléphone</span></div><div id="phoneManageList" class="management-list"></div></div>
     </section>
     <section class="management-grid" id="accessoriesManage">
-      <div class="card management-card"><div class="card-head"><div><span class="section-kicker">الإكسسوارات</span><h2>إدارة الإكسسوارات</h2></div><span id="accessoryManageCount">0 إكسسوار</span></div><div id="accessoryManageList" class="management-list"></div></div>
+      <div class="card management-card"><div class="card-head"><div><span class="section-kicker">Accessoires</span><h2>Gestion des accessoires</h2></div><span id="accessoryManageCount">0 accessoire</span></div><div id="accessoryManageList" class="management-list"></div></div>
     </section>
 
     <section class="card section-card" id="phoneFormCard">
-      <div class="card-head"><div><span class="section-kicker">الكتالوج</span><h2>📱 إضافة هاتف جديد</h2></div><span>كيبان مباشرة فالمتجر</span></div>
+      <div class="card-head"><div><span class="section-kicker">Catalogue</span><h2>📱 Ajouter un téléphone</h2></div><span>Publié directement dans la boutique</span></div>
       <form id="productForm" class="product-form form-grid">
         <input id="productId" type="hidden">
-        <div class="field"><label for="brand">الماركة</label><select id="brand" required><option value="">اختار الماركة</option><option>iPhone</option><option>Samsung</option><option>Redmi</option><option>Xiaomi</option><option>POCO</option><option>Oppo</option><option>Other</option></select></div>
-        <div class="field"><label for="model">الموديل</label><input id="model" type="text" placeholder="مثال: 15 Pro Max" required></div>
-        <div class="field"><label for="storage">التخزين</label><select id="storage" required><option value="">اختار التخزين</option><option>64GB</option><option>128GB</option><option>256GB</option><option>512GB</option><option>1TB</option></select></div>
-        <div class="field"><label for="ram">الرام</label><select id="ram" required><option value="">اختار الرام</option><option>4GB</option><option>6GB</option><option>8GB</option><option>12GB</option><option>16GB</option></select></div>
-        <div class="field"><label for="condition">الحالة</label><input id="condition" type="text" value="متوفر" required></div>
-        <div class="field"><label for="price">الثمن (DH)</label><input id="price" type="number" min="1" step="1" required></div>
-        <div class="field"><label for="oldPrice">الثمن القديم (اختياري)</label><input id="oldPrice" type="number" min="1" step="1"></div>
-        <div class="field"><label for="quantity">الكمية</label><input id="quantity" type="number" min="0" step="1" value="1" required></div>
-        <div class="field"><label for="phoneImageFile">صورة الهاتف من الجهاز</label><input id="phoneImageFile" type="file" accept="image/*"></div>
-        <div class="field"><label for="image">أو رابط الصورة (اختياري)</label><input id="image" type="url" placeholder="https://..."></div>
-        <div class="field field-wide"><img id="phoneImagePreview" class="image-preview" alt="معاينة صورة الهاتف" hidden></div>
-        <div class="field field-wide"><label for="description">وصف إضافي (اختياري)</label><textarea id="description" rows="3"></textarea></div>
-        <div class="form-submit field-wide"><button id="phoneSubmit" class="save" type="submit">إضافة الهاتف ✅</button><p id="phoneMessage" class="form-message" role="status" aria-live="polite"></p></div>
+        <div class="field"><label for="brand">Marque</label><select id="brand" required><option value="">Choisir la marque</option><option>iPhone</option><option>Samsung</option><option>Redmi</option><option>Xiaomi</option><option>POCO</option><option>Oppo</option><option>Other</option></select></div>
+        <div class="field"><label for="model">Modèle</label><input id="model" type="text" placeholder="Exemple : 15 Pro Max" required></div>
+        <div class="field"><label for="storage">Stockage</label><select id="storage" required><option value="">Choisir le stockage</option><option>64GB</option><option>128GB</option><option>256GB</option><option>512GB</option><option>1TB</option></select></div>
+        <div class="field" id="ramField" hidden><label for="ram">RAM (facultatif)</label><select id="ram"><option value="">Non spécifié</option><option>4GB</option><option>6GB</option><option>8GB</option><option>12GB</option><option>16GB</option></select></div>
+        <div class="field"><label for="condition">État</label><input id="condition" type="text" value="Disponible" required></div>
+        <div class="field"><label for="price">Prix (DH)</label><input id="price" type="number" min="1" step="1" required></div>
+        <div class="field"><label for="oldPrice">Ancien prix (facultatif)</label><input id="oldPrice" type="number" min="1" step="1"></div>
+        <div class="field"><label for="quantity">Quantité</label><input id="quantity" type="number" min="0" step="1" value="1" required></div>
+        <div class="field"><label for="phoneImageFile">Photos du téléphone</label><input id="phoneImageFile" type="file" accept="image/*" multiple></div>
+        <div class="field"><label for="image">Ou URL de l’image (facultatif)</label><input id="image" type="url" placeholder="https://..."></div>
+        <div class="field field-wide"><div id="phoneImagesPreview" class="images-preview" aria-label="Aperçu des photos du téléphone" hidden></div></div>
+        <div class="field field-wide"><label for="description">Description (facultatif)</label><textarea id="description" rows="3"></textarea></div>
+        <div class="form-submit field-wide"><button id="phoneSubmit" class="save" type="submit">Ajouter le téléphone ✅</button><p id="phoneMessage" class="form-message" role="status" aria-live="polite"></p></div>
       </form>
     </section>
 
     <section class="card section-card" id="accessoryFormCard">
-      <div class="card-head"><div><span class="section-kicker">الكتالوج</span><h2>🎧 إضافة إكسسوار جديد</h2></div><span>شواحن، سماعات، كوابل، كفرات</span></div>
+      <div class="card-head"><div><span class="section-kicker">Catalogue</span><h2>🎧 Ajouter un accessoire</h2></div><span>Chargeurs, casques, câbles, coques</span></div>
       <form id="accessoryForm" class="product-form form-grid">
         <input id="accessoryId" type="hidden">
-        <div class="field"><label for="accessoryType">النوع</label><select id="accessoryType" required><option value="">اختار النوع</option><option>شاحن</option><option>سماعات</option><option>كوابل</option><option>باور بانك</option><option>كفرات</option><option>أخرى</option></select></div>
-        <div class="field"><label for="accessoryName">الاسم</label><input id="accessoryName" type="text" placeholder="مثال: شاحن سريع USB-C" required></div>
-        <div class="field"><label for="accessoryPrice">الثمن (DH)</label><input id="accessoryPrice" type="number" min="1" step="1" required></div>
-        <div class="field"><label for="accessoryQuantity">الكمية</label><input id="accessoryQuantity" type="number" min="0" step="1" value="1" required></div>
-        <div class="field"><label for="accessoryImageFile">صورة الإكسسوار من الجهاز</label><input id="accessoryImageFile" type="file" accept="image/*"></div>
-        <div class="field"><label for="accessoryImage">أو رابط الصورة (اختياري)</label><input id="accessoryImage" type="url" placeholder="https://..."></div>
-        <div class="field field-wide"><img id="accessoryImagePreview" class="image-preview" alt="معاينة صورة الإكسسوار" hidden></div>
-        <div class="form-submit field-wide"><button id="accessorySubmit" class="save" type="submit">إضافة الإكسسوار ✅</button><p id="accessoryMessage" class="form-message" role="status" aria-live="polite"></p></div>
+        <div class="field"><label for="accessoryType">Type</label><select id="accessoryType" required><option value="">Choisir le type</option><option>Chargeur</option><option>Casque</option><option>Câble</option><option>Power bank</option><option>Coque</option><option>Autre</option></select></div>
+        <div class="field"><label for="accessoryName">Nom</label><input id="accessoryName" type="text" placeholder="Exemple : chargeur rapide USB-C" required></div>
+        <div class="field"><label for="accessoryPrice">Prix (DH)</label><input id="accessoryPrice" type="number" min="1" step="1" required></div>
+        <div class="field"><label for="accessoryQuantity">Quantité</label><input id="accessoryQuantity" type="number" min="0" step="1" value="1" required></div>
+        <div class="field"><label for="accessoryImageFile">Image de l'accessoire</label><input id="accessoryImageFile" type="file" accept="image/*"></div>
+        <div class="field"><label for="accessoryImage">Ou URL de l’image (facultatif)</label><input id="accessoryImage" type="url" placeholder="https://..."></div>
+        <div class="field field-wide"><img id="accessoryImagePreview" class="image-preview" alt="Aperçu de l'accessoire" hidden></div>
+        <div class="form-submit field-wide"><button id="accessorySubmit" class="save" type="submit">Ajouter l'accessoire ✅</button><p id="accessoryMessage" class="form-message" role="status" aria-live="polite"></p></div>
       </form>
     </section>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="../frontend/js/store.js?v=20261029c"></script>
+  <script src="../frontend/js/store.js?v=20261104a"></script>
   <script src="../frontend/js/supabase-config.js?v=20261029c"></script>
   <script src="../frontend/js/cloud-catalog.js?v=cc9fb76"></script>
   <script src="config/password.js?v=20261029c"></script>
   <script src="js/auth.js?v=20261029c"></script>
-  <script src="js/admin.js?v=d7617ef"></script>
+  <script src="js/admin.js?v=multi-images-20261029"></script>
 </body>
 </html>
