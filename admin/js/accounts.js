@@ -45,7 +45,8 @@
         document.getElementById('accountsMessage').textContent = 'تم الحفظ على هذا الجهاز فقط — شغل الاتصال السحابي.';
       }
     } catch (error) {
-      document.getElementById('accountsMessage').textContent = 'تعذر الحفظ في السحابة.';
+      const detail = error?.message || error?.details || error?.hint || String(error || '');
+      document.getElementById('accountsMessage').textContent = `تعذر الحفظ في السحابة${detail ? `: ${detail}` : '.'}`;
       console.warn('Store accounts cloud save failed:', error.message || error);
     }
     render();
@@ -142,7 +143,8 @@
       }
       render();
     } catch (error) {
-      message.textContent = 'تعذر الاتصال السحابي.';
+      const detail = error?.message || error?.details || error?.hint || String(error || '');
+      message.textContent = `تعذر الاتصال السحابي${detail ? `: ${detail}` : '.'}`;
       console.warn('Worker account sync failed:', error.message || error);
     }
   });

@@ -57,6 +57,6 @@
     await saveTable('accessory_products', accessories);
   }
 
-  window.ElectrophoneCloud = { loadSharedCatalog, saveSharedCatalog, fetchTable };
+  window.ElectrophoneCloud = { loadSharedCatalog, saveSharedCatalog, fetchTable, saveTable };
   void loadSharedCatalog().catch(error => console.warn('Shared catalog unavailable:', error.message || error));
 })();
