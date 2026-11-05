@@ -20,7 +20,12 @@
       if (window.ElectrophoneCloud?.fetchTable) {
         const cloud = await window.ElectrophoneCloud.fetchTable('store_accounts');
         if (Array.isArray(cloud) && cloud.length) {
-          accounts = cloud;
+          const merged = new Map();
+          accounts.forEach(account => merged.set(String(account.id), account));
+          cloud.forEach(account => merged.set(String(account.id), account));
+          accounts = [...merged.values()];
+          localStorage.setItem(ACCOUNT_KEY, JSON.stringify(accounts));
+          await save();
         } else if (accounts.length) {
           await save();
         }
@@ -123,6 +128,23 @@
   document.getElementById('ownerLogout').addEventListener('click', () => {
     localStorage.removeItem('electrophone_admin_session');
     location.replace('login.html');
+  });
+  document.getElementById('syncAccounts')?.addEventListener('click', async () => {
+    const message = document.getElementById('accountsMessage');
+    try {
+      if (!window.ElectrophoneCloud?.saveTable) throw new Error('الاتصال السحابي غير متاح');
+      await window.ElectrophoneCloud.saveTable('store_accounts', accounts);
+      const cloud = await window.ElectrophoneCloud.fetchTable('store_accounts');
+      if (Array.isArray(cloud)) {
+        accounts = cloud;
+        localStorage.setItem(ACCOUNT_KEY, JSON.stringify(accounts));
+        message.textContent = `تمت المزامنة ✅ (${accounts.length} حساب)`;
+      }
+      render();
+    } catch (error) {
+      message.textContent = 'تعذر الاتصال السحابي.';
+      console.warn('Worker account sync failed:', error.message || error);
+    }
   });
   load();
 })();
