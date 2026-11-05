@@ -60,7 +60,11 @@
     document.getElementById('accountsRows').innerHTML = accounts.length
       ? accounts.map(account => `<tr>
           <td>${escapeHtml(account.username)}</td><td>${escapeHtml(account.name)}</td>
-          <td>${escapeHtml(branches[account.branchId] || account.branchId)}</td>
+          <td>
+            <select class="field-select account-branch-select" data-branch="${escapeHtml(account.id)}" aria-label="المحل الخاص بـ ${escapeHtml(account.name || account.username)}">
+              ${Object.entries(branches).map(([id, name]) => `<option value="${id}" ${account.branchId === id ? 'selected' : ''}>${name}</option>`).join('')}
+            </select>
+          </td>
           <td><span class="status-badge ${account.active === false ? 'danger' : ''}">${account.active === false ? 'موقف' : 'نشط'}</span></td>
           <td>
             <button class="secondary-button" type="button" data-toggle="${escapeHtml(account.id)}">${account.active === false ? 'تفعيل' : 'تعطيل'}</button>
@@ -97,6 +101,15 @@
     });
     await save();
     document.getElementById('accountForm').reset();
+  });
+
+  document.getElementById('accountsRows').addEventListener('change', async event => {
+    const select = event.target.closest('[data-branch]');
+    if (!select) return;
+    const account = accounts.find(item => String(item.id) === String(select.dataset.branch));
+    if (!account) return;
+    account.branchId = select.value;
+    await save();
   });
 
   document.getElementById('accountsRows').addEventListener('click', async event => {
