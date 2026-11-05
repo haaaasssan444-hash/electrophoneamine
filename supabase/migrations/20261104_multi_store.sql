@@ -61,6 +61,11 @@ create policy "store_accounts_public_write"
   using (true)
   with check (true);
 
+grant usage on schema public to anon, authenticated;
+grant select, insert, update, delete on public.store_accounts to anon, authenticated;
+grant select, insert, update, delete on public.business_sales to anon, authenticated;
+grant select, insert, update, delete on public.business_stock to anon, authenticated;
+
 alter table public.business_sales enable row level security;
 
 drop policy if exists "business_sales_public_read" on public.business_sales;

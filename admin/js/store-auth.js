@@ -56,7 +56,9 @@
         if (!cloud) return accounts;
         accounts = Array.isArray(cloud) ? cloud : accounts;
       }
-    } catch (_) {}
+    } catch (error) {
+      console.warn('Worker accounts cloud unavailable:', error.message || error);
+    }
     localStorage.setItem(ACCOUNT_KEY, JSON.stringify(accounts));
     return accounts;
   }
