@@ -7,6 +7,7 @@
   const STOCK_KEY = 'electrophone_stock_excel';
   let sales = [];
   let stock = [];
+  let editingStockId = null;
   const money = value => `${Number(value || 0).toLocaleString('ar-MA')} DH`;
 
   function readSales() {
@@ -104,8 +105,12 @@
     const stockRows = document.getElementById('storeStockRows');
     if (stockRows) {
       stockRows.innerHTML = branchStock.length
-        ? branchStock.map(item => `<tr><td>${escapeHtml(item.product)}</td><td>${escapeHtml(item.sku)}</td><td><strong>${Number(item.quantity || 0)}</strong></td><td>${money(item.price)}</td><td>${Number(item.quantity || 0) > 0 ? 'متوفر' : 'نفد'}</td></tr>`).join('')
-        : '<tr><td colspan="5"><div class="empty-state">لم يتم إدخال مخزون لهذا المحل بعد</div></td></tr>';
+        ? branchStock.map(item => {
+          const ownerId = item.ownerId || item.workerId;
+          const editable = !ownerId || String(ownerId) === String(session?.id);
+          return `<tr><td>${escapeHtml(item.product)}</td><td>${escapeHtml(item.sku)}</td><td><strong>${Number(item.quantity || 0)}</strong></td><td>${money(item.price)}</td><td>${Number(item.quantity || 0) > 0 ? 'متوفر' : 'نفد'}</td><td>${editable ? `<button type="button" class="secondary-button" data-stock-edit="${escapeHtml(item.id)}">تعديل</button>` : ''}</td></tr>`;
+        }).join('')
+        : '<tr><td colspan="6"><div class="empty-state">لم يتم إدخال مخزون لهذا المحل بعد</div></td></tr>';
     }
   }
 
@@ -166,10 +171,28 @@
     if (!product || !Number.isFinite(quantity) || quantity < 0) return;
     const sku = document.getElementById('stockSku').value.trim();
     const price = Number(document.getElementById('stockPrice').value || 0);
-    const existing = stock.find(item =>
-      String(item.branchId) === String(session.branchId) &&
-      (sku ? String(item.sku || '').toLowerCase() === sku.toLowerCase() : String(item.product || '').toLowerCase() === product.toLowerCase())
-    );
+    let existing = null;
+    if (editingStockId) {
+      existing = stock.find(item =>
+        String(item.id) === String(editingStockId) &&
+        String(item.branchId) === String(session.branchId)
+      );
+      const ownerId = existing?.ownerId || existing?.workerId;
+      if (existing && ownerId && String(ownerId) !== String(session.id)) {
+        alert('لا يمكنك تعديل مخزون أدخله عامل آخر.');
+        return;
+      }
+    } else {
+      existing = stock.find(item =>
+        String(item.branchId) === String(session.branchId) &&
+        (sku ? String(item.sku || '').toLowerCase() === sku.toLowerCase() : String(item.product || '').toLowerCase() === product.toLowerCase())
+      );
+      const ownerId = existing?.ownerId || existing?.workerId;
+      if (existing && ownerId && String(ownerId) !== String(session.id)) {
+        alert('هذا المخزون مسجل بواسطة عامل آخر ولا يمكن تعديله.');
+        return;
+      }
+    }
     if (existing) {
       existing.product = product;
       existing.sku = sku;
@@ -178,6 +201,8 @@
       existing.updatedAt = new Date().toISOString();
       existing.workerId = session.id;
       existing.workerName = session.name;
+      existing.ownerId = existing.ownerId || existing.workerId;
+      existing.ownerName = existing.ownerName || session.name;
     } else {
       stock.push({
         id: `stock-${session.branchId}-${Date.now()}`,
@@ -188,11 +213,35 @@
         price,
         updatedAt: new Date().toISOString(),
         workerId: session.id,
-        workerName: session.name
+        workerName: session.name,
+        ownerId: session.id,
+        ownerName: session.name
       });
     }
     await saveStock();
     document.getElementById('stockForm').reset();
+    editingStockId = null;
+  });
+
+  document.getElementById('storeStockRows').addEventListener('click', event => {
+    const button = event.target.closest('[data-stock-edit]');
+    if (!button) return;
+    const item = stock.find(stockItem =>
+      String(stockItem.id) === String(button.dataset.stockEdit) &&
+      String(stockItem.branchId) === String(session?.branchId)
+    );
+    if (!item) return;
+    const ownerId = item.ownerId || item.workerId;
+    if (ownerId && String(ownerId) !== String(session.id)) {
+      alert('لا يمكنك تعديل مخزون أدخله عامل آخر.');
+      return;
+    }
+    editingStockId = String(item.id);
+    document.getElementById('stockProduct').value = item.product || '';
+    document.getElementById('stockSku').value = item.sku || '';
+    document.getElementById('stockQuantity').value = item.quantity || 0;
+    document.getElementById('stockPrice').value = item.price || 0;
+    document.getElementById('stockProduct').focus();
   });
 
   document.getElementById('storeSalesRows').addEventListener('click', async event => {
