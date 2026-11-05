@@ -97,8 +97,19 @@
   }
 
   function branchChoices() {
-    const items = state.branches || [];
+    const items = activeBranches();
     return `<option value="">غير محدد</option>${items.map(branch => `<option value="${escapeHtml(branch.id)}">${escapeHtml(branch.name)}</option>`).join('')}`;
+  }
+
+  function activeBranches() {
+    const accounts = state.accounts || [];
+    const branches = state.branches || [];
+    if (!accounts.length) return branches;
+    return branches.filter(branch =>
+      accounts.some(account =>
+        String(account.branchId) === String(branch.id) && account.active !== false
+      )
+    );
   }
 
   function seedBranches() {
@@ -319,7 +330,7 @@
     const sales = state.sales || [];
     const expenses = state.expenses || [];
     const stock = state.stock || [];
-    const branches = state.branches || [];
+    const branches = activeBranches();
     const accounts = state.accounts || [];
     const totalSales = sales.reduce((sum, item) => sum + number(item.total), 0);
     const totalExpenses = expenses.reduce((sum, item) => sum + number(item.amount), 0);
