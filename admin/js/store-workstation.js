@@ -1,6 +1,8 @@
 (() => {
-  const session = window.StoreAuth.requireWorker();
-  if (!session) return;
+  let session = window.StoreAuth.getSession();
+  const loginGate = document.getElementById('workstationLoginGate');
+  if (!session?.branchId && loginGate) loginGate.hidden = false;
+  else if (loginGate) loginGate.hidden = true;
   const SALES_KEY = 'electrophone_sales_excel';
   let sales = [];
   const money = value => `${Number(value || 0).toLocaleString('ar-MA')} DH`;
@@ -37,8 +39,10 @@
   }
 
   function render() {
-    document.getElementById('storeTitle').textContent = `مبيعات ${session.name || session.username}`;
-    const branchSales = sales.filter(item => String(item.branchId) === String(session.branchId));
+    document.getElementById('storeTitle').textContent = session?.name || session?.username ? `مبيعات ${session.name || session.username}` : 'مبيعات المحل';
+    const branchSales = session?.branchId
+      ? sales.filter(item => String(item.branchId) === String(session.branchId))
+      : [];
     const now = new Date();
     const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
     const todaySales = branchSales.filter(item => String(item.date || '').startsWith(today));
@@ -62,6 +66,11 @@
 
   document.getElementById('saleDate').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
   document.getElementById('saveSale').addEventListener('click', async () => {
+    if (!session?.branchId) {
+      loginGate.hidden = false;
+      document.getElementById('workstationLoginError').textContent = 'سجل الدخول أولاً قبل حفظ البيع.';
+      return;
+    }
     const form = document.getElementById('saleForm');
     if (!form.reportValidity()) return;
     const sale = {
@@ -95,6 +104,28 @@
     if (!confirm('حذف عملية البيع؟')) return;
     sales = sales.filter(sale => String(sale.id) !== String(button.dataset.saleDelete));
     await saveSales();
+  });
+  document.getElementById('workstationLoginForm').addEventListener('submit', async event => {
+    event.preventDefault();
+    const error = document.getElementById('workstationLoginError');
+    error.textContent = '';
+    try {
+      const authenticated = await window.StoreAuth.loginWorker(
+        document.getElementById('workstationUsername').value,
+        document.getElementById('workstationPassword').value
+      );
+      if (!authenticated) {
+        error.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة.';
+        return;
+      }
+      session = authenticated;
+      loginGate.hidden = true;
+      document.getElementById('workstationUsername').value = '';
+      document.getElementById('workstationPassword').value = '';
+      await loadSales();
+    } catch (exception) {
+      error.textContent = exception.message || 'تعذر تسجيل الدخول.';
+    }
   });
   document.getElementById('workerLogout').addEventListener('click', window.StoreAuth.logoutWorker);
   loadSales();

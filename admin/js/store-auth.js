@@ -114,5 +114,23 @@
     location.replace('store-login.html');
   }
 
-  window.StoreAuth = { hashPassword, sessionAccounts, getSession, requireWorker, logoutWorker, localAccounts };
+  async function loginWorker(username, password) {
+    const normalizedUsername = String(username || '').trim().toLowerCase();
+    const accounts = await sessionAccounts();
+    const account = accounts.find(item => String(item.username).toLowerCase() === normalizedUsername && item.active !== false);
+    if (!account || !account.passwordSalt || !account.passwordHash) return null;
+    const result = await hashPassword(password, account.passwordSalt);
+    if (result.hash !== account.passwordHash) return null;
+    const session = {
+      id: account.id,
+      username: account.username,
+      name: account.name,
+      branchId: account.branchId,
+      role: account.role || 'worker'
+    };
+    localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+    return session;
+  }
+
+  window.StoreAuth = { hashPassword, sessionAccounts, getSession, requireWorker, logoutWorker, loginWorker, localAccounts };
 })();
