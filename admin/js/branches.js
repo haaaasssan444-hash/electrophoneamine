@@ -464,7 +464,7 @@
     document.querySelectorAll('[data-section]').forEach(item => item.classList.remove('active'));
     button.classList.add('active');
     if (selectedCell) selectedCell = null;
-    if (['overview', 'reports'].includes(button.dataset.section)) renderSection(button.dataset.section);
+    if (button.dataset.section === 'overview') renderSection(button.dataset.section);
     else renderSection(button.dataset.section);
   });
 
