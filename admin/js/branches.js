@@ -51,6 +51,7 @@
   let currentSection = 'overview';
   let selectedCell = null;
   let saveTimer;
+  const branchFilters = { sales: 'all', stock: 'all' };
   const content = document.getElementById('sectionContent');
   const title = document.getElementById('sectionTitle');
   const number = value => {
@@ -136,10 +137,24 @@
     const columnCount = schema.columns.length;
     content.innerHTML = `
       <div class="metric-grid" id="excelMetrics"></div>
+      ${['sales', 'stock'].includes(section) ? `
+      <div class="panel branch-filter-panel">
+        <div class="panel-head"><h2>التنقل بين المحلات</h2><label>المحل: <select id="branchFilter">${'<option value="all">جميع المحلات</option>'}${branchChoices().replace('<option value="">غير محدد</option>', '')}</select></label></div>
+      </div>` : ''}
       <div class="excel-panel">
         <div class="excel-toolbar"><span id="excelCellName" class="excel-cell-name">A1</span><input id="excelFormula" class="excel-formula" type="text" aria-label="محتوى الخلية"></div>
-        <div class="excel-scroll"><table class="excel-table"><thead><tr><th></th>${schema.columns.map(([, label]) => `<th>${escapeHtml(label)}</th>`).join('')}<th>حذف</th></tr></thead><tbody id="excelBody"></tbody></table></div>
+        <div class="excel-scroll"><table class="excel-table"><thead><tr><th></th>${schema.columns.map(([, label]) => `<th>${escapeHtml(label)}</th>`).join('')}<th>حذف</th></tr></thead><tbody id="excelBody"></tbody><tfoot id="excelFoot"></tfoot></table></div>
       </div>`;
+    const branchFilter = document.getElementById('branchFilter');
+    if (branchFilter) {
+      branchFilter.value = branchFilters[section] || 'all';
+      branchFilter.addEventListener('change', () => {
+        branchFilters[section] = branchFilter.value;
+        renderRows(section);
+        updateMetrics(section);
+      });
+    }
+    if (section === 'stock') setupStockTransfer();
     renderRows(section);
     updateMetrics(section);
     setupExcelFormula(section);
@@ -156,17 +171,96 @@
     };
   }
 
+  function setupStockTransfer() {
+    const panel = document.createElement('div');
+    panel.className = 'panel stock-transfer-panel';
+    panel.innerHTML = `
+      <div class="panel-head"><h2>نقل مخزون بين المحلات</h2></div>
+      <div class="form-panel">
+        <div class="field"><label>من المحل</label><select id="transferFrom">${branchChoices()}</select></div>
+        <div class="field"><label>إلى المحل</label><select id="transferTo">${branchChoices()}</select></div>
+        <div class="field"><label>المنتج</label><input id="transferProduct" type="text" placeholder="اسم المنتج"></div>
+        <div class="field"><label>الكمية</label><input id="transferQuantity" type="number" min="1" step="1"></div>
+        <div class="form-actions"><button id="transferStock" class="primary-button" type="button">تنفيذ النقل</button></div>
+      </div>`;
+    const excelPanel = content.querySelector('.excel-panel');
+    excelPanel?.before(panel);
+    document.getElementById('transferStock')?.addEventListener('click', transferStock);
+  }
+
+  function transferStock() {
+    const fromId = document.getElementById('transferFrom').value;
+    const toId = document.getElementById('transferTo').value;
+    const product = document.getElementById('transferProduct').value.trim().toLowerCase();
+    const quantity = number(document.getElementById('transferQuantity').value);
+    if (!fromId || !toId || fromId === toId || !product || quantity <= 0) {
+      alert('اختر المحلين، والمنتج، وكمية صحيحة.');
+      return;
+    }
+    const source = (state.stock || []).find(item =>
+      String(item.branchId) === String(fromId) &&
+      String(item.product || '').trim().toLowerCase() === product
+    );
+    if (!source || number(source.quantity) < quantity) {
+      alert('الكمية غير متوفرة في المحل المصدر.');
+      return;
+    }
+    source.quantity = number(source.quantity) - quantity;
+    source.updatedAt = new Date().toISOString();
+    let destination = (state.stock || []).find(item =>
+      String(item.branchId) === String(toId) &&
+      String(item.product || '').trim().toLowerCase() === product
+    );
+    if (destination) {
+      destination.quantity = number(destination.quantity) + quantity;
+      destination.updatedAt = new Date().toISOString();
+    } else {
+      destination = {
+        id: `stock-${toId}-${Date.now()}`,
+        branchId: toId,
+        product: source.product,
+        sku: source.sku || '',
+        quantity,
+        cost: source.cost || 0,
+        price: source.price || 0,
+        updatedAt: new Date().toISOString()
+      };
+      state.stock.push(destination);
+    }
+    saveSection('stock');
+    renderRows('stock');
+    updateMetrics('stock');
+    document.getElementById('transferQuantity').value = '';
+  }
+
   function renderRows(section) {
     const schema = schemas[section];
     const body = document.getElementById('excelBody');
+    const foot = document.getElementById('excelFoot');
     if (!body) return;
     const rows = state[section] || [];
-    body.innerHTML = rows.map((item, rowIndex) => `
+    const selectedBranch = branchFilters[section] || 'all';
+    const visible = rows.map((item, rowIndex) => ({ item, rowIndex })).filter(({ item }) =>
+      !['sales', 'stock'].includes(section) || selectedBranch === 'all' || String(item.branchId) === String(selectedBranch)
+    );
+    body.innerHTML = visible.map(({ item, rowIndex }) => `
       <tr>
         <th>${rowIndex + 1}</th>
         ${schema.columns.map(([key], columnIndex) => `<td><div class="excel-cell" contenteditable="true" spellcheck="false" data-row="${rowIndex}" data-key="${key}" data-column="${columnIndex}" aria-label="${escapeHtml(schema.columns[columnIndex][1])}">${escapeHtml(displayValue(section, key, item[key]))}</div></td>`).join('')}
         <td class="excel-row-delete"><button type="button" data-delete-row="${rowIndex}" aria-label="حذف السطر">×</button></td>
       </tr>`).join('') || '<tr><td colspan="100"><div class="empty-state">أضف سطراً جديداً من زر + سطر</div></td></tr>';
+    if (foot) {
+      if (section === 'sales') {
+        const quantity = visible.reduce((sum, row) => sum + number(row.item.quantity), 0);
+        const total = visible.reduce((sum, row) => sum + number(row.item.total), 0);
+        foot.innerHTML = `<tr class="excel-total-row"><th>المجموع</th><td colspan="4"></td><td><strong>${quantity}</strong></td><td><strong>${money(total)}</strong></td><td colspan="2"></td></tr>`;
+      } else if (section === 'stock') {
+        const quantity = visible.reduce((sum, row) => sum + number(row.item.quantity), 0);
+        foot.innerHTML = `<tr class="excel-total-row"><th>المجموع</th><td colspan="3"></td><td><strong>${quantity}</strong> وحدة</td><td colspan="3"></td></tr>`;
+      } else {
+        foot.innerHTML = '';
+      }
+    }
   }
 
   function updateMetrics(section) {
@@ -177,14 +271,19 @@
     const stock = state.stock || [];
     const employees = state.employees || [];
     if (section === 'sales') {
-      const total = sales.reduce((sum, item) => sum + number(item.total), 0);
-      metrics.innerHTML = `<article class="metric-card"><span>عدد العمليات</span><strong>${sales.length}</strong></article><article class="metric-card"><span>إجمالي المبيعات</span><strong>${money(total)}</strong></article>`;
+      const selectedBranch = branchFilters.sales || 'all';
+      const filtered = selectedBranch === 'all' ? sales : sales.filter(item => String(item.branchId) === String(selectedBranch));
+      const total = filtered.reduce((sum, item) => sum + number(item.total), 0);
+      const quantity = filtered.reduce((sum, item) => sum + number(item.quantity), 0);
+      metrics.innerHTML = `<article class="metric-card"><span>عدد العمليات</span><strong>${filtered.length}</strong></article><article class="metric-card"><span>الكمية المباعة</span><strong>${quantity}</strong></article><article class="metric-card"><span>إجمالي المبيعات</span><strong>${money(total)}</strong></article>`;
     } else if (section === 'expenses') {
       const total = expenses.reduce((sum, item) => sum + number(item.amount), 0);
       metrics.innerHTML = `<article class="metric-card"><span>عدد المصاريف</span><strong>${expenses.length}</strong></article><article class="metric-card"><span>إجمالي المصاريف</span><strong>${money(total)}</strong></article>`;
     } else if (section === 'stock') {
-      const units = stock.reduce((sum, item) => sum + number(item.quantity), 0);
-      metrics.innerHTML = `<article class="metric-card"><span>عدد المنتجات</span><strong>${stock.length}</strong></article><article class="metric-card"><span>إجمالي الوحدات</span><strong>${units}</strong></article>`;
+      const selectedBranch = branchFilters.stock || 'all';
+      const filtered = selectedBranch === 'all' ? stock : stock.filter(item => String(item.branchId) === String(selectedBranch));
+      const units = filtered.reduce((sum, item) => sum + number(item.quantity), 0);
+      metrics.innerHTML = `<article class="metric-card"><span>عدد المنتجات</span><strong>${filtered.length}</strong></article><article class="metric-card"><span>إجمالي الوحدات</span><strong>${units}</strong></article>`;
     } else if (section === 'employees') {
       const salaries = employees.reduce((sum, item) => sum + number(item.salary), 0);
       metrics.innerHTML = `<article class="metric-card"><span>عدد الموظفين</span><strong>${employees.length}</strong></article><article class="metric-card"><span>كتلة الرواتب</span><strong>${money(salaries)}</strong></article>`;
@@ -363,7 +462,11 @@
       document.querySelectorAll('[data-section]').forEach(item => item.classList.toggle('active', item.dataset.section === currentSection));
       renderSection(currentSection);
     }
-    state[currentSection].push({ id: `${currentSection}-${Date.now()}` });
+    const newRow = { id: `${currentSection}-${Date.now()}` };
+    if (['sales', 'stock'].includes(currentSection) && branchFilters[currentSection] !== 'all') {
+      newRow.branchId = branchFilters[currentSection];
+    }
+    state[currentSection].push(newRow);
     saveSection(currentSection);
     renderRows(currentSection);
     updateMetrics(currentSection);
