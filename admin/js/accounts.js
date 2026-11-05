@@ -36,7 +36,7 @@
         document.getElementById('accountsMessage').textContent = 'تم الحفظ على هذا الجهاز فقط — شغل الاتصال السحابي.';
       }
     } catch (error) {
-      document.getElementById('accountsMessage').textContent = 'تعذر الحفظ في السحابة. شغل migration قاعدة البيانات.';
+      document.getElementById('accountsMessage').textContent = 'تعذر الحفظ في السحابة.';
       console.warn('Store accounts cloud save failed:', error.message || error);
     }
     render();
@@ -48,7 +48,15 @@
       'branch-4': 'المحل 4', 'branch-5': 'المحل 5', 'branch-6': 'المحل 6', 'branch-7': 'المحل 7'
     };
     document.getElementById('accountsRows').innerHTML = accounts.length
-      ? accounts.map(account => `<tr><td>${escapeHtml(account.username)}</td><td>${escapeHtml(account.name)}</td><td>${escapeHtml(branches[account.branchId] || account.branchId)}</td><td><span class="status-badge ${account.active === false ? 'danger' : ''}">${account.active === false ? 'موقف' : 'نشط'}</span></td><td><button class="secondary-button" type="button" data-toggle="${escapeHtml(account.id)}">${account.active === false ? 'تفعيل' : 'تعطيل'}</button></td></tr>`).join('')
+      ? accounts.map(account => `<tr>
+          <td>${escapeHtml(account.username)}</td><td>${escapeHtml(account.name)}</td>
+          <td>${escapeHtml(branches[account.branchId] || account.branchId)}</td>
+          <td><span class="status-badge ${account.active === false ? 'danger' : ''}">${account.active === false ? 'موقف' : 'نشط'}</span></td>
+          <td>
+            <button class="secondary-button" type="button" data-toggle="${escapeHtml(account.id)}">${account.active === false ? 'تفعيل' : 'تعطيل'}</button>
+            <button class="secondary-button" type="button" data-reset="${escapeHtml(account.id)}">تغيير كلمة المرور</button>
+          </td>
+        </tr>`).join('')
       : '<tr><td colspan="5"><div class="empty-state">لا توجد حسابات العمال</div></td></tr>';
   }
 
@@ -57,7 +65,6 @@
   }
 
   document.getElementById('accountForm').addEventListener('submit', async event => {
-    event.preventEventDefault?.();
     event.preventDefault();
     const username = document.getElementById('accountUsername').value.trim().toLowerCase();
     if (!username) return;
@@ -79,17 +86,28 @@
     });
     await save();
     document.getElementById('accountForm').reset();
-    document.getElementById('accountsMessage').textContent = 'تم إنشاء الحساب ✅';
   });
 
   document.getElementById('accountsRows').addEventListener('click', async event => {
-    const button = event.target.closest('[data-toggle]');
-    if (!button) return;
-    const account = accounts.find(item => String(item.id) === String(button.dataset.toggle));
+    const toggleButton = event.target.closest('[data-toggle]');
+    const resetButton = event.target.closest('[data-reset]');
+    if (!toggleButton && !resetButton) return;
+    const id = toggleButton?.dataset.toggle || resetButton?.dataset.reset;
+    const account = accounts.find(item => String(item.id) === String(id));
     if (!account) return;
-    account.active = account.active === false;
+    if (toggleButton) {
+      account.active = account.active === false;
+      await save();
+      return;
+    }
+    const password = prompt(`كلمة مرور جديدة للعامل ${account.name || account.username}:`);
+    if (!password || password.trim().length < 4) return;
+    const credentials = await window.StoreAuth.hashPassword(password.trim());
+    account.passwordSalt = credentials.salt;
+    account.passwordHash = credentials.hash;
     await save();
   });
+
   document.getElementById('ownerLogout').addEventListener('click', () => {
     localStorage.removeItem('electrophone_admin_session');
     location.replace('login.html');

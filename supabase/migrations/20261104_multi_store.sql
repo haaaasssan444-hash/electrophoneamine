@@ -75,3 +75,18 @@ create policy "business_sales_public_write"
   to anon, authenticated
   using (true)
   with check (true);
+
+alter table public.business_stock enable row level security;
+
+drop policy if exists "business_stock_public_read" on public.business_stock;
+create policy "business_stock_public_read"
+  on public.business_stock for select
+  to anon, authenticated
+  using (true);
+
+drop policy if exists "business_stock_public_write" on public.business_stock;
+create policy "business_stock_public_write"
+  on public.business_stock for all
+  to anon, authenticated
+  using (true)
+  with check (true);

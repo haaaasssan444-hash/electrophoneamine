@@ -232,11 +232,12 @@
         <article class="metric-card"><span>المخزون</span><strong>${units}</strong><small>وحدة متوفرة</small></article>
         <article class="metric-card"><span>الصافي</span><strong>${money(totalSales - totalExpenses)}</strong><small>بعد المصاريف المسجلة</small></article>
       </div>
-      <div class="panel"><div class="panel-head"><h2>المبيعات حسب المحل</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>المحل</th><th>المبيعات</th><th>المصاريف</th><th>الصافي</th></tr></thead><tbody>${branches.map(branch => {
+      <div class="panel"><div class="panel-head"><h2>المبيعات والمخزون حسب المحل</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>المحل</th><th>المبيعات</th><th>المخزون</th><th>المصاريف</th><th>الصافي</th></tr></thead><tbody>${branches.map(branch => {
         const id = String(branch.id);
         const branchSales = sales.filter(item => String(item.branchId) === id).reduce((sum, item) => sum + number(item.total), 0);
         const branchExpenses = expenses.filter(item => String(item.branchId) === id).reduce((sum, item) => sum + number(item.amount), 0);
-        return `<tr><td>${escapeHtml(branch.name)}</td><td>${money(branchSales)}</td><td>${money(branchExpenses)}</td><td><strong>${money(branchSales - branchExpenses)}</strong></td></tr>`;
+        const branchUnits = stock.filter(item => String(item.branchId) === id).reduce((sum, item) => sum + number(item.quantity), 0);
+        return `<tr><td>${escapeHtml(branch.name)}</td><td>${money(branchSales)}</td><td><strong>${branchUnits}</strong> وحدة</td><td>${money(branchExpenses)}</td><td><strong>${money(branchSales - branchExpenses)}</strong></td></tr>`;
       }).join('')}</tbody></table></div></div>`;
   }
 
@@ -244,8 +245,15 @@
     title.textContent = 'التقارير';
     const sales = state.sales || [];
     const expenses = state.expenses || [];
+    const stock = state.stock || [];
     const totalSales = sales.reduce((sum, item) => sum + number(item.total), 0);
     const totalExpenses = expenses.reduce((sum, item) => sum + number(item.amount), 0);
+    const daily = {};
+    sales.forEach(item => {
+      const key = String(item.date || '').slice(0, 10) || 'غير محدد';
+      daily[key] = (daily[key] || 0) + number(item.total);
+    });
+    const branchNames = Object.fromEntries((state.branches || []).map(branch => [String(branch.id), branch.name]));
     content.innerHTML = `
       <div class="metric-grid">
         <article class="metric-card"><span>إجمالي المبيعات</span><strong>${money(totalSales)}</strong></article>
@@ -253,10 +261,14 @@
         <article class="metric-card"><span>صافي النتيجة</span><strong>${money(totalSales - totalExpenses)}</strong></article>
         <article class="metric-card"><span>عدد العمليات</span><strong>${sales.length}</strong></article>
       </div>
-      <div class="report-grid"><div class="panel"><div class="panel-head"><h2>أداء المحلات</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>المحل</th><th>المبيعات</th></tr></thead><tbody>${(state.branches || []).map(branch => {
+      <div class="report-grid">
+      <div class="panel"><div class="panel-head"><h2>أداء المحلات</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>المحل</th><th>المبيعات</th></tr></thead><tbody>${(state.branches || []).map(branch => {
         const branchSales = sales.filter(item => String(item.branchId) === String(branch.id)).reduce((sum, item) => sum + number(item.total), 0);
         return `<tr><td>${escapeHtml(branch.name)}</td><td>${money(branchSales)}</td></tr>`;
-      }).join('')}</tbody></table></div></div></div>`;
+      }).join('')}</tbody></table></div></div>
+      <div class="panel"><div class="panel-head"><h2>المبيعات اليومية</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>اليوم</th><th>المبيعات</th><th>عدد العمليات</th></tr></thead><tbody>${Object.entries(daily).sort((a,b) => b[0].localeCompare(a[0])).map(([date,total]) => `<tr><td>${escapeHtml(date)}</td><td>${money(total)}</td><td>${sales.filter(item => String(item.date || '').slice(0,10) === date).length}</td></tr>`).join('') || '<tr><td colspan="3">لا توجد مبيعات</td></tr>'}</tbody></table></div></div>
+      <div class="panel"><div class="panel-head"><h2>المخزون حسب المحل والمنتج</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>المحل</th><th>المنتج</th><th>المرجع</th><th>الكمية</th><th>آخر عامل</th></tr></thead><tbody>${stock.map(item => `<tr><td>${escapeHtml(branchNames[String(item.branchId)] || item.branchId)}</td><td>${escapeHtml(item.product)}</td><td>${escapeHtml(item.sku)}</td><td><strong>${Number(item.quantity || 0)}</strong></td><td>${escapeHtml(item.workerName)}</td></tr>`).join('') || '<tr><td colspan="5">لا يوجد مخزون مسجل</td></tr>'}</tbody></table></div></div>
+      </div>`;
   }
 
   async function renderSection(section) {

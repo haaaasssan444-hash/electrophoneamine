@@ -42,6 +42,19 @@
       <article class="metric-card"><span>عمليات اليوم</span><strong id="todayCount">0</strong></article>
       <article class="metric-card"><span>مبيعات الشهر</span><strong id="monthSales">0 DH</strong></article>
     </div>
+    <div class="panel" style="margin-bottom:14px">
+      <div class="panel-head"><h2>مخزون المحل</h2></div>
+      <div class="data-table-wrap" style="padding:14px">
+        <form id="stockForm" class="form-panel" style="display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));margin:0">
+          <div class="field"><label>اسم المنتج</label><input id="stockProduct" type="text" required></div>
+          <div class="field"><label>المرجع / SKU</label><input id="stockSku" type="text"></div>
+          <div class="field"><label>الكمية</label><input id="stockQuantity" type="number" min="0" step="1" required></div>
+          <div class="field"><label>سعر البيع DH</label><input id="stockPrice" type="number" min="0" step="1"></div>
+          <div class="form-actions"><button id="saveStock" class="primary-button" type="button">حفظ المخزون</button></div>
+        </form>
+        <table class="data-table"><thead><tr><th>المنتج</th><th>المرجع</th><th>الكمية</th><th>سعر البيع</th><th>الحالة</th></tr></thead><tbody id="storeStockRows"></tbody></table>
+      </div>
+    </div>
     <div class="excel-panel">
       <div class="excel-toolbar">
         <span class="excel-cell-name">عملية بيع</span>
