@@ -45,3 +45,33 @@ create table if not exists public.store_accounts (
   data jsonb not null default '{}'::jsonb,
   updated_at timestamptz not null default now()
 );
+
+alter table public.store_accounts enable row level security;
+
+drop policy if exists "store_accounts_public_read" on public.store_accounts;
+create policy "store_accounts_public_read"
+  on public.store_accounts for select
+  to anon, authenticated
+  using (true);
+
+drop policy if exists "store_accounts_public_write" on public.store_accounts;
+create policy "store_accounts_public_write"
+  on public.store_accounts for all
+  to anon, authenticated
+  using (true)
+  with check (true);
+
+alter table public.business_sales enable row level security;
+
+drop policy if exists "business_sales_public_read" on public.business_sales;
+create policy "business_sales_public_read"
+  on public.business_sales for select
+  to anon, authenticated
+  using (true);
+
+drop policy if exists "business_sales_public_write" on public.business_sales;
+create policy "business_sales_public_write"
+  on public.business_sales for all
+  to anon, authenticated
+  using (true)
+  with check (true);

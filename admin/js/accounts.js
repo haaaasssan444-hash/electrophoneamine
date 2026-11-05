@@ -29,8 +29,16 @@
   async function save() {
     localStorage.setItem(ACCOUNT_KEY, JSON.stringify(accounts));
     try {
-      if (window.ElectrophoneCloud?.saveTable) await window.ElectrophoneCloud.saveTable('store_accounts', accounts);
-    } catch (_) {}
+      if (window.ElectrophoneCloud?.saveTable) {
+        await window.ElectrophoneCloud.saveTable('store_accounts', accounts);
+        document.getElementById('accountsMessage').textContent = 'تم حفظ الحساب ✅';
+      } else {
+        document.getElementById('accountsMessage').textContent = 'تم الحفظ على هذا الجهاز فقط — شغل الاتصال السحابي.';
+      }
+    } catch (error) {
+      document.getElementById('accountsMessage').textContent = 'تعذر الحفظ في السحابة. شغل migration قاعدة البيانات.';
+      console.warn('Store accounts cloud save failed:', error.message || error);
+    }
     render();
   }
 
