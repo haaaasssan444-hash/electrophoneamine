@@ -54,7 +54,7 @@
         const timeoutPromise = new Promise(resolve => setTimeout(() => resolve(null), 3000));
         const cloud = await Promise.race([cloudPromise, timeoutPromise]);
         if (!cloud) return accounts;
-        accounts = Array.isArray(cloud) ? cloud : accounts;
+        if (Array.isArray(cloud) && cloud.length) accounts = cloud;
       }
     } catch (error) {
       console.warn('Worker accounts cloud unavailable:', error.message || error);

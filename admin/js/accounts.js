@@ -19,7 +19,11 @@
     try {
       if (window.ElectrophoneCloud?.fetchTable) {
         const cloud = await window.ElectrophoneCloud.fetchTable('store_accounts');
-        accounts = Array.isArray(cloud) ? cloud : accounts;
+        if (Array.isArray(cloud) && cloud.length) {
+          accounts = cloud;
+        } else if (accounts.length) {
+          await save();
+        }
       }
     } catch (_) {}
     localStorage.setItem(ACCOUNT_KEY, JSON.stringify(accounts));
