@@ -12,7 +12,7 @@
       columns: [
         ['date', 'التاريخ'], ['branchId', 'المحل'], ['customer', 'العميل'],
         ['product', 'المنتج'], ['quantity', 'الكمية'], ['total', 'المبلغ DH'],
-        ['payment', 'الدفع (نقدا/تحويل/بطاقة)']
+        ['payment', 'الدفع (نقدا/تحويل/بطاقة)'], ['workerName', 'العامل']
       ]
     },
     stock: {
@@ -320,6 +320,7 @@
     const expenses = state.expenses || [];
     const stock = state.stock || [];
     const branches = state.branches || [];
+    const accounts = state.accounts || [];
     const totalSales = sales.reduce((sum, item) => sum + number(item.total), 0);
     const totalExpenses = expenses.reduce((sum, item) => sum + number(item.amount), 0);
     const units = stock.reduce((sum, item) => sum + number(item.quantity), 0);
@@ -329,14 +330,16 @@
         <article class="metric-card"><span>المحلات</span><strong>${branches.length}</strong><small>المحلات المسجلة</small></article>
         <article class="metric-card"><span>المبيعات</span><strong>${money(totalSales)}</strong><small>${sales.length} عملية</small></article>
         <article class="metric-card"><span>المخزون</span><strong>${units}</strong><small>وحدة متوفرة</small></article>
+        <article class="metric-card"><span>العمال</span><strong>${accounts.filter(item => item.active !== false).length}</strong><small>حساب عامل نشط</small></article>
         <article class="metric-card"><span>الصافي</span><strong>${money(totalSales - totalExpenses)}</strong><small>بعد المصاريف المسجلة</small></article>
       </div>
-      <div class="panel"><div class="panel-head"><h2>المبيعات والمخزون حسب المحل</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>المحل</th><th>المبيعات</th><th>المخزون</th><th>المصاريف</th><th>الصافي</th></tr></thead><tbody>${branches.map(branch => {
+      <div class="panel"><div class="panel-head"><h2>المبيعات والمخزون والعمال حسب المحل</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>المحل</th><th>المبيعات</th><th>المخزون</th><th>العمال</th><th>المصاريف</th><th>الصافي</th></tr></thead><tbody>${branches.map(branch => {
         const id = String(branch.id);
         const branchSales = sales.filter(item => String(item.branchId) === id).reduce((sum, item) => sum + number(item.total), 0);
         const branchExpenses = expenses.filter(item => String(item.branchId) === id).reduce((sum, item) => sum + number(item.amount), 0);
         const branchUnits = stock.filter(item => String(item.branchId) === id).reduce((sum, item) => sum + number(item.quantity), 0);
-        return `<tr><td>${escapeHtml(branch.name)}</td><td>${money(branchSales)}</td><td><strong>${branchUnits}</strong> وحدة</td><td>${money(branchExpenses)}</td><td><strong>${money(branchSales - branchExpenses)}</strong></td></tr>`;
+        const workerCount = accounts.filter(item => String(item.branchId) === id && item.active !== false).length;
+        return `<tr><td>${escapeHtml(branch.name)}</td><td>${money(branchSales)}</td><td><strong>${branchUnits}</strong> وحدة</td><td><strong>${workerCount}</strong> عامل</td><td>${money(branchExpenses)}</td><td><strong>${money(branchSales - branchExpenses)}</strong></td></tr>`;
       }).join('')}</tbody></table></div></div>`;
   }
 
@@ -353,6 +356,14 @@
       daily[key] = (daily[key] || 0) + number(item.total);
     });
     const branchNames = Object.fromEntries((state.branches || []).map(branch => [String(branch.id), branch.name]));
+    const workerTotals = {};
+    sales.forEach(item => {
+      const workerName = String(item.workerName || 'عامل غير محدد');
+      const key = `${workerName}|${String(item.branchId || '')}`;
+      if (!workerTotals[key]) workerTotals[key] = { workerName, branchId: String(item.branchId || ''), total: 0, count: 0 };
+      workerTotals[key].total += number(item.total);
+      workerTotals[key].count += 1;
+    });
     content.innerHTML = `
       <div class="metric-grid">
         <article class="metric-card"><span>إجمالي المبيعات</span><strong>${money(totalSales)}</strong></article>
@@ -365,6 +376,7 @@
         const branchSales = sales.filter(item => String(item.branchId) === String(branch.id)).reduce((sum, item) => sum + number(item.total), 0);
         return `<tr><td>${escapeHtml(branch.name)}</td><td>${money(branchSales)}</td></tr>`;
       }).join('')}</tbody></table></div></div>
+      <div class="panel"><div class="panel-head"><h2>أداء العمال المرتبط بالمحلات</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>العامل</th><th>المحل</th><th>عدد العمليات</th><th>المبيعات</th></tr></thead><tbody>${Object.values(workerTotals).sort((a,b) => b.total-a.total).map(item => `<tr><td>${escapeHtml(item.workerName)}</td><td>${escapeHtml(branchNames[item.branchId] || item.branchId || 'غير محدد')}</td><td>${item.count}</td><td><strong>${money(item.total)}</strong></td></tr>`).join('') || '<tr><td colspan="4">لا توجد مبيعات مرتبطة بالعمال</td></tr>'}</tbody></table></div></div>
       <div class="panel"><div class="panel-head"><h2>المبيعات اليومية</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>اليوم</th><th>المبيعات</th><th>عدد العمليات</th></tr></thead><tbody>${Object.entries(daily).sort((a,b) => b[0].localeCompare(a[0])).map(([date,total]) => `<tr><td>${escapeHtml(date)}</td><td>${money(total)}</td><td>${sales.filter(item => String(item.date || '').slice(0,10) === date).length}</td></tr>`).join('') || '<tr><td colspan="3">لا توجد مبيعات</td></tr>'}</tbody></table></div></div>
       <div class="panel"><div class="panel-head"><h2>المخزون حسب المحل والمنتج</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>المحل</th><th>المنتج</th><th>المرجع</th><th>الكمية</th><th>آخر عامل</th></tr></thead><tbody>${stock.map(item => `<tr><td>${escapeHtml(branchNames[String(item.branchId)] || item.branchId)}</td><td>${escapeHtml(item.product)}</td><td>${escapeHtml(item.sku)}</td><td><strong>${Number(item.quantity || 0)}</strong></td><td>${escapeHtml(item.workerName)}</td></tr>`).join('') || '<tr><td colspan="5">لا يوجد مخزون مسجل</td></tr>'}</tbody></table></div></div>
       </div>`;
@@ -532,6 +544,15 @@
 
   async function initialize() {
     await Promise.all(Object.keys(schemas).map(loadSection));
+    try {
+      if (window.ElectrophoneCloud?.fetchTable) {
+        state.accounts = await window.ElectrophoneCloud.fetchTable('store_accounts');
+      } else {
+        state.accounts = JSON.parse(localStorage.getItem('electrophone_store_accounts') || '[]');
+      }
+    } catch (_) {
+      state.accounts = JSON.parse(localStorage.getItem('electrophone_store_accounts') || '[]');
+    }
     seedBranches();
     renderSection('overview');
   }

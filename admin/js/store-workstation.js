@@ -33,6 +33,15 @@
         window.StoreAuth.logoutWorker();
         return;
       }
+      if (String(activeAccount.branchId) !== String(session.branchId)) {
+        session = {
+          ...session,
+          branchId: activeAccount.branchId,
+          name: activeAccount.name || session.name,
+          username: activeAccount.username || session.username
+        };
+        localStorage.setItem('electrophone_store_session', JSON.stringify(session));
+      }
     }
     sales = readSales();
     stock = readStock();
@@ -167,6 +176,7 @@
       existing.quantity = quantity;
       existing.price = price;
       existing.updatedAt = new Date().toISOString();
+      existing.workerId = session.id;
       existing.workerName = session.name;
     } else {
       stock.push({
@@ -177,6 +187,7 @@
         quantity,
         price,
         updatedAt: new Date().toISOString(),
+        workerId: session.id,
         workerName: session.name
       });
     }
