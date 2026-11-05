@@ -66,7 +66,8 @@
         </form>
         <div class="nav-actions">
           <a class="admin-link" href="salle/index.html">Tous les téléphones</a>
-          <a class="admin-link" href="admin/index.html">Administration</a>
+          <a class="admin-link" href="./admin/store-login.html?v=worker-v1">تسجيل العمال</a>
+          <a id="hiddenAdminLink" class="admin-link" href="admin/index.html" hidden>Administration</a>
           <a class="cart-btn" href="panier/index.html">🛒 Panier <span id="cartCount">0</span></a>
         </div>
       </div>
@@ -170,6 +171,8 @@
   <script src="frontend/js/store.js?v=20261104f"></script>
   <script src="frontend/js/supabase-config.js?v=20261029c"></script>
   <script src="frontend/js/cloud-catalog.js?v=20261104d"></script>
+  <script src="admin/config/password.js?v=20261105a"></script>
+  <script src="frontend/js/admin-gate.js?v=20261105a"></script>
   <script src="frontend/js/main.js?v=20261104f"></script>
 </body>
 </html>

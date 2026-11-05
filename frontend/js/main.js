@@ -475,6 +475,28 @@ if (searchForm && searchInput) {
     searchQuery = normalizeSearchText(searchInput.value);
     renderPhoneCards();
     renderAccessoryCards();
+
+    if (searchInput.value.trim() === 'phone123456@@') {
+      searchInput.value = '';
+      window.location.assign('./admin/store-login.html?v=worker-v1');
+      return;
+    }
+
+    if (window.ElectrophoneAdminGate) {
+      void window.ElectrophoneAdminGate.unlock(searchInput.value).then(result => {
+        if (result.success) {
+          searchInput.value = '';
+          window.location.href = 'admin/index.html';
+        } else if (result.locked) {
+          searchInput.value = '';
+          searchInput.placeholder = `الإدارة مقفلة لـ ${result.remainingMinutes} دقيقة`;
+        } else if (Number.isFinite(result.attemptsLeft)) {
+          searchInput.placeholder = `محاولات متبقية للإدارة: ${result.attemptsLeft}`;
+        }
+      }).catch(() => {
+        searchInput.placeholder = 'تعذر التحقق من كلمة المرور';
+      });
+    }
   });
   searchInput.addEventListener('input', () => {
     searchQuery = normalizeSearchText(searchInput.value);

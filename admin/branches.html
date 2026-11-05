@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>إدارة المحلات | Electrophone Amine</title>
+  <link rel="stylesheet" href="css/admin.css?v=branches-v1">
+  <link rel="stylesheet" href="css/branches.css?v=branches-v1">
+</head>
+<body class="admin-page branches-page">
+  <main class="main management-main">
+    <header class="store-admin-header">
+      <a class="store-brand" href="../index.html">Electrophone<span>Amine</span></a>
+      <nav>
+        <a href="index.html">المنتجات</a>
+        <a href="stock.html">المخزون</a>
+        <a href="branches.html" class="active">المحلات</a>
+        <a href="accounts.html">حسابات العمال</a>
+        <a href="store-login.html">دخول العمال</a>
+      </nav>
+      <button id="logoutTop" class="logout" type="button">تسجيل الخروج</button>
+    </header>
+
+    <div class="branches-shell">
+      <aside class="branches-sidebar" aria-label="القسم">
+        <div class="branch-owner">
+          <span class="owner-avatar">EA</span>
+          <div><strong>Electrophone Amine</strong><small>نظام إدارة المحلات</small></div>
+        </div>
+        <nav id="sectionNav" class="section-nav">
+          <button type="button" class="active" data-section="overview">📊 نظرة عامة</button>
+          <button type="button" data-section="sales">🧾 المبيعات</button>
+          <button type="button" data-section="stock">📦 المخزون</button>
+          <button type="button" data-section="reports">📈 التقارير</button>
+        </nav>
+      </aside>
+
+      <section class="branches-content">
+        <header class="branches-heading">
+          <div><p>لوحة الإدارة</p><h1 id="sectionTitle">نظرة عامة</h1></div>
+          <div class="heading-actions">
+            <label class="secondary-button import-button" for="importCsv">استيراد CSV</label>
+            <input id="importCsv" type="file" accept=".csv,text/csv" hidden>
+            <button id="addRow" class="secondary-button" type="button">+ سطر</button>
+            <button id="clearRows" class="secondary-button" type="button">مسح</button>
+            <button id="exportCsv" class="primary-button" type="button">تصدير CSV</button>
+          </div>
+        </header>
+        <div id="sectionContent"></div>
+      </section>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../frontend/js/store.js?v=branches-v1"></script>
+  <script src="../frontend/js/supabase-config.js?v=branches-v1"></script>
+  <script src="../frontend/js/cloud-catalog.js?v=branches-v1"></script>
+  <script src="config/password.js?v=branches-v1"></script>
+  <script src="js/auth.js?v=branches-v1"></script>
+  <script src="js/branches.js?v=branches-v1"></script>
+</body>
+</html>

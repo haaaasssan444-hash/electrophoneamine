@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>مبيعات المحل | Electrophone Amine</title>
+  <link rel="stylesheet" href="css/admin.css?v=worker-v1">
+  <link rel="stylesheet" href="css/branches.css?v=worker-v1">
+</head>
+<body class="admin-page workstation-page">
+  <main class="branches-content" style="min-height:100vh;padding:18px;max-width:1400px;margin:auto">
+    <header class="branches-heading">
+      <div><p>صفحة العامل</p><h1 id="storeTitle">المبيعات</h1></div>
+      <button id="workerLogout" class="secondary-button" type="button">تسجيل الخروج</button>
+    </header>
+    <div class="metric-grid">
+      <article class="metric-card"><span>مبيعات اليوم</span><strong id="todaySales">0 DH</strong></article>
+      <article class="metric-card"><span>عمليات اليوم</span><strong id="todayCount">0</strong></article>
+      <article class="metric-card"><span>مبيعات الشهر</span><strong id="monthSales">0 DH</strong></article>
+    </div>
+    <div class="excel-panel">
+      <div class="excel-toolbar">
+        <span class="excel-cell-name">عملية بيع</span>
+        <button id="saveSale" class="primary-button" type="button" style="height:34px;margin-right:auto">حفظ البيع</button>
+      </div>
+      <div class="data-table-wrap" style="padding:14px">
+        <form id="saleForm" class="form-panel" style="display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));margin:0">
+          <div class="field"><label>التاريخ والوقت</label><input id="saleDate" type="datetime-local"></div>
+          <div class="field"><label>اسم المنتج</label><input id="saleProduct" type="text" required></div>
+          <div class="field"><label>الكمية</label><input id="saleQuantity" type="number" min="1" step="1" value="1" required></div>
+          <div class="field"><label>المبلغ DH</label><input id="saleTotal" type="number" min="0" step="1" required></div>
+          <div class="field"><label>طريقة الدفع</label><select id="salePayment"><option>نقدا</option><option>تحويل بنكي</option><option>بطاقة</option></select></div>
+          <div class="field"><label>اسم العميل (اختياري)</label><input id="saleCustomer" type="text"></div>
+          <div class="field field-wide"><label>ملاحظات (اختياري)</label><input id="saleNotes" type="text"></div>
+        </form>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:14px">
+      <div class="panel-head"><h2>مبيعات المحل المسجلة</h2></div>
+      <div class="data-table-wrap">
+        <table class="data-table"><thead><tr><th>التاريخ</th><th>المنتج</th><th>الكمية</th><th>المبلغ</th><th>الدفع</th><th>العميل</th><th>حذف</th></tr></thead><tbody id="storeSalesRows"></tbody></table>
+      </div>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../frontend/js/supabase-config.js?v=worker-v1"></script>
+  <script src="../frontend/js/cloud-catalog.js?v=worker-v1"></script>
+  <script src="js/store-auth.js?v=worker-v1"></script>
+  <script src="js/store-workstation.js?v=worker-v1"></script>
+</body>
+</html>

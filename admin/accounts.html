@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>حسابات الموظفين | Electrophone Amine</title>
+  <link rel="stylesheet" href="css/admin.css?v=worker-v1">
+  <link rel="stylesheet" href="css/branches.css?v=worker-v1">
+</head>
+<body class="admin-page">
+  <main class="management-main">
+    <header class="store-admin-header">
+      <a class="store-brand" href="../index.html">Electrophone<span>Amine</span></a>
+      <nav><a href="index.html">الإدارة</a><a href="branches.html">المحلات والتقارير</a><a href="accounts.html" class="active">حسابات العمال</a><a href="store-login.html">دخول العمال</a></nav>
+      <button id="ownerLogout" class="logout" type="button">تسجيل الخروج</button>
+    </header>
+    <div class="branches-content">
+      <header class="branches-heading"><div><p>إدارة الدخول</p><h1>حسابات العمال</h1></div></header>
+      <form id="accountForm" class="form-panel" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+        <div class="field"><label>اسم المستخدم</label><input id="accountUsername" required></div>
+        <div class="field"><label>الاسم الكامل</label><input id="accountName" required></div>
+        <div class="field"><label>المحل</label><select id="accountBranch"><option value="branch-1">المحل 1</option><option value="branch-2">المحل 2</option><option value="branch-3">المحل 3</option><option value="branch-4">المحل 4</option><option value="branch-5">المحل 5</option><option value="branch-6">المحل 6</option><option value="branch-7">المحل 7</option></select></div>
+        <div class="field"><label>كلمة المرور</label><input id="accountPassword" type="password" required minlength="4"></div>
+        <div class="form-actions"><button class="primary-button" type="submit">إنشاء الحساب</button></div>
+      </form>
+      <div class="panel"><div class="panel-head"><h2>الحسابات</h2><span id="accountsMessage"></span></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>المستخدم</th><th>الاسم</th><th>المحل</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="accountsRows"></tbody></table></div></div>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../frontend/js/supabase-config.js?v=worker-v1"></script>
+  <script src="../frontend/js/cloud-catalog.js?v=worker-v1"></script>
+  <script src="config/password.js?v=worker-v1"></script>
+  <script src="js/auth.js?v=worker-v1"></script>
+  <script src="js/store-auth.js?v=worker-v1"></script>
+  <script src="js/accounts.js?v=worker-v1"></script>
+</body>
+</html>

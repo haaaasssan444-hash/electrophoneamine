@@ -1,0 +1,90 @@
+(() => {
+  if (!window.StoreAuth) return;
+  const ownerSession = localStorage.getItem('electrophone_admin_session');
+  if (ownerSession !== 'authenticated') {
+    location.replace('login.html');
+    return;
+  }
+
+  const ACCOUNT_KEY = 'electrophone_store_accounts';
+  let accounts = [];
+
+  async function load() {
+    accounts = (() => {
+      try {
+        const saved = JSON.parse(localStorage.getItem(ACCOUNT_KEY) || '[]');
+        return Array.isArray(saved) ? saved : [];
+      } catch (_) { return []; }
+    })();
+    try {
+      if (window.ElectrophoneCloud?.fetchTable) {
+        const cloud = await window.ElectrophoneCloud.fetchTable('store_accounts');
+        if (cloud.length || !accounts.length) accounts = cloud;
+      }
+    } catch (_) {}
+    localStorage.setItem(ACCOUNT_KEY, JSON.stringify(accounts));
+    render();
+  }
+
+  async function save() {
+    localStorage.setItem(ACCOUNT_KEY, JSON.stringify(accounts));
+    try {
+      if (window.ElectrophoneCloud?.saveTable) await window.ElectrophoneCloud.saveTable('store_accounts', accounts);
+    } catch (_) {}
+    render();
+  }
+
+  function render() {
+    const branches = {
+      'branch-1': 'المحل 1', 'branch-2': 'المحل 2', 'branch-3': 'المحل 3',
+      'branch-4': 'المحل 4', 'branch-5': 'المحل 5', 'branch-6': 'المحل 6', 'branch-7': 'المحل 7'
+    };
+    document.getElementById('accountsRows').innerHTML = accounts.length
+      ? accounts.map(account => `<tr><td>${escapeHtml(account.username)}</td><td>${escapeHtml(account.name)}</td><td>${escapeHtml(branches[account.branchId] || account.branchId)}</td><td><span class="status-badge ${account.active === false ? 'danger' : ''}">${account.active === false ? 'موقف' : 'نشط'}</span></td><td><button class="secondary-button" type="button" data-toggle="${escapeHtml(account.id)}">${account.active === false ? 'تفعيل' : 'تعطيل'}</button></td></tr>`).join('')
+      : '<tr><td colspan="5"><div class="empty-state">لا توجد حسابات العمال</div></td></tr>';
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+  }
+
+  document.getElementById('accountForm').addEventListener('submit', async event => {
+    event.preventEventDefault?.();
+    event.preventDefault();
+    const username = document.getElementById('accountUsername').value.trim().toLowerCase();
+    if (!username) return;
+    if (accounts.some(account => String(account.username).toLowerCase() === username)) {
+      document.getElementById('accountsMessage').textContent = 'اسم المستخدم موجود بالفعل.';
+      return;
+    }
+    const password = document.getElementById('accountPassword').value;
+    const credentials = await window.StoreAuth.hashPassword(password);
+    accounts.push({
+      id: `worker-${Date.now()}`,
+      username,
+      name: document.getElementById('accountName').value.trim(),
+      branchId: document.getElementById('accountBranch').value,
+      role: 'worker',
+      active: true,
+      passwordSalt: credentials.salt,
+      passwordHash: credentials.hash
+    });
+    await save();
+    document.getElementById('accountForm').reset();
+    document.getElementById('accountsMessage').textContent = 'تم إنشاء الحساب ✅';
+  });
+
+  document.getElementById('accountsRows').addEventListener('click', async event => {
+    const button = event.target.closest('[data-toggle]');
+    if (!button) return;
+    const account = accounts.find(item => String(item.id) === String(button.dataset.toggle));
+    if (!account) return;
+    account.active = account.active === false;
+    await save();
+  });
+  document.getElementById('ownerLogout').addEventListener('click', () => {
+    localStorage.removeItem('electrophone_admin_session');
+    location.replace('login.html');
+  });
+  load();
+})();
