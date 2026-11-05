@@ -19,7 +19,7 @@
     try {
       if (window.ElectrophoneCloud?.fetchTable) {
         const cloud = await window.ElectrophoneCloud.fetchTable('store_accounts');
-        if (cloud.length || !accounts.length) accounts = cloud;
+        accounts = Array.isArray(cloud) ? cloud : accounts;
       }
     } catch (_) {}
     localStorage.setItem(ACCOUNT_KEY, JSON.stringify(accounts));
@@ -55,6 +55,7 @@
           <td>
             <button class="secondary-button" type="button" data-toggle="${escapeHtml(account.id)}">${account.active === false ? 'تفعيل' : 'تعطيل'}</button>
             <button class="secondary-button" type="button" data-reset="${escapeHtml(account.id)}">تغيير كلمة المرور</button>
+            <button class="secondary-button danger-button" type="button" data-delete="${escapeHtml(account.id)}">حذف الحساب</button>
           </td>
         </tr>`).join('')
       : '<tr><td colspan="5"><div class="empty-state">لا توجد حسابات العمال</div></td></tr>';
@@ -91,10 +92,17 @@
   document.getElementById('accountsRows').addEventListener('click', async event => {
     const toggleButton = event.target.closest('[data-toggle]');
     const resetButton = event.target.closest('[data-reset]');
-    if (!toggleButton && !resetButton) return;
-    const id = toggleButton?.dataset.toggle || resetButton?.dataset.reset;
+    const deleteButton = event.target.closest('[data-delete]');
+    if (!toggleButton && !resetButton && !deleteButton) return;
+    const id = toggleButton?.dataset.toggle || resetButton?.dataset.reset || deleteButton?.dataset.delete;
     const account = accounts.find(item => String(item.id) === String(id));
     if (!account) return;
+    if (deleteButton) {
+      if (!confirm(`حذف حساب العامل "${account.name || account.username}" نهائياً؟`)) return;
+      accounts = accounts.filter(item => String(item.id) !== String(id));
+      await save();
+      return;
+    }
     if (toggleButton) {
       account.active = account.active === false;
       await save();

@@ -54,7 +54,7 @@
         const timeoutPromise = new Promise(resolve => setTimeout(() => resolve(null), 3000));
         const cloud = await Promise.race([cloudPromise, timeoutPromise]);
         if (!cloud) return accounts;
-        if (cloud.length) accounts = cloud;
+        accounts = Array.isArray(cloud) ? cloud : accounts;
       }
     } catch (_) {}
     localStorage.setItem(ACCOUNT_KEY, JSON.stringify(accounts));

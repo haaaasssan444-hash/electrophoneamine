@@ -24,6 +24,16 @@
   }
 
   async function loadSales() {
+    if (session?.id && window.StoreAuth?.sessionAccounts) {
+      const accounts = await window.StoreAuth.sessionAccounts();
+      const activeAccount = accounts.find(account =>
+        String(account.id) === String(session.id) && account.active !== false
+      );
+      if (!activeAccount) {
+        window.StoreAuth.logoutWorker();
+        return;
+      }
+    }
     sales = readSales();
     stock = readStock();
     render();
