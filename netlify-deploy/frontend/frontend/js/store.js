@@ -36,7 +36,7 @@
   const WHATSAPP_DEFAULT_KEY = 'electrophone_whatsapp_default_v1';
   const WHATSAPP_PHONE_UPDATE_KEY = 'electrophone_whatsapp_phone_0665343844_v1';
   const DEFAULT_WHATSAPP_PHONE = '212665343844';
-  const DEFAULT_INSTAGRAM_URL = 'https://www.instagram.com/hassan_elmorabit0/';
+  const DEFAULT_INSTAGRAM_URL = 'https://www.instagram.com/electrophone_amine/';
   const STORE_SCRIPT_URL = document.currentScript && document.currentScript.src;
 
   const FEATURED_PRODUCTS = [

@@ -38,10 +38,11 @@
   const FEATURED_IMAGE_UPDATE_KEY = 'electrophone_iphone16_primary_image_v1';
   const INVENTORY_IMAGE_UPDATE_KEY = 'electrophone_inventory_images_20261027_v1';
   const SOCIAL_DEFAULTS_KEY = 'electrophone_social_defaults_v1';
+  const INSTAGRAM_PROFILE_UPDATE_KEY = 'electrophone_instagram_profile_update_20261110_v1';
   const WHATSAPP_DEFAULT_KEY = 'electrophone_whatsapp_default_v1';
   const WHATSAPP_PHONE_UPDATE_KEY = 'electrophone_whatsapp_phone_0665343844_v1';
   const DEFAULT_WHATSAPP_PHONE = '212665343844';
-  const DEFAULT_INSTAGRAM_URL = 'https://www.instagram.com/hassan_elmorabit0/';
+  const DEFAULT_INSTAGRAM_URL = 'https://www.instagram.com/electrophone_amine/';
   const STORE_SCRIPT_URL = document.currentScript && document.currentScript.src;
 
   const FEATURED_PRODUCTS = [
@@ -1916,6 +1917,19 @@
       localStorage.setItem('electrophone_social_links', JSON.stringify(profiles));
     }
     localStorage.setItem(SOCIAL_DEFAULTS_KEY, 'true');
+  }
+
+  if (!localStorage.getItem(INSTAGRAM_PROFILE_UPDATE_KEY)) {
+    const savedProfiles = localStorage.getItem('electrophone_social_links');
+    const profiles = savedProfiles ? JSON.parse(savedProfiles) : {};
+    if (!profiles || typeof profiles !== 'object' || Array.isArray(profiles)) {
+      throw new Error('بيانات حسابات التواصل المخزنة غير صالحة.');
+    }
+    if (typeof profiles.instagram === 'string' && profiles.instagram.includes('/hassan_elmorabit0')) {
+      profiles.instagram = DEFAULT_INSTAGRAM_URL;
+      localStorage.setItem('electrophone_social_links', JSON.stringify(profiles));
+    }
+    localStorage.setItem(INSTAGRAM_PROFILE_UPDATE_KEY, 'true');
   }
 
   if (!localStorage.getItem(WHATSAPP_DEFAULT_KEY)) {
