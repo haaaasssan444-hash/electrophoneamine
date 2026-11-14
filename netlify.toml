@@ -11,3 +11,15 @@
   from = "/api/track"
   to = "/.netlify/functions/analytics"
   status = 200
+
+[[redirects]]
+  from = "/salle/salle/*"
+  to = "/salle/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/panier/panier/*"
+  to = "/panier/:splat"
+  status = 301
+  force = true

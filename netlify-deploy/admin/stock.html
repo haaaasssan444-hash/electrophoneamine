@@ -5,14 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Gestion du stock | Electrophone Amine</title>
+  <meta name="description" content="Consultez et mettez à jour les quantités, la valeur des stocks et les indicateurs du magasin Electrophone Amine. Accès réservé au personnel autorisé en ligne.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Gestion du stock et inventaire | Electrophone Amine">
+  <meta property="og:description" content="Consultez et mettez à jour les quantités et indicateurs du magasin Electrophone Amine, réservé au personnel autorisé.">
+  <meta property="og:image" content="https://marketphone.shop/frontend/assets/electrophone-amine-logo.jpg">
+  <meta property="og:url" content="https://marketphone.shop/admin/stock.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.ico">
+  <link rel="apple-touch-icon" href="../frontend/assets/electrophone-amine-logo.jpg">
+  <title>Gestion du stock et inventaire | Electrophone Amine</title>
   <link rel="stylesheet" href="css/admin.css?v=stock-v1">
 </head>
 <body class="admin-page stock-page">
   <main class="main management-main">
     <header class="store-admin-header">
       <a class="store-brand" href="../index.html">Electrophone<span>Amine</span></a>
-      <nav><a href="index.html">Produits</a><a href="stock.html" class="active">Stock</a></nav>
+      <nav><a href="index.html">Produits</a><a href="stock.html" class="active">Stock</a><a href="analytics.html">📊 الزيارات</a></nav>
       <button id="logoutTop" class="logout" type="button">Déconnexion</button>
     </header>
     <header class="page-heading">
@@ -23,7 +32,6 @@
       <article class="stock-stat"><span>Unités en stock</span><strong id="stockUnits">0</strong><small id="stockUnitsNote">Toutes catégories</small></article>
       <article class="stock-stat"><span>Valeur du stock</span><strong id="stockValue">0 DH</strong><small>Prix de vente actuels</small></article>
       <article class="stock-stat"><span>Produits épuisés</span><strong id="stockOut">0</strong><small>Quantité égale à 0</small></article>
-      <article class="stock-stat"><span>Visiteurs du magasin</span><strong id="visitorTotal">0</strong><small id="visitorToday">Aujourd’hui : 0</small></article>
     </section>
     <section class="stock-layout"><div class="stock-breakdown">
       <article class="stock-breakdown-item"><span>Produits téléphones</span><strong id="phoneCount">0</strong></article>

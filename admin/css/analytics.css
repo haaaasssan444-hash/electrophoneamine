@@ -1,0 +1,25 @@
+.analytics-controls{display:flex;align-items:center;gap:10px}
+.analytics-controls .status{white-space:nowrap}
+.analytics-controls .status.error{color:#991b1b;background:#fee2e2}
+.analytics-shell{max-width:1400px;margin:0 auto;padding:0 24px 40px}
+.analytics-error{margin:0 0 16px;padding:12px 14px;border:1px solid #fecaca;border-radius:12px;background:#fff1f2;color:#991b1b;font-weight:800}
+.analytics-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.analytics-stat{min-width:0;padding:19px;border:1px solid #e5e7eb;border-radius:16px;background:#fff;box-shadow:0 8px 24px rgba(127,29,29,.06)}
+.analytics-stat span,.analytics-stat small{display:block}
+.analytics-stat span{color:#4b5563;font-size:13px;font-weight:800}
+.analytics-stat strong{display:block;margin-top:8px;color:#111827;font-size:30px}
+.analytics-stat small{margin-top:5px;color:#6b7280}
+.analytics-panels{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(300px,.9fr);gap:16px;margin-top:18px}
+.analytics-panels>.stock-card{min-width:0}
+.daily-chart{height:220px;display:flex;align-items:stretch;gap:8px;overflow-x:auto;padding:16px 14px 8px}
+.daily-point{flex:0 0 38px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;min-width:0}
+.daily-count{color:#4b5563;font-size:11px;font-weight:800}
+.daily-bar-track{width:20px;height:135px;display:flex;align-items:flex-end;justify-content:center}
+.daily-bar{width:100%;height:var(--bar-height);min-height:2px;border-radius:7px 7px 2px 2px;background:linear-gradient(180deg,#ef4444,#b91c1c)}
+.daily-date{color:#6b7280;font-size:10px;white-space:nowrap}
+.analytics-empty{padding:18px;text-align:center;color:#6b7280}
+.analytics-note{margin:16px 0 0;color:#4b5563;font-size:13px;line-height:1.8}
+.analytics-page .stock-table{min-width:360px}
+.analytics-page .stock-table td:first-child{max-width:220px;overflow-wrap:anywhere;white-space:normal}
+@media(max-width:900px){.analytics-panels{grid-template-columns:1fr}}
+@media(max-width:600px){.analytics-shell{padding:0 12px 28px}.analytics-summary{grid-template-columns:1fr}.analytics-controls{width:100%;justify-content:space-between}.analytics-page>.page-heading{align-items:flex-start;flex-direction:column}.analytics-controls .status{white-space:normal}.daily-chart{gap:5px;padding-inline:8px}.daily-point{flex-basis:34px}}

@@ -3,18 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../favicon.ico">
+  <link rel="apple-touch-icon" href="../frontend/assets/electrophone-amine-logo.jpg">
   <link rel="canonical" href="https://marketphone.shop/salle/">
   <meta name="robots" content="index, follow, max-image-preview:large">
-  <meta name="description" content="Découvrez tous les téléphones disponibles chez Electrophone Amine, leurs modèles, caractéristiques et prix en dirhams.">
+  <meta name="description" content="Comparez les téléphones disponibles chez Electrophone Amine à Casablanca : modèles, caractéristiques et prix en dirhams. Commandez facilement sur WhatsApp.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fr_MA">
   <meta property="og:site_name" content="Electrophone Amine">
-  <meta property="og:title" content="Tous les téléphones disponibles | Electrophone Amine">
-  <meta property="og:description" content="Découvrez les téléphones disponibles, leurs modèles, caractéristiques et prix en dirhams.">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:title" content="Téléphones à Casablanca | Vente et prix | Electrophone Amine">
+  <meta property="og:description" content="Comparez les téléphones disponibles à Casablanca, leurs caractéristiques et prix en dirhams. Commandez facilement sur WhatsApp.">
+  <meta property="og:image" content="https://marketphone.shop/frontend/assets/electrophone-amine-logo.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Téléphones à Casablanca | Vente et prix | Electrophone Amine">
+  <meta name="twitter:description" content="Comparez les modèles disponibles, leurs caractéristiques et prix en dirhams chez Electrophone Amine à Casablanca.">
   <meta property="og:url" content="https://marketphone.shop/salle/">
-  <title>Téléphones à vendre à Casablanca | Tous les téléphones | Electrophone Amine</title>
+  <meta name="twitter:image" content="https://marketphone.shop/frontend/assets/electrophone-amine-logo.jpg">
+  <title>Téléphones à Casablanca | Vente et prix | Electrophone Amine</title>
   <link rel="stylesheet" href="../frontend/css/style.css">
+  <link rel="stylesheet" href="../frontend/css/consent.css">
 </head>
 <body>
   <header class="navbar">
@@ -59,12 +66,14 @@
     <div id="imageLightbox" class="image-lightbox" role="dialog" aria-modal="true" aria-label="Afficher la photo du téléphone" hidden>
       <button class="lightbox-close" type="button" aria-label="Fermer la photo agrandie" data-lightbox-close>×</button>
       <button class="lightbox-step lightbox-previous" type="button" aria-label="Photo précédente" data-lightbox-step="-1">‹</button>
-      <img id="lightboxImage" class="lightbox-image" alt="">
+      <img id="lightboxImage" class="lightbox-image" alt="" width="800" height="800">
       <button class="lightbox-step lightbox-next" type="button" aria-label="Photo suivante" data-lightbox-step="1">›</button>
       <span id="lightboxCounter" class="lightbox-counter" aria-live="polite"></span>
     </div>
   </div>
+  <footer class="footer-bottom">© Electrophone Amine · <a href="../privacy/">Confidentialité</a> · <a href="../cgu/">Conditions générales</a> · <button type="button" data-cookie-settings>Préférences cookies</button></footer>
   <script src="../frontend/js/store.js"></script>
+  <script src="../frontend/js/consent.js"></script>
   <script src="../frontend/js/main.js"></script>
 </body>
 </html>

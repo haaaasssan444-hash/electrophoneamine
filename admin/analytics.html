@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta name="description" content="لوحة خاصة بإحصائيات زيارات متجر Electrophone Amine ومشاهدات المنتجات.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="إحصائيات زيارات المتجر | Electrophone Amine">
+  <meta property="og:description" content="إحصائيات الزيارات اليومية ومشاهدات المنتجات في متجر Electrophone Amine.">
+  <meta property="og:image" content="https://marketphone.shop/frontend/assets/electrophone-amine-logo.jpg">
+  <meta property="og:url" content="https://marketphone.shop/admin/analytics.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="إحصائيات زيارات المتجر | Electrophone Amine">
+  <meta name="twitter:description" content="إحصائيات الزيارات اليومية ومشاهدات المنتجات في المتجر.">
+  <meta name="twitter:image" content="https://marketphone.shop/frontend/assets/electrophone-amine-logo.jpg">
+  <link rel="icon" href="../favicon.ico">
+  <link rel="apple-touch-icon" href="../frontend/assets/electrophone-amine-logo.jpg">
+  <title>إحصائيات زيارات المتجر | Electrophone Amine</title>
+  <link rel="stylesheet" href="css/admin.css?v=analytics-v1">
+  <link rel="stylesheet" href="css/analytics.css?v=analytics-v1">
+</head>
+<body class="admin-page analytics-page">
+  <main class="main management-main">
+    <header class="store-admin-header">
+      <a class="store-brand" href="../index.html">Electrophone<span>Amine</span></a>
+      <nav aria-label="قائمة الإدارة">
+        <a href="index.html">المنتجات</a>
+        <a href="stock.html">المخزون</a>
+        <a href="analytics.html" class="active" aria-current="page">📊 الزيارات</a>
+      </nav>
+      <button id="logoutTop" class="logout" type="button">تسجيل الخروج</button>
+    </header>
+
+    <header class="page-heading">
+      <div>
+        <p class="eyebrow">لوحة الإدارة</p>
+        <h1>إحصائيات الزيارات</h1>
+        <p>متابعة الزيارات ومشاهدات المنتجات المسجلة بعد موافقة الزائر.</p>
+      </div>
+      <div class="analytics-controls">
+        <span id="analyticsStatus" class="status" role="status" aria-live="polite">جاري تحميل الإحصائيات…</span>
+        <button id="refreshAnalytics" class="stock-save" type="button">تحديث</button>
+      </div>
+    </header>
+
+    <div class="analytics-shell">
+      <p id="analyticsError" class="analytics-error" role="alert" hidden></p>
+      <section class="analytics-summary" aria-label="ملخص الزيارات">
+        <article class="analytics-stat">
+          <span>إجمالي الزيارات المسجلة</span>
+          <strong id="visitsTotal">—</strong>
+          <small>ليست عدداً للأشخاص الفريدين</small>
+        </article>
+        <article class="analytics-stat">
+          <span>زيارات اليوم</span>
+          <strong id="visitsToday">—</strong>
+          <small>حسب توقيت UTC</small>
+        </article>
+        <article class="analytics-stat">
+          <span>مشاهدات المنتجات</span>
+          <strong id="productViewsTotal">—</strong>
+          <small>إجمالي مشاهدات بطاقات المنتجات</small>
+        </article>
+      </section>
+
+      <section class="analytics-panels">
+        <article class="stock-card">
+          <div class="stock-card-head">
+            <div><span class="section-kicker">آخر 14 يوماً</span><h2>الزيارات اليومية</h2></div>
+            <small id="analyticsUpdated">آخر تحديث: —</small>
+          </div>
+          <div id="dailyChart" class="daily-chart" role="list" aria-label="رسم الزيارات اليومية"></div>
+          <p id="dailyEmpty" class="analytics-empty" hidden>لا توجد زيارات مسجلة في هذه الفترة.</p>
+        </article>
+
+        <article class="stock-card">
+          <div class="stock-card-head">
+            <div><span class="section-kicker">حسب المنتج</span><h2>المنتجات الأكثر مشاهدة</h2></div>
+          </div>
+          <div class="stock-table-wrap">
+            <table class="stock-table">
+              <thead><tr><th>المنتج</th><th>النوع</th><th>المشاهدات</th></tr></thead>
+              <tbody id="topProducts">
+                <tr><td colspan="3" class="analytics-empty">جاري التحميل…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <p class="analytics-note">هذه بيانات مجمّعة للزيارات وليست هوية الزوار أو عدد الأشخاص الفريدين. لا تُسجّل الزيارة إلا بعد موافقة الزائر على التتبّع.</p>
+    </div>
+  </main>
+  <script src="config/password.js?v=20261029c"></script>
+  <script src="js/auth.js?v=20261029c"></script>
+  <script src="js/analytics.js?v=analytics-v1"></script>
+</body>
+</html>

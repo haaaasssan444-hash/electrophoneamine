@@ -7,7 +7,7 @@ a{color:inherit}
 .sidebar{width:250px;background:#151d32;border-left:1px solid #1e2a44;position:fixed;right:0;top:0;bottom:0;padding:24px 16px;display:flex;flex-direction:column}
 .brand{font-weight:900;font-size:18px;margin:0 0 28px;text-decoration:none}
 .menu a{padding:12px;border-radius:12px;color:#a5b4cc;text-decoration:none;font-weight:700;margin-bottom:6px;display:block}
-.menu a:hover,.menu a.active{background:#0ea5e9;color:#fff}
+.menu a:hover,.menu a.active{background:#0369a1;color:#fff}
 .logout{margin-top:auto;padding:11px;border:1px solid #394662;border-radius:10px;background:#1a233d;color:#e2e8f0;font:inherit;font-weight:800;cursor:pointer}
 .logout:hover{background:#293653}
 .main{margin-right:250px;padding:28px;max-width:1600px}

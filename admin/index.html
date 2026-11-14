@@ -7,8 +7,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="description" content="Administration des produits du magasin Electrophone Amine.">
-  <title>Gestion des produits | Electrophone Amine</title>
+  <meta name="description" content="Espace d’administration pour gérer les téléphones, accessoires, prix et informations du catalogue Electrophone Amine. Réservé au personnel autorisé du magasin.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Gestion des produits du magasin | Electrophone Amine">
+  <meta property="og:description" content="Espace d’administration des produits et accessoires Electrophone Amine, réservé au personnel autorisé.">
+  <meta property="og:image" content="https://marketphone.shop/frontend/assets/electrophone-amine-logo.jpg">
+  <meta property="og:url" content="https://marketphone.shop/admin/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.ico">
+  <link rel="apple-touch-icon" href="../frontend/assets/electrophone-amine-logo.jpg">
+  <title>Gestion des produits du magasin | Electrophone Amine</title>
   <link rel="stylesheet" href="css/admin.css?v=d7617ef">
 </head>
 <body class="admin-page">
@@ -17,12 +25,13 @@
     <nav class="menu" aria-label="Menu principal">
       <a class="active" href="index.html">➕ Ajouter des produits</a>
       <a href="stock.html">📦 Gestion du stock</a>
+      <a href="analytics.html">📊 إحصائيات الزيارات</a>
       <a href="../index.html">👀 Voir la boutique</a>
     </nav>
     <button id="logout" class="logout" type="button">Déconnexion</button>
   </aside>
   <main class="main management-main">
-    <header class="store-admin-header"><a class="store-brand" href="../index.html">Electrophone<span>Amine</span></a><nav><a href="#phonesManage" class="active">Téléphones</a><a href="#accessoriesManage">Accessoires</a><a href="#phoneFormCard">Ajouter un téléphone</a><a href="#accessoryFormCard">Ajouter un accessoire</a><a href="branches.html" class="branches-link">🏢 المحلات</a><a href="accounts.html" class="branches-link">حسابات العمال</a><a href="store-login.html" class="branches-link">دخول العمال</a><a href="stock.html">Stock</a></nav><button id="logoutTop" class="logout" type="button">Déconnexion</button></header>
+    <header class="store-admin-header"><a class="store-brand" href="../index.html">Electrophone<span>Amine</span></a><nav><a href="#phonesManage" class="active">Téléphones</a><a href="#accessoriesManage">Accessoires</a><a href="#phoneFormCard">Ajouter un téléphone</a><a href="#accessoryFormCard">Ajouter un accessoire</a><a href="branches.html" class="branches-link">🏢 المحلات</a><a href="accounts.html" class="branches-link">حسابات العمال</a><a href="store-login.html" class="branches-link">دخول العمال</a><a href="stock.html">Stock</a><a href="analytics.html">📊 الزيارات</a></nav><button id="logoutTop" class="logout" type="button">Déconnexion</button></header>
     <header class="page-heading">
       <div><p class="eyebrow">Gestion du magasin</p><h1>Bienvenue Amine 👋</h1><p>Modifiez les noms, les prix, les informations et supprimez les produits.</p></div>
       <span class="status">● Connecté au cloud</span>
@@ -65,7 +74,7 @@
         <div class="field"><label for="accessoryQuantity">Quantité</label><input id="accessoryQuantity" type="number" min="0" step="1" value="1" required></div>
         <div class="field"><label for="accessoryImageFile">Image de l'accessoire</label><input id="accessoryImageFile" type="file" accept="image/*"></div>
         <div class="field"><label for="accessoryImage">Ou URL de l’image (facultatif)</label><input id="accessoryImage" type="url" placeholder="https://..."></div>
-        <div class="field field-wide"><img id="accessoryImagePreview" class="image-preview" alt="Aperçu de l'accessoire" hidden></div>
+        <div class="field field-wide"><img id="accessoryImagePreview" class="image-preview" alt="Aperçu de l'accessoire" width="800" height="600" hidden></div>
         <div class="form-submit field-wide"><button id="accessorySubmit" class="save" type="submit">Ajouter l'accessoire ✅</button><p id="accessoryMessage" class="form-message" role="status" aria-live="polite"></p></div>
       </form>
     </section>

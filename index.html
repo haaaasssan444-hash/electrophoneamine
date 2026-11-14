@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="frontend/assets/electrophone-amine-favicon.png">
+  <link rel="icon" href="favicon.ico">
   <link rel="apple-touch-icon" href="frontend/assets/electrophone-amine-logo.jpg">
   <link rel="canonical" href="https://marketphone.shop/">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  <meta name="description" content="Electrophone Amine à Casablanca: téléphones neufs et d'occasion, iPhone, Samsung, Xiaomi et accessoires. Consultez les prix en dirhams et commandez sur WhatsApp.">
+  <meta name="description" content="Electrophone Amine à Casablanca : téléphones neufs, d'occasion, iPhone, Samsung, Xiaomi et accessoires. Consultez les prix et commandez sur WhatsApp en dirhams.">
   <link rel="alternate" hreflang="fr-MA" href="https://marketphone.shop/">
   <link rel="alternate" hreflang="x-default" href="https://marketphone.shop/">
   <meta name="theme-color" content="#dc2626">
@@ -15,7 +15,7 @@
   <meta property="og:locale" content="fr_MA">
   <meta property="og:site_name" content="Electrophone Amine">
   <meta property="og:title" content="Electrophone Amine | Téléphones et accessoires à Casablanca">
-  <meta property="og:description" content="Trouvez un iPhone, Samsung ou Xiaomi disponible à Casablanca, avec les prix en dirhams et commande via WhatsApp.">
+  <meta property="og:description" content="Trouvez un iPhone, Samsung ou Xiaomi disponible à Casablanca, avec prix en dirhams et commande via WhatsApp.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Electrophone Amine | Téléphones et accessoires à Casablanca">
   <meta name="twitter:description" content="Trouvez un iPhone, Samsung ou Xiaomi disponible à Casablanca, avec les prix en dirhams et commande via WhatsApp.">
@@ -28,13 +28,14 @@
   {"@context":"https://schema.org","@graph":[{"@type":"MobilePhoneStore","@id":"https://marketphone.shop/#store","name":"Electrophone Amine","alternateName":"Electrophone Amine","url":"https://marketphone.shop/","logo":"https://marketphone.shop/frontend/assets/electrophone-amine-logo.jpg","image":"https://marketphone.shop/frontend/assets/electrophone-amine-logo.jpg","telephone":"+212665343844","address":{"@type":"PostalAddress","addressLocality":"Casablanca","addressRegion":"Casablanca-Settat","addressCountry":"MA"},"geo":{"@type":"GeoCoordinates","latitude":33.563091,"longitude":-7.557610},"hasMap":"https://maps.google.com/?q=33.563091,-7.557610","priceRange":"DH","currenciesAccepted":"MAD","paymentAccepted":"Cash, Bank Transfer","sameAs":["https://www.instagram.com/electrophone_amine/"]},{"@type":"WebSite","@id":"https://marketphone.shop/#website","url":"https://marketphone.shop/","name":"Electrophone Amine","alternateName":"Electrophone Amine","inLanguage":"fr-MA","publisher":{"@id":"https://marketphone.shop/#store"}}]}
   </script>
   <link rel="stylesheet" href="frontend/css/style.css?v=20261104g">
+  <link rel="stylesheet" href="frontend/css/consent.css">
 </head>
 <body>
   <div class="store-navigation">
     <header class="navbar">
       <div class="nav-inner">
         <a class="logo" href="index.html" aria-label="Accueil Electrophone Amine">
-          <img src="frontend/assets/electrophone-amine-logo.jpg" alt="Electrophone Amine">
+          <img src="frontend/assets/electrophone-amine-logo.jpg" alt="Electrophone Amine" width="48" height="48">
           <span class="logo-text">Electrophone <b>Amine</b></span>
         </a>
         <div class="catalog-nav">
@@ -135,9 +136,10 @@
         <a class="location-link" href="https://maps.google.com/?q=33.563091,-7.557610&amp;z=16" target="_self" rel="noopener noreferrer">Itinéraire vers le magasin</a>
       </div>
       <div class="location-map-wrap">
+        <p class="map-consent-note">La carte Google Maps est désactivée tant que vous n’avez pas donné votre accord pour les contenus tiers. <button type="button" data-cookie-settings>Autoriser la carte</button></p>
         <iframe
           class="location-map"
-          src="https://maps.google.com/maps?q=33.563091,-7.557610&amp;z=16&amp;output=embed"
+          data-consent-src="https://maps.google.com/maps?q=33.563091,-7.557610&amp;z=16&amp;output=embed"
           title="Carte de l’emplacement du magasin"
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
@@ -150,7 +152,7 @@
         </a>
       </div>
     </section>
-    <div class="footer-bottom">© Electrophone Amine — Tous droits réservés</div>
+    <div class="footer-bottom">© Electrophone Amine — Tous droits réservés · <a href="privacy/">Confidentialité</a> · <a href="cgu/">Conditions générales</a> · <button type="button" data-cookie-settings>Préférences cookies</button></div>
   </footer>
 
   <div id="productModal" class="modal" role="dialog" aria-modal="true" aria-label="Détails du produit" onclick="if(event.target===this)closeModal()">
@@ -161,7 +163,7 @@
     <div id="imageLightbox" class="image-lightbox" role="dialog" aria-modal="true" aria-label="Afficher la photo du produit" hidden>
       <button class="lightbox-close" type="button" aria-label="Fermer l’image agrandie" data-lightbox-close>×</button>
       <button class="lightbox-step lightbox-previous" type="button" aria-label="Image précédente" data-lightbox-step="-1">‹</button>
-      <img id="lightboxImage" class="lightbox-image" alt="">
+      <img id="lightboxImage" class="lightbox-image" alt="" width="800" height="800">
       <button class="lightbox-step lightbox-next" type="button" aria-label="Image suivante" data-lightbox-step="1">›</button>
       <span id="lightboxCounter" class="lightbox-counter" aria-live="polite"></span>
     </div>
@@ -172,6 +174,7 @@
   <script src="frontend/js/cloud-catalog.js?v=20261110a"></script>
   <script src="admin/config/password.js?v=20261105a"></script>
   <script src="frontend/js/admin-gate.js?v=20261105a"></script>
+  <script src="frontend/js/consent.js"></script>
   <script src="frontend/js/main.js?v=20261104f"></script>
 </body>
 </html>

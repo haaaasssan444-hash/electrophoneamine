@@ -47,6 +47,7 @@ function syncCartPrices() {
 }
 
 function recordVisit() {
+  if (!hasAnalyticsConsent()) return;
   const total = Number(localStorage.getItem('site_visitors')) || 0;
   localStorage.setItem('site_visitors', String(total + 1));
 
@@ -68,11 +69,12 @@ function recordVisit() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type: 'visit' })
-    }).catch(() => {});
+    }).catch(error => console.warn('Visit analytics request failed.', error));
   }
 }
 
 function recordProductView(product) {
+  if (!hasAnalyticsConsent()) return;
   const key = 'site_product_views';
   const saved = localStorage.getItem(key);
   const views = saved ? JSON.parse(saved) : {};
@@ -87,7 +89,11 @@ function recordProductView(product) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ type: 'view', itemType: product.productType || 'phone', itemId: product.id })
-  }).catch(() => {});
+  }).catch(error => console.warn('Product analytics request failed.', error));
+}
+
+function hasAnalyticsConsent() {
+  return Boolean(window.ElectrophoneConsent && window.ElectrophoneConsent.hasAnalyticsConsent());
 }
 
 function productById(id, type) {
@@ -160,7 +166,7 @@ function renderPhoneCards() {
       <article class="product-card">
         <div class="card-img-wrap" data-open-product="${id}" data-type="phone" role="button" tabindex="0">
           <span class="badge">${store.escapeHTML(store.toFrenchCatalogText ? store.toFrenchCatalogText(product.condition || product.cond || 'Disponible') : (product.condition || product.cond || 'Disponible'))}</span>
-          ${safeImg ? `<img src="${safeImg}" alt="${safeName}" loading="lazy" onerror="this.hidden=true">` : ''}
+          ${safeImg ? `<img src="${safeImg}" alt="${safeName}" width="640" height="640" loading="lazy" onerror="this.hidden=true">` : ''}
         </div>
         <div class="card-info">
           <h3>${safeName}</h3>
@@ -202,7 +208,7 @@ function renderAccessoryCards() {
       <article class="product-card accessory-card">
         <div class="card-img-wrap" data-open-product="${id}" data-type="accessory" role="button" tabindex="0">
           <span class="badge">${store.escapeHTML(store.toFrenchCatalogText ? store.toFrenchCatalogText(accessory.type || 'Accessoire') : (accessory.type || 'Accessoire'))}</span>
-          ${image ? `<img src="${image}" alt="${name}" loading="lazy" onerror="this.hidden=true">` : ''}
+          ${image ? `<img src="${image}" alt="${name}" width="640" height="640" loading="lazy" onerror="this.hidden=true">` : ''}
         </div>
         <div class="card-info">
           <h3>${name}</h3>
@@ -381,7 +387,7 @@ function openModal(id, type = 'phone') {
           <div class="modal-photo-grid" role="group" aria-label="Toutes les photos du produit">
             ${safeImages.map((image, index) => `
               <button class="modal-photo-tile" type="button" data-lightbox-open="${index}" aria-label="Agrandir la photo ${index + 1}">
-                <img src="${image}" alt="${safeName} - photo ${index + 1}" loading="eager">
+                <img src="${image}" alt="${safeName} - photo ${index + 1}" width="800" height="800" loading="eager">
                 <span class="modal-photo-number">${index + 1}</span>
               </button>
             `).join('')}
@@ -608,6 +614,9 @@ function injectProductStructuredData() {
 
 syncCartPrices();
 recordVisit();
+document.addEventListener('electrophone:consent-change', event => {
+  if (event.detail === 'accepted') recordVisit();
+});
 renderPhoneCards();
 renderAccessoryCards();
 renderSocialLinks();

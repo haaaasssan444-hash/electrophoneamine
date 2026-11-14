@@ -73,14 +73,6 @@
     } catch(error) { message.className='stock-message error'; message.textContent=`Échec de la publication : ${error.message || error}`; }
     finally { button.disabled=false; }
   }
-  async function loadAnalytics() {
-    try {
-      const response=await fetch('/api/analytics',{cache:'no-store'}); if(!response.ok) throw new Error();
-      const analytics=await response.json(), today=new Date(), key=`${today.getUTCFullYear()}-${String(today.getUTCMonth()+1).padStart(2,'0')}-${String(today.getUTCDate()).padStart(2,'0')}`;
-      document.getElementById('visitorTotal').textContent=String(number(analytics.visitorsTotal));
-      document.getElementById('visitorToday').textContent=`Aujourd’hui : ${number(analytics.visitorsDaily&&analytics.visitorsDaily[key])}`;
-    } catch(_) { document.getElementById('visitorTotal').textContent='—'; document.getElementById('visitorToday').textContent='Statistiques non disponibles'; }
-  }
   document.getElementById('stockSearch').addEventListener('input',renderTable);
   document.getElementById('stockFilter').addEventListener('change',renderTable);
   document.getElementById('saveStock').addEventListener('click',saveStock);
@@ -90,7 +82,7 @@
   window.addEventListener('accessories:updated',event=>{if(Array.isArray(event.detail))accessories=event.detail;renderStats();renderTable()});
   async function initialize() {
     if(window.ElectrophoneCloud){try{await window.ElectrophoneCloud.loadSharedCatalog()}catch(_){}}
-    phones=store.getProducts(); accessories=readArray('electrophone_accessories'); renderStats(); renderTable(); loadAnalytics();
+    phones=store.getProducts(); accessories=readArray('electrophone_accessories'); renderStats(); renderTable();
   }
   initialize();
 })();

@@ -129,21 +129,6 @@
     }
   }
 
-  async function loadAnalytics() {
-    try {
-      const response = await fetch('/api/analytics', { cache: 'no-store' });
-      if (!response.ok) throw new Error('analytics unavailable');
-      const analytics = await response.json();
-      document.getElementById('visitorTotal').textContent = String(number(analytics.visitorsTotal));
-      const today = new Date();
-      const key = `${today.getUTCFullYear()}-${String(today.getUTCMonth() + 1).padStart(2, '0')}-${String(today.getUTCDate()).padStart(2, '0')}`;
-      document.getElementById('visitorToday').textContent = `Aujourd’hui : ${number(analytics.visitorsDaily && analytics.visitorsDaily[key])}`;
-    } catch (_) {
-      document.getElementById('visitorTotal').textContent = '—';
-      document.getElementById('visitorToday').textContent = 'Statistiques non disponibles';
-    }
-  }
-
   document.getElementById('stockSearch').addEventListener('input', renderTable);
   document.getElementById('stockFilter').addEventListener('change', renderTable);
   document.getElementById('saveStock').addEventListener('click', saveStock);
@@ -170,7 +155,6 @@
     accessories = readArray('electrophone_accessories');
     renderStats();
     renderTable();
-    loadAnalytics();
   }
 
   initialize();

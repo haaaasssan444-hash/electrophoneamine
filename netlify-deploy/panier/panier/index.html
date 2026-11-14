@@ -4,11 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>السلة ديالك - Electrophone Amine</title>
+<meta name="description" content="Consultez les articles de votre panier, vérifiez les quantités et envoyez votre demande à Electrophone Amine via WhatsApp pour confirmer prix et disponibilité.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Panier et commande | Electrophone Amine, Casablanca">
+<meta property="og:description" content="Vérifiez votre panier et envoyez votre demande à Electrophone Amine via WhatsApp pour confirmer le prix et la disponibilité.">
+<meta property="og:image" content="https://marketphone.shop/frontend/assets/electrophone-amine-logo.jpg">
+<meta property="og:url" content="https://marketphone.shop/panier/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://marketphone.shop/panier/">
+<link rel="icon" href="../../favicon.ico">
+<link rel="apple-touch-icon" href="../../frontend/assets/electrophone-amine-logo.jpg">
+<title>Panier et commande | Electrophone Amine, Casablanca</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Tajawal',sans-serif}
-:root{--red:#dc2626;--red-dark:#b91c1c;--ink:#242424;--muted:#777;--line:#fecaca;--cream:#fff7f7}
+:root{--red:#dc2626;--red-dark:#b91c1c;--ink:#242424;--muted:#707070;--line:#fecaca;--cream:#fff7f7}
 body{background:linear-gradient(180deg,#fff5f5 0,#fff 320px);color:var(--ink);min-height:100vh}
 .top-bar{position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:14px max(20px,calc((100vw - 1100px)/2));background:rgba(255,255,255,.94);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
 .logo{font-weight:900;letter-spacing:.2px;color:var(--ink)}
@@ -37,7 +47,7 @@ body{background:linear-gradient(180deg,#fff5f5 0,#fff 320px);color:var(--ink);mi
 .sum-row{display:flex;justify-content:space-between;gap:14px;padding:11px 20px;color:var(--muted);font-size:14px}
 .sum-row.total{color:var(--ink);font-weight:900;font-size:19px;border-top:1px dashed #e8ddb7;margin-top:8px;padding-top:17px}
 .btn{width:100%;border:none;border-radius:13px;padding:13px;font-size:14px;font-weight:900;cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s}
-.btn-primary{background:linear-gradient(100deg,var(--red),#f87171);color:#450a0a;margin:14px 0 4px;box-shadow:0 8px 18px rgba(220,38,38,.18)}
+.btn-primary{background:var(--red-dark);color:#fff;margin:14px 0 4px;box-shadow:0 8px 18px rgba(220,38,38,.18)}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 11px 24px rgba(220,38,38,.28)}
 .btn-ghost{background:#fff;border:1px solid var(--line);color:#991b1b;margin-top:9px}
 .btn-ghost:hover{background:#fee2e2;border-color:#fca5a5}
@@ -48,12 +58,13 @@ body{background:linear-gradient(180deg,#fff5f5 0,#fff 320px);color:var(--ink);mi
 @media(max-width:800px){.container{grid-template-columns:1fr;margin:25px auto;padding:0 16px 38px}.summary{position:static}}
 @media(max-width:520px){.top-bar{padding:12px 14px}.container{gap:14px}.card{border-radius:18px}.card-head{padding:15px 16px}.item{gap:11px;padding:14px 13px}.item img{width:68px;height:68px;border-radius:13px}.item-info h3{font-size:14px}.remove{width:32px;height:32px}.summary .card-head{padding:16px}.empty{padding:48px 16px}}
 </style>
+<link rel="stylesheet" href="../../frontend/css/consent.css">
 </head>
 <body>
 
 <div class="top-bar">
   <div class="logo">Electrophone<span>Amine</span>.ma</div>
-  <a href="../index.html" class="btn-home">
+  <a href="../../index.html" class="btn-home">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     العودة للرئيسية
   </a>
@@ -61,8 +72,13 @@ body{background:linear-gradient(180deg,#fff5f5 0,#fff 320px);color:var(--ink);mi
 
 <div class="container" id="app">
 </div>
+<footer class="footer-bottom" style="padding:16px;text-align:center;color:#707070">
+  <a href="../../privacy/" style="color:#7f1d1d">Confidentialité</a> ·
+  <a href="../../cgu/" style="color:#7f1d1d">Conditions générales</a> ·
+  <button type="button" data-cookie-settings>Préférences cookies</button>
+</footer>
 
-<script src="../frontend/js/store.js"></script>
+<script src="../../frontend/js/store.js"></script>
 <script>
 const store = window.ElectrophoneStore;
 let cart = readCart();
@@ -103,7 +119,7 @@ function formatPrice(price) {
 function render() {
   const app = document.getElementById('app');
   if (cart.length === 0) {
-    app.innerHTML = `<div class="card" style="grid-column:1/-1"><div class="empty"><div style="font-size:48px">🛒</div><h3>السلة خاوية</h3><p style="margin:10px 0">زيد شي هواتف باش تطلب</p><a href="../index.html" class="btn-home" style="margin-top:10px;justify-content:center">العودة للمتجر</a></div></div>`;
+    app.innerHTML = `<div class="card" style="grid-column:1/-1"><div class="empty"><div style="font-size:48px">🛒</div><h3>السلة خاوية</h3><p style="margin:10px 0">زيد شي هواتف باش تطلب</p><a href="../../index.html" class="btn-home" style="margin-top:10px;justify-content:center">العودة للمتجر</a></div></div>`;
     return;
   }
 
@@ -113,7 +129,7 @@ function render() {
     const storage = store.escapeHTML(product.storage || '');
     return `
       <div class="item">
-        ${image ? `<img src="${image}" alt="${name}" onerror="this.hidden=true">` : ''}
+        ${image ? `<img src="${image}" alt="${name}" width="88" height="88" loading="lazy" onerror="this.hidden=true">` : ''}
         <div class="item-info">
           <h3>${name}</h3>
           <small>${storage ? `${storage} • ` : ''}${store.escapeHTML(product.condition || 'متوفر')} ✅</small>
@@ -142,12 +158,12 @@ function render() {
     <div class="card summary">
       <div class="card-head"><div class="title">ملخص الطلب</div></div>
       <div class="sum-row"><span>المجموع الجزئي</span><span>${total}</span></div>
-      <div class="sum-row"><span>التوصيل</span><span style="color:#2ecc71">مجانا</span></div>
+      <div class="sum-row"><span>التوصيل</span><span style="color:#15803d">مجانا</span></div>
       <div class="sum-row total"><span>المجموع</span><span>${total}</span></div>
       <div style="padding:0 18px 18px">
         <button class="btn btn-primary" type="button" onclick="orderWhatsApp()">اطلب عبر واتساب 📲</button>
         <button class="btn btn-ghost" type="button" onclick="clearCart()">مسح السلة 🗑️</button>
-        <a href="../index.html" class="btn btn-ghost" style="display:flex;justify-content:center;text-decoration:none;align-items:center">+ زيد منتوجات</a>
+        <a href="../../index.html" class="btn btn-ghost" style="display:flex;justify-content:center;text-decoration:none;align-items:center">+ زيد منتوجات</a>
       </div>
     </div>
   `;
@@ -198,5 +214,6 @@ window.addEventListener('storage', event => {
 syncCartPrices();
 render();
 </script>
+<script src="../../frontend/js/consent.js"></script>
 </body>
 </html>
