@@ -1,4 +1,4 @@
-const { getStore } = require('@netlify/blobs');
+const { connectLambda, getStore } = require('@netlify/blobs');
 
 const STORE_NAME = 'electrophone-analytics-v1';
 const DATA_KEY = 'analytics';
@@ -21,6 +21,7 @@ exports.handler = async event => {
 
   const headers = { ...corsHeaders(), 'content-type': 'application/json; charset=utf-8' };
   try {
+    connectLambda(event);
     const store = getStore(STORE_NAME);
     let analytics = (await store.get(DATA_KEY, { type: 'json' })) || emptyAnalytics();
 
