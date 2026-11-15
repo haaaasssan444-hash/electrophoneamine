@@ -476,13 +476,43 @@ document.querySelectorAll('[data-accessory-filter]').forEach(link => {
 const searchForm = document.querySelector('.search-box');
 const searchInput = $('productSearch');
 if (searchForm && searchInput) {
+  const adminCodeToggle = $('adminCodeToggle');
+  const submitButton = searchForm.querySelector('button[type="submit"]');
+  const searchPlaceholder = searchInput.placeholder;
+  const searchLabel = searchInput.getAttribute('aria-label');
+  let adminCodeMode = false;
+
+  function setAdminCodeMode(enabled) {
+    adminCodeMode = enabled;
+    searchInput.value = '';
+    searchInput.type = enabled ? 'password' : 'search';
+    searchInput.autocomplete = enabled ? 'current-password' : 'off';
+    searchInput.placeholder = enabled ? 'Code d’administration' : searchPlaceholder;
+    searchInput.setAttribute('aria-label', enabled ? 'Code d’accès administrateur' : searchLabel);
+    if (adminCodeToggle) {
+      adminCodeToggle.setAttribute('aria-pressed', String(enabled));
+      adminCodeToggle.setAttribute('aria-label', enabled ? 'Revenir à la recherche de produits' : 'Entrer le code administrateur');
+    }
+    if (submitButton) submitButton.setAttribute('aria-label', enabled ? 'Accéder à l’administration' : 'Rechercher');
+    if (!enabled) {
+      searchQuery = '';
+      renderPhoneCards();
+      renderAccessoryCards();
+    }
+    searchInput.focus();
+  }
+
+  if (adminCodeToggle) {
+    adminCodeToggle.addEventListener('click', () => setAdminCodeMode(!adminCodeMode));
+  }
+
   searchForm.addEventListener('submit', event => {
     event.preventDefault();
-    searchQuery = normalizeSearchText(searchInput.value);
-    renderPhoneCards();
-    renderAccessoryCards();
-
-    if (window.ElectrophoneAdminGate) {
+    if (adminCodeMode) {
+      if (!window.ElectrophoneAdminGate) {
+        searchInput.placeholder = 'تعذر تحميل التحقق من الإدارة';
+        return;
+      }
       void window.ElectrophoneAdminGate.unlock(searchInput.value).then(result => {
         if (result.success) {
           searchInput.value = '';
@@ -491,14 +521,22 @@ if (searchForm && searchInput) {
           searchInput.value = '';
           searchInput.placeholder = `الإدارة مقفلة لـ ${result.remainingMinutes} دقيقة`;
         } else if (Number.isFinite(result.attemptsLeft)) {
-          searchInput.placeholder = `محاولات متبقية للإدارة: ${result.attemptsLeft}`;
+          searchInput.value = '';
+          searchInput.placeholder = `كود غير صحيح — محاولات متبقية: ${result.attemptsLeft}`;
         }
       }).catch(() => {
+        searchInput.value = '';
         searchInput.placeholder = 'تعذر التحقق من كلمة المرور';
       });
+      return;
     }
+
+    searchQuery = normalizeSearchText(searchInput.value);
+    renderPhoneCards();
+    renderAccessoryCards();
   });
   searchInput.addEventListener('input', () => {
+    if (adminCodeMode) return;
     searchQuery = normalizeSearchText(searchInput.value);
     renderPhoneCards();
     renderAccessoryCards();

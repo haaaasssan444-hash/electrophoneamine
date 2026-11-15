@@ -32,6 +32,8 @@ body{
 .search-box input::placeholder{color:#6b6b6b}
 .search-box button{display:grid;place-items:center;flex:none;width:42px;height:100%;border:0;background:#fee2e2;color:#991b1b;cursor:pointer}
 .search-box button:hover{background:#fecaca}
+.search-box .admin-code-toggle{width:38px;background:#fff;color:#991b1b;border-inline-start:1px solid #fecaca}
+.search-box .admin-code-toggle:hover,.search-box .admin-code-toggle[aria-pressed="true"]{background:#fee2e2}
 .search-box svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
 .cart-btn{background:var(--red-dark);color:#fff;padding:8px 14px;border-radius:12px;text-decoration:none;font-weight:900}
 

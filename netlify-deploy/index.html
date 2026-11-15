@@ -27,7 +27,7 @@
   <script type="application/ld+json">
   {"@context":"https://schema.org","@graph":[{"@type":"MobilePhoneStore","@id":"https://marketphone.shop/#store","name":"Electrophone Amine","alternateName":"Electrophone Amine","url":"https://marketphone.shop/","logo":"https://marketphone.shop/frontend/assets/electrophone-amine-logo.jpg","image":"https://marketphone.shop/frontend/assets/electrophone-amine-logo.jpg","telephone":"+212665343844","address":{"@type":"PostalAddress","addressLocality":"Casablanca","addressRegion":"Casablanca-Settat","addressCountry":"MA"},"geo":{"@type":"GeoCoordinates","latitude":33.563091,"longitude":-7.557610},"hasMap":"https://maps.google.com/?q=33.563091,-7.557610","priceRange":"DH","currenciesAccepted":"MAD","paymentAccepted":"Cash, Bank Transfer","sameAs":["https://www.instagram.com/electrophone_amine/"]},{"@type":"WebSite","@id":"https://marketphone.shop/#website","url":"https://marketphone.shop/","name":"Electrophone Amine","alternateName":"Electrophone Amine","inLanguage":"fr-MA","publisher":{"@id":"https://marketphone.shop/#store"}}]}
   </script>
-  <link rel="stylesheet" href="frontend/css/style.css?v=20261104g">
+  <link rel="stylesheet" href="frontend/css/style.css?v=admin-password-mode-20261115a">
   <link rel="stylesheet" href="frontend/css/consent.css">
 </head>
 <body>
@@ -61,13 +61,16 @@
         </div>
         <form class="search-box" role="search">
           <input id="productSearch" type="search" placeholder="Rechercher un téléphone ou un accessoire..." aria-label="Rechercher un téléphone ou un accessoire" autocomplete="off">
+          <button id="adminCodeToggle" class="admin-code-toggle" type="button" aria-label="Entrer le code administrateur" aria-pressed="false" aria-controls="productSearch">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
+          </button>
           <button type="submit" aria-label="Rechercher">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
           </button>
         </form>
         <div class="nav-actions">
           <a class="admin-link" href="salle/index.html">Tous les téléphones</a>
-          <a class="admin-link" href="admin/index.html">Administration</a>
+          <a id="hiddenAdminLink" class="admin-link" href="admin/index.html" hidden>Administration</a>
           <a class="cart-btn" href="panier/index.html">🛒 Panier <span id="cartCount">0</span></a>
         </div>
       </div>
@@ -175,6 +178,6 @@
   <script src="admin/config/password.js?v=20261105a"></script>
   <script src="frontend/js/admin-gate.js?v=20261105a"></script>
   <script src="frontend/js/consent.js"></script>
-  <script src="frontend/js/main.js?v=admin-search-20261115a"></script>
+  <script src="frontend/js/main.js?v=admin-password-mode-20261115a"></script>
 </body>
 </html>
