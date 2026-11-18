@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Gérez les comptes et les accès des employés d’Electrophone Amine à Casablanca. Espace réservé au personnel autorisé; connectez-vous pour continuer sur place.">
+  <meta property="og:type" content="website"><meta property="og:title" content="Comptes employés | Electrophone Amine - Administration"><meta property="og:description" content="Gestion des comptes et des accès des employés du magasin Electrophone Amine, réservée au personnel autorisé."><meta property="og:image" content="https://marketphone.shop/frontend/assets/electrophone-amine-logo.jpg"><meta property="og:url" content="https://marketphone.shop/admin/accounts.html"><meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.ico"><link rel="apple-touch-icon" href="../frontend/assets/electrophone-amine-logo.jpg">
+  <title>Comptes employés | Electrophone Amine - Administration</title>
+  <link rel="stylesheet" href="css/admin.css?v=worker-v1">
+  <link rel="stylesheet" href="css/branches.css?v=worker-v10">
+</head>
+<body class="admin-page">
+  <main class="management-main">
+    <header class="store-admin-header">
+      <a class="store-brand" href="../index.html">Electrophone<span>Amine</span></a>
+      <nav><a href="index.html">الإدارة</a><a href="accounts.html" class="active">حسابات العمال</a><a href="store-login.html">دخول العمال</a><a href="analytics.html">📊 إحصائيات الزيارات</a></nav>
+      <button id="ownerLogout" class="logout" type="button">تسجيل الخروج</button>
+    </header>
+    <div class="branches-content">
+      <header class="branches-heading"><div><p>إدارة الدخول</p><h1>حسابات العمال</h1></div><button id="syncAccounts" class="primary-button" type="button">مزامنة السحابة</button></header>
+      <form id="accountForm" class="form-panel" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+        <div class="field"><label>اسم المستخدم</label><input id="accountUsername" required></div>
+        <div class="field"><label>الاسم الكامل</label><input id="accountName" required></div>
+        <div class="field"><label>المحل</label><select id="accountBranch"><option value="branch-1">المحل 1</option><option value="branch-2">المحل 2</option><option value="branch-3">المحل 3</option><option value="branch-4">المحل 4</option><option value="branch-5">المحل 5</option><option value="branch-6">المحل 6</option><option value="branch-7">المحل 7</option></select></div>
+        <div class="field"><label>كلمة المرور</label><input id="accountPassword" type="password" required minlength="4"></div>
+        <div class="form-actions"><button class="primary-button" type="submit">إنشاء الحساب</button></div>
+      </form>
+      <div class="panel"><div class="panel-head"><h2>الحسابات</h2><span id="accountsMessage"></span></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>المستخدم</th><th>الاسم</th><th>المحل</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="accountsRows"></tbody></table></div></div>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../frontend/js/supabase-config.js?v=worker-v10"></script>
+  <script src="../frontend/js/cloud-catalog.js?v=workers-20261118a"></script>
+  <script src="config/password.js?v=worker-v1"></script>
+  <script src="js/auth.js?v=worker-v1"></script>
+  <script src="js/store-auth.js?v=worker-v10"></script>
+  <script src="js/accounts.js?v=worker-v10"></script>
+</body>
+</html>

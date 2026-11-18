@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Espace de vente en magasin pour enregistrer les ventes, suivre le stock et consulter le catalogue Electrophone Amine. Réservé au personnel autorisé sur place.">
+  <meta property="og:type" content="website"><meta property="og:title" content="Ventes en magasin | Electrophone Amine - Administration"><meta property="og:description" content="Enregistrez les ventes et consultez les stocks Electrophone Amine dans cet espace réservé au personnel autorisé."><meta property="og:image" content="https://marketphone.shop/frontend/assets/electrophone-amine-logo.jpg"><meta property="og:url" content="https://marketphone.shop/admin/store-workstation.html"><meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.ico"><link rel="apple-touch-icon" href="../frontend/assets/electrophone-amine-logo.jpg">
+  <title>Ventes en magasin | Electrophone Amine - Administration</title>
+  <link rel="stylesheet" href="css/admin.css?v=worker-v1">
+  <link rel="stylesheet" href="css/branches.css?v=worker-v10">
+  <style>
+    .workstation-login-gate{position:fixed;inset:0;z-index:30;display:grid;place-items:center;background:rgba(15,23,42,.62);padding:18px;backdrop-filter:blur(5px)}
+    .workstation-login-gate[hidden]{display:none}
+    .workstation-login-box{width:min(390px,100%);background:#fff;border-radius:18px;padding:26px;box-shadow:0 18px 50px rgba(15,23,42,.25)}
+    .workstation-login-box h2{margin:10px 0 6px;font-size:22px}.workstation-login-box p{margin:0 0 16px;color:#667085;font-size:13px}
+    .workstation-login-box label{display:block;margin:10px 0 6px;font-size:12px;font-weight:800;color:#667085}
+    .workstation-login-box input{width:100%;height:44px;border:1px solid #dfe3e8;border-radius:9px;padding:0 12px;font:inherit}
+    .workstation-login-box button{width:100%;height:44px;margin-top:14px;border:0;border-radius:9px;background:#dc2626;color:#fff;font-weight:900;font:inherit;cursor:pointer}
+    #workstationLoginError{min-height:18px;margin:10px 0 0;color:#b91c1c;font-weight:800}
+  </style>
+</head>
+<body class="workstation-page">
+  <div id="workstationLoginGate" class="workstation-login-gate" role="dialog" aria-modal="true" aria-label="تسجيل دخول العامل">
+    <form id="workstationLoginForm" class="workstation-login-box">
+      <span class="owner-avatar">EA</span>
+      <h2>تسجيل دخول العامل</h2>
+      <p>دخل اسم المستخدم وكلمة المرور ثم يمكنك تسجيل المبيعات.</p>
+      <label for="workstationUsername">اسم المستخدم</label>
+      <input id="workstationUsername" type="text" autocomplete="username" required autofocus>
+      <label for="workstationPassword">كلمة المرور</label>
+      <input id="workstationPassword" type="password" autocomplete="current-password" required>
+      <p id="workstationLoginError" role="alert"></p>
+      <button type="submit">دخول وفتح صفحة المبيعات</button>
+    </form>
+  </div>
+  <main class="branches-content" style="min-height:100vh;padding:18px;max-width:1400px;margin:auto">
+    <header class="branches-heading">
+      <div><p>صفحة العامل</p><h1 id="storeTitle">المبيعات</h1></div>
+      <button id="workerLogout" class="secondary-button" type="button">تسجيل الخروج</button>
+    </header>
+    <div class="metric-grid">
+      <article class="metric-card"><span>مبيعات اليوم</span><strong id="todaySales">0 DH</strong></article>
+      <article class="metric-card"><span>عمليات اليوم</span><strong id="todayCount">0</strong></article>
+      <article class="metric-card"><span>مبيعات الشهر</span><strong id="monthSales">0 DH</strong></article>
+    </div>
+    <div class="panel" style="margin-bottom:14px">
+      <div class="panel-head"><h2>مخزون المحل</h2></div>
+      <div class="data-table-wrap" style="padding:14px">
+        <form id="stockForm" class="form-panel" style="display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));margin:0">
+          <div class="field"><label>اسم المنتج</label><input id="stockProduct" type="text" required></div>
+          <div class="field"><label>المرجع / SKU</label><input id="stockSku" type="text"></div>
+          <div class="field"><label>الكمية</label><input id="stockQuantity" type="number" min="0" step="1" required></div>
+          <div class="field"><label>سعر البيع DH</label><input id="stockPrice" type="number" min="0" step="1"></div>
+          <div class="form-actions"><button id="saveStock" class="primary-button" type="button">حفظ المخزون</button></div>
+        </form>
+        <table class="data-table"><thead><tr><th>المنتج</th><th>المرجع</th><th>الكمية</th><th>سعر البيع</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="storeStockRows"></tbody></table>
+      </div>
+    </div>
+    <div class="excel-panel">
+      <div class="excel-toolbar">
+        <span class="excel-cell-name">عملية بيع</span>
+        <button id="saveSale" class="primary-button" type="button" style="height:34px;margin-right:auto">حفظ البيع</button>
+      </div>
+      <div class="data-table-wrap" style="padding:14px">
+        <form id="saleForm" class="form-panel" style="display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));margin:0">
+          <div class="field"><label>التاريخ والوقت</label><input id="saleDate" type="datetime-local"></div>
+          <div class="field"><label>اسم المنتج</label><input id="saleProduct" type="text" required></div>
+          <div class="field"><label>الكمية</label><input id="saleQuantity" type="number" min="1" step="1" value="1" required></div>
+          <div class="field"><label>المبلغ DH</label><input id="saleTotal" type="number" min="0" step="1" required></div>
+          <div class="field"><label>طريقة الدفع</label><select id="salePayment"><option>نقدا</option><option>تحويل بنكي</option><option>بطاقة</option></select></div>
+          <div class="field"><label>اسم العميل (اختياري)</label><input id="saleCustomer" type="text"></div>
+          <div class="field field-wide"><label>ملاحظات (اختياري)</label><input id="saleNotes" type="text"></div>
+        </form>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:14px">
+      <div class="panel-head"><h2>مبيعات المحل المسجلة</h2></div>
+      <div class="data-table-wrap">
+        <table class="data-table"><thead><tr><th>التاريخ</th><th>المنتج</th><th>الكمية</th><th>المبلغ</th><th>الدفع</th><th>العميل</th><th>حذف</th></tr></thead><tbody id="storeSalesRows"></tbody></table>
+      </div>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../frontend/js/supabase-config.js?v=worker-v11"></script>
+  <script src="../frontend/js/cloud-catalog.js?v=workers-20261118a"></script>
+  <script src="js/store-auth.js?v=worker-v11"></script>
+  <script src="js/store-workstation.js?v=worker-v11"></script>
+</body>
+</html>

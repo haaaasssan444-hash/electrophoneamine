@@ -3,7 +3,8 @@
   const SESSION_KEY = 'electrophone_store_session';
   const isLogin = /store-login\.html/.test(location.pathname);
   const ENTRY_KEY = 'electrophone_worker_entry_unlocked';
-  const ENTRY_PASSWORD = 'phone123456@@';
+  const ENTRY_PASSWORD_SALT = '027ce9a46ccf7cc5ae024cfe4699648a';
+  const ENTRY_PASSWORD_HASH = '0a2022800c6902e00fe69ee5de4d129cebb30d45e6bce78cf4728ef56474b08e';
 
   async function hashPassword(password, saltHex) {
     const salt = saltHex
@@ -28,11 +29,12 @@
     if (sessionStorage.getItem(ENTRY_KEY) === 'true') {
       entryGate.hidden = true;
     }
-    document.getElementById('workerEntryForm')?.addEventListener('submit', event => {
+    document.getElementById('workerEntryForm')?.addEventListener('submit', async event => {
       event.preventDefault();
       const input = document.getElementById('workerEntryPassword');
       const error = document.getElementById('workerEntryError');
-      if (input.value === ENTRY_PASSWORD) {
+      const result = await hashPassword(input.value, ENTRY_PASSWORD_SALT);
+      if (result.hash === ENTRY_PASSWORD_HASH) {
         sessionStorage.setItem(ENTRY_KEY, 'true');
         entryGate.hidden = true;
         error.textContent = '';
