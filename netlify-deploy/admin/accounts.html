@@ -9,7 +9,7 @@
   <link rel="icon" href="../favicon.ico"><link rel="apple-touch-icon" href="../frontend/assets/electrophone-amine-logo.jpg">
   <title>Comptes employés | Electrophone Amine - Administration</title>
   <link rel="stylesheet" href="css/admin.css?v=worker-v1">
-  <link rel="stylesheet" href="css/branches.css?v=worker-v10">
+  <link rel="stylesheet" href="css/branches.css?v=worker-dashboard-20261118a">
 </head>
 <body class="admin-page">
   <main class="management-main">
@@ -19,7 +19,17 @@
       <button id="ownerLogout" class="logout" type="button">تسجيل الخروج</button>
     </header>
     <div class="branches-content">
-      <header class="branches-heading"><div><p>إدارة الدخول</p><h1>حسابات العمال</h1></div><button id="syncAccounts" class="primary-button" type="button">مزامنة السحابة</button></header>
+      <header class="branches-heading"><div><p>إدارة الدخول والأداء</p><h1>حسابات العمال</h1></div><button id="syncAccounts" class="primary-button" type="button">مزامنة السحابة</button></header>
+      <section class="panel worker-activity-panel">
+        <div class="panel-head"><div><h2>ملخص أداء العمال</h2><small>إجمالي المبيعات المسجلة والمخزون المنسوب لكل عامل</small></div><button id="refreshWorkerActivity" class="secondary-button" type="button">تحديث البيانات</button></div>
+        <p id="activityMessage" class="activity-message" role="status" aria-live="polite">جار تحميل بيانات المبيعات والمخزون...</p>
+        <div class="metric-grid worker-metrics">
+          <article class="metric-card"><span>العمال النشطون</span><strong id="activeWorkerCount">0</strong></article>
+          <article class="metric-card"><span>إجمالي المبيعات</span><strong id="workerSalesTotal">—</strong></article>
+          <article class="metric-card"><span>الوحدات المباعة</span><strong id="workerUnitsSold">—</strong></article>
+          <article class="metric-card"><span>وحدات المخزون</span><strong id="workerStockUnits">—</strong></article>
+        </div>
+      </section>
       <form id="accountForm" class="form-panel" style="grid-template-columns:repeat(4,minmax(0,1fr))">
         <div class="field"><label>اسم المستخدم</label><input id="accountUsername" required></div>
         <div class="field"><label>الاسم الكامل</label><input id="accountName" required></div>
@@ -27,7 +37,7 @@
         <div class="field"><label>كلمة المرور</label><input id="accountPassword" type="password" required minlength="4"></div>
         <div class="form-actions"><button class="primary-button" type="submit">إنشاء الحساب</button></div>
       </form>
-      <div class="panel"><div class="panel-head"><h2>الحسابات</h2><span id="accountsMessage"></span></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>المستخدم</th><th>الاسم</th><th>المحل</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="accountsRows"></tbody></table></div></div>
+      <div class="panel worker-accounts-panel"><div class="panel-head"><div><h2>العمال والمبيعات والمخزون</h2><small>اضغط على «التفاصيل» لمعرفة المنتجات المباعة والمخزون الحالي لكل عامل.</small></div><span id="accountsMessage"></span></div><div class="data-table-wrap"><table class="data-table worker-accounts-table"><thead><tr><th>المستخدم</th><th>الاسم</th><th>المحل</th><th>عمليات البيع</th><th>إجمالي المبيعات</th><th>الوحدات المباعة</th><th>وحدات المخزون</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="accountsRows"></tbody></table></div></div>
     </div>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -36,6 +46,6 @@
   <script src="config/password.js?v=worker-v1"></script>
   <script src="js/auth.js?v=worker-v1"></script>
   <script src="js/store-auth.js?v=worker-v12"></script>
-  <script src="js/accounts.js?v=worker-v10"></script>
+  <script src="js/accounts.js?v=worker-dashboard-20261118a"></script>
 </body>
 </html>
