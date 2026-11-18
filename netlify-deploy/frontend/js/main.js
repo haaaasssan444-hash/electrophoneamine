@@ -481,6 +481,24 @@ if (searchForm && searchInput) {
   const searchPlaceholder = searchInput.placeholder;
   const searchLabel = searchInput.getAttribute('aria-label');
   let adminCodeMode = false;
+  let workerPortalCheckPending = false;
+
+  function maybeOpenWorkerPortal(value) {
+    const workerPortalCheck = window.ElectrophoneAdminGate?.matchesWorkerPortalCode;
+    const normalized = String(value == null ? '' : value).replace(/\s+/g, '').toLocaleLowerCase();
+    if (!workerPortalCheck || !normalized.startsWith('phone') || !normalized.endsWith('@@') || workerPortalCheckPending) return;
+    workerPortalCheckPending = true;
+    void workerPortalCheck(value).then(matches => {
+      if (matches && !adminCodeMode && searchInput.value === value) {
+        searchInput.value = '';
+        window.location.href = '/admin/store-login.html';
+      }
+    }).catch(() => {
+      searchInput.placeholder = 'تعذر التحقق من رمز دخول العمال';
+    }).finally(() => {
+      workerPortalCheckPending = false;
+    });
+  }
 
   function setAdminCodeMode(enabled) {
     adminCodeMode = enabled;
@@ -532,22 +550,7 @@ if (searchForm && searchInput) {
     }
 
     const submittedQuery = searchInput.value;
-    const workerPortalCheck = window.ElectrophoneAdminGate?.matchesWorkerPortalCode;
-    if (workerPortalCheck) {
-      void workerPortalCheck(submittedQuery).then(matches => {
-        if (matches) {
-          window.location.href = '/admin/store-login.html';
-          return;
-        }
-        searchQuery = normalizeSearchText(submittedQuery);
-        renderPhoneCards();
-        renderAccessoryCards();
-      }).catch(() => {
-        searchInput.placeholder = 'تعذر التحقق من رمز دخول العمال';
-      });
-      return;
-    }
-
+    maybeOpenWorkerPortal(submittedQuery);
     searchQuery = normalizeSearchText(submittedQuery);
     renderPhoneCards();
     renderAccessoryCards();
@@ -557,6 +560,7 @@ if (searchForm && searchInput) {
     searchQuery = normalizeSearchText(searchInput.value);
     renderPhoneCards();
     renderAccessoryCards();
+    maybeOpenWorkerPortal(searchInput.value);
   });
 }
 
