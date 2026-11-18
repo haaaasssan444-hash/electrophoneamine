@@ -531,7 +531,24 @@ if (searchForm && searchInput) {
       return;
     }
 
-    searchQuery = normalizeSearchText(searchInput.value);
+    const submittedQuery = searchInput.value;
+    const workerPortalCheck = window.ElectrophoneAdminGate?.matchesWorkerPortalCode;
+    if (workerPortalCheck) {
+      void workerPortalCheck(submittedQuery).then(matches => {
+        if (matches) {
+          window.location.href = '/admin/store-login.html';
+          return;
+        }
+        searchQuery = normalizeSearchText(submittedQuery);
+        renderPhoneCards();
+        renderAccessoryCards();
+      }).catch(() => {
+        searchInput.placeholder = 'تعذر التحقق من رمز دخول العمال';
+      });
+      return;
+    }
+
+    searchQuery = normalizeSearchText(submittedQuery);
     renderPhoneCards();
     renderAccessoryCards();
   });

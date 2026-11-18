@@ -4,6 +4,11 @@
   const ATTEMPTS_KEY = 'electrophone_admin_failed_attempts';
   const LOCK_KEY = 'electrophone_admin_lock_until';
   const SESSION_KEY = 'electrophone_admin_session';
+  const WORKER_PORTAL_CODE = {
+    iterations: 310000,
+    salt: '027ce9a46ccf7cc5ae024cfe4699648a',
+    hash: '0a2022800c6902e00fe69ee5de4d129cebb30d45e6bce78cf4728ef56474b08e'
+  };
 
   function getLockUntil() {
     const value = Number(localStorage.getItem(LOCK_KEY) || 0);
@@ -24,9 +29,9 @@
     return Math.max(1, Math.ceil((getLockUntil() - Date.now()) / 60000));
   }
 
-  async function hashAccessCode(value) {
+  async function hashCode(value, credential) {
     const salt = Uint8Array.from(
-      ADMIN_ACCESS_CODE.salt.match(/.{2}/g).map(byte => parseInt(byte, 16))
+      credential.salt.match(/.{2}/g).map(byte => parseInt(byte, 16))
     );
     const key = await crypto.subtle.importKey(
       'raw',
@@ -36,7 +41,7 @@
       ['deriveBits']
     );
     const bits = await crypto.subtle.deriveBits(
-      { name: 'PBKDF2', hash: 'SHA-256', salt, iterations: ADMIN_ACCESS_CODE.iterations },
+      { name: 'PBKDF2', hash: 'SHA-256', salt, iterations: credential.iterations },
       key,
       256
     );
@@ -45,7 +50,7 @@
 
   async function unlock(value) {
     if (isLocked()) return { success: false, locked: true, remainingMinutes: getRemainingMinutes() };
-    const submitted = await hashAccessCode(value.trim());
+    const submitted = await hashCode(value.trim(), ADMIN_ACCESS_CODE);
     if (submitted === ADMIN_ACCESS_CODE.hash) {
       localStorage.setItem(SESSION_KEY, 'authenticated');
       localStorage.setItem(ATTEMPTS_KEY, '0');
@@ -63,5 +68,11 @@
     return { success: false, locked: false, attemptsLeft: MAX_ATTEMPTS - attempts };
   }
 
-  window.ElectrophoneAdminGate = { isLocked, getRemainingMinutes, unlock };
+  async function matchesWorkerPortalCode(value) {
+    const normalized = String(value == null ? '' : value).replace(/\s+/g, '').toLocaleLowerCase();
+    if (!normalized.startsWith('phone') || !normalized.endsWith('@@')) return false;
+    return await hashCode(normalized, WORKER_PORTAL_CODE) === WORKER_PORTAL_CODE.hash;
+  }
+
+  window.ElectrophoneAdminGate = { isLocked, getRemainingMinutes, unlock, matchesWorkerPortalCode };
 })();
