@@ -12,6 +12,10 @@ const $ = id => document.getElementById(id);
 const productGrid = $('products');
 const accessoryGrid = $('accessories');
 const productModal = $('productModal');
+const uiT = key => window.ElectrophoneLanguage ? window.ElectrophoneLanguage.t(key) : key;
+const catalogText = value => store.toCatalogText
+  ? store.toCatalogText(value, window.ElectrophoneLanguage?.get() || 'fr')
+  : value;
 
 function readArray(key, errorMessage) {
   const saved = localStorage.getItem(key);
@@ -146,40 +150,40 @@ function renderPhoneCards() {
   if ($('cartCount')) {
     $('cartCount').textContent = cart.reduce((total, item) => total + (Number(item.qty) || 1), 0);
   }
-  if ($('productCount')) $('productCount').textContent = `${searched.length} téléphone${searched.length > 1 ? 's' : ''}`;
+  if ($('productCount')) $('productCount').textContent = `${searched.length} ${searched.length === 1 ? uiT('phoneCount') : uiT('phoneCountPlural')}`;
 
   if (searched.length === 0) {
-    grid.innerHTML = `<p class="empty-products">${searchQuery ? 'Aucun téléphone ne correspond à cette recherche.' : 'Aucun téléphone dans cette catégorie pour le moment.'}</p>`;
+    grid.innerHTML = `<p class="empty-products">${searchQuery ? uiT('noPhoneSearch') : uiT('noPhoneCategory')}</p>`;
     return;
   }
 
   grid.innerHTML = searched.map(product => {
     const id = store.escapeHTML(product.id);
-    const safeName = store.escapeHTML(store.toFrenchCatalogText ? store.toFrenchCatalogText(product.name || 'Téléphone') : (product.name || 'Téléphone'));
+    const safeName = store.escapeHTML(catalogText(product.name || 'Téléphone'));
     const safeImg = store.escapeHTML(store.resolveImage(product.img || ''));
     const price = productHasPrice(product) ? Number(product.price) : null;
     const oldPrice = Number(product.oldPrice) || 0;
     const priceMarkup = price === null
-      ? '<span class="price">Prix bientôt disponible</span>'
+      ? `<span class="price">${uiT('priceSoon')}</span>`
       : `<span class="price">${price.toLocaleString('fr-MA')} DH</span>`;
     return `
       <article class="product-card">
         <div class="card-img-wrap" data-open-product="${id}" data-type="phone" role="button" tabindex="0">
-          <span class="badge">${store.escapeHTML(store.toFrenchCatalogText ? store.toFrenchCatalogText(product.condition || product.cond || 'Disponible') : (product.condition || product.cond || 'Disponible'))}</span>
+          <span class="badge">${store.escapeHTML(catalogText(product.condition || product.cond || 'Disponible'))}</span>
           ${safeImg ? `<img src="${safeImg}" alt="${safeName}" width="640" height="640" loading="lazy" onerror="this.hidden=true">` : ''}
         </div>
         <div class="card-info">
           <h3>${safeName}</h3>
-          ${product.summary ? `<p class="desc">${store.escapeHTML(store.toFrenchCatalogText ? store.toFrenchCatalogText(product.summary) : product.summary)}</p>` : ''}
+          ${product.summary ? `<p class="desc">${store.escapeHTML(catalogText(product.summary))}</p>` : ''}
           <div class="price-row">
             ${priceMarkup}
             ${price !== null && oldPrice > price ? `<span class="old-price">${oldPrice.toLocaleString('fr-MA')} DH</span>` : ''}
           </div>
           <div class="product-actions">
             ${price === null
-              ? `<button class="btn-whatsapp" type="button" data-order-product="${id}" data-type="phone">Demander le prix sur WhatsApp</button>`
-              : `<button class="btn-buy" type="button" data-add-product="${id}" data-type="phone">Ajouter au panier 🛒</button>
-                 <button class="btn-whatsapp" type="button" data-order-product="${id}" data-type="phone">Commander sur WhatsApp</button>`}
+              ? `<button class="btn-whatsapp" type="button" data-order-product="${id}" data-type="phone">${uiT('askPrice')}</button>`
+              : `<button class="btn-buy" type="button" data-add-product="${id}" data-type="phone">${uiT('addCart')} 🛒</button>
+                 <button class="btn-whatsapp" type="button" data-order-product="${id}" data-type="phone">${uiT('orderWhatsapp')}</button>`}
           </div>
         </div>
       </article>
@@ -194,28 +198,28 @@ function renderAccessoryCards() {
     ? accessories
     : accessories.filter(accessory => accessoryMatchesCategory(accessory, currentAccessoryFilter));
   const searched = filtered.filter(matchesSearch);
-  if ($('accessoryCount')) $('accessoryCount').textContent = `${searched.length} accessoire${searched.length > 1 ? 's' : ''}`;
+  if ($('accessoryCount')) $('accessoryCount').textContent = `${searched.length} ${searched.length === 1 ? uiT('accessoryCount') : uiT('accessoryCountPlural')}`;
   if (!searched.length) {
-    grid.innerHTML = `<p class="empty-products">${searchQuery ? 'Aucun accessoire ne correspond à cette recherche.' : 'Aucun accessoire publié pour le moment.'}</p>`;
+    grid.innerHTML = `<p class="empty-products">${searchQuery ? uiT('noAccessorySearch') : uiT('noAccessory')}</p>`;
     return;
   }
 
   grid.innerHTML = searched.map(accessory => {
     const id = store.escapeHTML(accessory.id);
-    const name = store.escapeHTML(store.toFrenchCatalogText ? store.toFrenchCatalogText(accessory.name || 'Accessoire') : (accessory.name || 'Accessoire'));
+    const name = store.escapeHTML(catalogText(accessory.name || 'Accessoire'));
     const image = store.escapeHTML(store.resolveImage(accessory.img || ''));
     return `
       <article class="product-card accessory-card">
         <div class="card-img-wrap" data-open-product="${id}" data-type="accessory" role="button" tabindex="0">
-          <span class="badge">${store.escapeHTML(store.toFrenchCatalogText ? store.toFrenchCatalogText(accessory.type || 'Accessoire') : (accessory.type || 'Accessoire'))}</span>
+          <span class="badge">${store.escapeHTML(catalogText(accessory.type || 'Accessoire'))}</span>
           ${image ? `<img src="${image}" alt="${name}" width="640" height="640" loading="lazy" onerror="this.hidden=true">` : ''}
         </div>
         <div class="card-info">
           <h3>${name}</h3>
           <div class="price-row"><span class="price">${(Number(accessory.price) || 0).toLocaleString('fr-MA')} DH</span></div>
           <div class="product-actions">
-            <button class="btn-buy" type="button" data-add-product="${id}" data-type="accessory">Ajouter au panier 🛒</button>
-            <button class="btn-whatsapp" type="button" data-order-product="${id}" data-type="accessory">Commander sur WhatsApp</button>
+            <button class="btn-buy" type="button" data-add-product="${id}" data-type="accessory">${uiT('addCart')} 🛒</button>
+            <button class="btn-whatsapp" type="button" data-order-product="${id}" data-type="accessory">${uiT('orderWhatsapp')}</button>
           </div>
         </div>
       </article>
@@ -320,7 +324,11 @@ function addToCart(id, type = 'phone') {
   const product = productById(id, type);
   if (!product) return;
   if (!productHasPrice(product)) {
-    window.alert('Le prix de ce téléphone n’est pas encore disponible. Contactez-nous sur WhatsApp pour connaître le prix.');
+    window.alert(window.ElectrophoneLanguage?.get() === 'ar'
+      ? 'الثمن غير متوفر دابا. تواصل معنا على واتساب باش تعرف الثمن.'
+      : window.ElectrophoneLanguage?.get() === 'en'
+        ? 'The price is not available yet. Contact us on WhatsApp for the price.'
+        : 'Le prix de ce téléphone n’est pas encore disponible. Contactez-nous sur WhatsApp pour connaître le prix.');
     return;
   }
   const existing = cart.find(item =>
@@ -346,9 +354,7 @@ function orderProductWhatsApp(id, type = 'phone') {
     return;
   }
 
-  const name = store.toFrenchCatalogText
-    ? store.toFrenchCatalogText(product.name || product.type || 'Produit')
-    : (product.name || product.type || 'Produit');
+  const name = catalogText(product.name || product.type || 'Produit');
   const message = [
     'Bonjour, je souhaite commander ce produit :',
     `- ${name}`,
@@ -361,14 +367,15 @@ function orderProductWhatsApp(id, type = 'phone') {
 function openModal(id, type = 'phone') {
   const product = productById(id, type);
   if (!product || !$('modalBody')) return;
+  window.lastOpenedProduct = { id, type };
   recordProductView({ ...product, productType: type });
 
-  const safeName = store.escapeHTML(store.toFrenchCatalogText ? store.toFrenchCatalogText(product.name || 'Produit') : (product.name || 'Produit'));
-  const safeDesc = store.escapeHTML(store.toFrenchCatalogText ? store.toFrenchCatalogText(product.desc || product.type || 'Produit disponible dans le magasin.') : (product.desc || product.type || 'Produit disponible dans le magasin.'));
+  const safeName = store.escapeHTML(catalogText(product.name || 'Produit'));
+  const safeDesc = store.escapeHTML(catalogText(product.desc || product.type || 'Produit disponible dans le magasin.'));
   const price = productHasPrice(product) ? Number(product.price) : null;
   const oldPrice = Number(product.oldPrice) || 0;
   const priceMarkup = price === null
-    ? '<span class="price">Prix bientôt disponible</span>'
+    ? `<span class="price">${uiT('priceSoon')}</span>`
     : `<span class="price">${price.toLocaleString('fr-MA')} DH</span>`;
   const imageSources = Array.isArray(product.images) && product.images.length
     ? product.images
@@ -403,9 +410,9 @@ function openModal(id, type = 'phone') {
         </div>
         <div class="product-actions">
           ${price === null
-            ? `<button class="btn-whatsapp" type="button" data-order-product="${store.escapeHTML(product.id)}" data-type="${type}">Demander le prix sur WhatsApp</button>`
-            : `<button class="btn-buy" type="button" data-add-product="${store.escapeHTML(product.id)}" data-type="${type}">Ajouter au panier 🛒</button>
-               <button class="btn-whatsapp" type="button" data-order-product="${store.escapeHTML(product.id)}" data-type="${type}">Commander sur WhatsApp</button>`}
+            ? `<button class="btn-whatsapp" type="button" data-order-product="${store.escapeHTML(product.id)}" data-type="${type}">${uiT('askPrice')}</button>`
+            : `<button class="btn-buy" type="button" data-add-product="${store.escapeHTML(product.id)}" data-type="${type}">${uiT('addCart')} 🛒</button>
+               <button class="btn-whatsapp" type="button" data-order-product="${store.escapeHTML(product.id)}" data-type="${type}">${uiT('orderWhatsapp')}</button>`}
         </div>
       </div>
     </div>
@@ -610,6 +617,13 @@ window.addEventListener('products:updated', event => {
   products = event.detail;
   syncCartPrices();
   renderPhoneCards();
+});
+window.addEventListener('language:changed', () => {
+  renderPhoneCards();
+  renderAccessoryCards();
+  if ($('productModal')?.classList.contains('active') && window.lastOpenedProduct) {
+    openModal(window.lastOpenedProduct.id, window.lastOpenedProduct.type);
+  }
 });
 
 function injectProductStructuredData() {

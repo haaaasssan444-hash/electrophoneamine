@@ -2499,6 +2499,39 @@
       .trim();
   }
 
+  function toCatalogText(value, language) {
+    if (language === 'fr') return toFrenchCatalogText(value);
+    let text = toFrenchCatalogText(value);
+    if (language === 'ar') {
+      const arPairs = [
+        ['Disponible', 'متوفر'], ['Excellent état', 'حالة ممتازة'], ['Occasion', 'مستعمل'],
+        ['Neuf', 'جديد'], ['Propre', 'نظيف'], ['batterie', 'بطارية'],
+        ['garantie du magasin', 'ضمان المحل'], ['jours', 'أيام'], ['jour', 'يوم'],
+        ['livraison', 'توصيل'], ['paiement à la livraison', 'الدفع عند الاستلام'],
+        ['noir', 'أسود'], ['bleu', 'أزرق'], ['blanc', 'أبيض'], ['gris', 'رمادي'],
+        ['rouge', 'أحمر'], ['rose', 'وردي'], ['doré', 'ذهبي'], ['argenté', 'فضي'],
+        ['téléphone', 'هاتف'], ['produit', 'منتج'], ['accessoire', 'إكسسوار'],
+        ['câble', 'كابل'], ['chargeur', 'شاحن'], ['écouteurs', 'سماعات']
+      ];
+      arPairs.forEach(([from, to]) => { text = text.split(from).join(to); });
+      return text;
+    }
+    const enPairs = [
+      ['Disponible', 'Available'], ['Excellent état', 'Excellent condition'], ['Occasion propre', 'Clean used'],
+      ['Occasion', 'Used'], ['Neuf', 'New'], ['batterie', 'battery'], ['état de santé de la batterie', 'battery health'],
+      ['garantie du magasin', 'store warranty'], ['jours', 'days'], ['jour', 'day'],
+      ['livraison', 'delivery'], ['paiement à la livraison', 'cash on delivery'],
+      ['noir', 'black'], ['bleu', 'blue'], ['blanc', 'white'], ['gris', 'gray'],
+      ['rouge', 'red'], ['rose', 'pink'], ['doré', 'gold'], ['argenté', 'silver'],
+      ['téléphone', 'phone'], ['produit', 'product'], ['accessoire', 'accessory'],
+      ['câble', 'cable'], ['chargeur', 'charger'], ['écouteurs', 'headphones'],
+      ['écran', 'screen'], ['processeur', 'processor'], ['appareil photo', 'camera'],
+      ['boîte d’origine', 'original box'], ['câble d’origine', 'original cable']
+    ];
+    enPairs.forEach(([from, to]) => { text = text.split(from).join(to); });
+    return text;
+  }
+
   function normalizeCatalogText(item) {
     if (!item || typeof item !== 'object') return item;
     const normalized = { ...item };
@@ -2532,6 +2565,7 @@
     saveProducts,
     escapeHTML,
     toFrenchCatalogText,
+    toCatalogText,
     normalizeCatalogText,
     resolveImage,
     getSeedProducts: () => PRICED_SEED_PRODUCTS

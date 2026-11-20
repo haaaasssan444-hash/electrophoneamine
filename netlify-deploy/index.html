@@ -27,7 +27,7 @@
   <script type="application/ld+json">
   {"@context":"https://schema.org","@graph":[{"@type":"MobilePhoneStore","@id":"https://marketphone.shop/#store","name":"Electrophone Amine","alternateName":"Electrophone Amine","url":"https://marketphone.shop/","logo":"https://marketphone.shop/frontend/assets/electrophone-amine-logo.jpg","image":"https://marketphone.shop/frontend/assets/electrophone-amine-logo.jpg","telephone":"+212665343844","address":{"@type":"PostalAddress","addressLocality":"Casablanca","addressRegion":"Casablanca-Settat","addressCountry":"MA"},"geo":{"@type":"GeoCoordinates","latitude":33.563091,"longitude":-7.557610},"hasMap":"https://maps.google.com/?q=33.563091,-7.557610","priceRange":"DH","currenciesAccepted":"MAD","paymentAccepted":"Cash, Bank Transfer","sameAs":["https://www.instagram.com/electrophone_amine/"]},{"@type":"WebSite","@id":"https://marketphone.shop/#website","url":"https://marketphone.shop/","name":"Electrophone Amine","alternateName":"Electrophone Amine","inLanguage":"fr-MA","publisher":{"@id":"https://marketphone.shop/#store"}}]}
   </script>
-  <link rel="stylesheet" href="frontend/css/style.css?v=hidden-admin-dot-20261120a">
+  <link rel="stylesheet" href="frontend/css/style.css?v=language-v1">
   <link rel="stylesheet" href="frontend/css/consent.css">
 </head>
 <body>
@@ -40,7 +40,7 @@
         </a>
         <div class="catalog-nav">
         <nav class="nav-links phone-filters" aria-label="Filtrer les téléphones">
-          <a class="active" href="#" data-filter="all">Tout</a>
+          <a class="active" href="#" data-filter="all" data-i18n="all">Tout</a>
           <a href="#" data-filter="iphone">iPhone</a>
           <a href="#" data-filter="samsung">Samsung</a>
           <a href="#" data-filter="redmi">Redmi</a>
@@ -52,19 +52,27 @@
           <a href="#" data-filter="vivo">vivo</a>
         </nav>
         <nav class="nav-links accessory-filters" aria-label="Filtrer les accessoires" hidden>
-          <a class="active" href="#" data-accessory-filter="all">Tout</a>
-          <a href="#" data-accessory-filter="headphones">Casques</a>
-          <a href="#" data-accessory-filter="chargers">Chargeurs</a>
-          <a href="#" data-accessory-filter="cables">Câbles</a>
+          <a class="active" href="#" data-accessory-filter="all" data-i18n="all">Tout</a>
+          <a href="#" data-accessory-filter="headphones" data-i18n="headphones">Casques</a>
+          <a href="#" data-accessory-filter="chargers" data-i18n="chargers">Chargeurs</a>
+          <a href="#" data-accessory-filter="cables" data-i18n="cables">Câbles</a>
           <a href="#" data-accessory-filter="airpods">AirPods</a>
         </nav>
         </div>
         <form class="search-box" role="search">
-          <input id="productSearch" type="search" placeholder="Rechercher un téléphone ou un accessoire..." aria-label="Rechercher un téléphone ou un accessoire" autocomplete="off">
-          <button type="submit" aria-label="Rechercher">
+          <input id="productSearch" type="search" placeholder="Rechercher un téléphone ou un accessoire..." aria-label="Rechercher un téléphone ou un accessoire" autocomplete="off" data-i18n-placeholder="searchPlaceholder" data-i18n-aria="searchAria">
+          <button type="submit" aria-label="Rechercher" data-i18n-aria="searchAria">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
           </button>
         </form>
+        <div class="language-switcher">
+          <label for="siteLanguage" class="language-label">العربية / Français / English</label>
+          <select id="siteLanguage" aria-label="Choisir la langue">
+            <option value="fr">🇫🇷 Français</option>
+            <option value="ar">🇲🇦 العربية</option>
+            <option value="en">🇬🇧 English</option>
+          </select>
+        </div>
         <div class="nav-actions">
           <a class="admin-link" href="salle/index.html">Tous les téléphones</a>
           <a id="hiddenAdminLink" class="admin-link" href="admin/index.html" hidden>Administration</a>
@@ -74,37 +82,37 @@
     </header>
     <nav class="catalog-tabs-bar" aria-label="Sections du magasin">
       <div class="catalog-tabs">
-        <a class="active" href="#phoneSection" data-catalog="phones" aria-current="page">Téléphones</a>
-        <a href="#accessorySection" data-catalog="accessories">Accessoires</a>
+        <a class="active" href="#phoneSection" data-catalog="phones" aria-current="page" data-i18n="phones">Téléphones</a>
+        <a href="#accessorySection" data-catalog="accessories" data-i18n="accessories">Accessoires</a>
       </div>
     </nav>
   </div>
 
   <main>
     <section class="hero">
-      <h1>Choisissez votre téléphone en toute confiance</h1>
-      <p>Découvrez les téléphones et accessoires disponibles, consultez les caractéristiques et les prix en dirhams, puis commandez via WhatsApp.</p>
+      <h1 data-i18n="heroTitle">Choisissez votre téléphone en toute confiance</h1>
+      <p data-i18n="heroText">Découvrez les téléphones et accessoires disponibles, consultez les caractéristiques et les prix en dirhams, puis commandez via WhatsApp.</p>
       <a class="hero-location-link" href="https://maps.google.com/?q=33.563091,-7.557610&amp;z=16" target="_self" rel="noopener noreferrer" aria-label="Ouvrir l’emplacement du magasin dans Google Maps">
         <span class="hero-location-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" focusable="false"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
         </span>
         <span class="hero-location-copy">
-          <strong>Visitez le magasin</strong>
-          <span>Voir notre emplacement sur Google Maps</span>
+          <strong data-i18n="visitStore">Visitez le magasin</strong>
+          <span data-i18n="mapLocation">Voir notre emplacement sur Google Maps</span>
         </span>
         <span class="hero-location-arrow" aria-hidden="true">←</span>
       </a>
     </section>
-    <section id="phoneSection" class="container" aria-label="Téléphones disponibles">
+    <section id="phoneSection" class="container" aria-label="Téléphones disponibles" data-i18n-aria="phonesAvailable">
       <div class="section-heading">
-        <h2>Nos téléphones</h2>
+        <h2 data-i18n="nosPhones">Nos téléphones</h2>
         <span id="productCount" class="product-count"></span>
       </div>
       <div id="products" class="products-grid" aria-live="polite"></div>
     </section>
-    <section id="accessorySection" class="container accessories-section" aria-label="Accessoires disponibles" hidden>
+    <section id="accessorySection" class="container accessories-section" aria-label="Accessoires disponibles" hidden data-i18n-aria="accessoriesAvailable">
       <div class="section-heading">
-        <h2>Accessoires téléphones</h2>
+        <h2 data-i18n="nosAccessories">Accessoires téléphones</h2>
         <span id="accessoryCount" class="product-count"></span>
       </div>
       <div id="accessories" class="products-grid" aria-live="polite"></div>
@@ -120,9 +128,9 @@
   <footer class="contact-footer">
     <div class="contact-footer-inner">
       <div class="contact-copy">
-        <span class="contact-eyebrow">Une question ?</span>
-        <h2>Contactez-nous</h2>
-        <p>Suivez-nous ou écrivez-nous sur nos comptes officiels.</p>
+        <span class="contact-eyebrow" data-i18n="question">Une question ?</span>
+        <h2 data-i18n="contactUs">Contactez-nous</h2>
+        <p data-i18n="followUs">Suivez-nous ou écrivez-nous sur nos comptes officiels.</p>
       </div>
       <div class="social-links-wrap">
         <nav id="socialLinks" class="social-links" aria-label="Réseaux sociaux"></nav>
@@ -133,13 +141,13 @@
       <div class="location-heading">
         <div>
           <span class="contact-eyebrow">Bienvenue</span>
-          <h2 id="locationTitle">Emplacement du magasin sur Google Maps</h2>
+          <h2 id="locationTitle" data-i18n="mapTitle">Emplacement du magasin sur Google Maps</h2>
           <p>33.563091, -7.557610</p>
         </div>
-        <a class="location-link" href="https://maps.google.com/?q=33.563091,-7.557610&amp;z=16" target="_self" rel="noopener noreferrer">Itinéraire vers le magasin</a>
+        <a class="location-link" href="https://maps.google.com/?q=33.563091,-7.557610&amp;z=16" target="_self" rel="noopener noreferrer" data-i18n="mapDirections">Itinéraire vers le magasin</a>
       </div>
       <div class="location-map-wrap">
-        <p class="map-consent-note">La carte Google Maps est désactivée tant que vous n’avez pas donné votre accord pour les contenus tiers. <button type="button" data-cookie-settings>Autoriser la carte</button></p>
+        <p class="map-consent-note"><span data-i18n="mapConsent">La carte Google Maps est désactivée tant que vous n’avez pas donné votre accord pour les contenus tiers.</span> <button type="button" data-cookie-settings data-i18n="allowMap">Autoriser la carte</button></p>
         <iframe
           class="location-map"
           data-consent-src="https://maps.google.com/maps?q=33.563091,-7.557610&amp;z=16&amp;output=embed"
@@ -155,7 +163,7 @@
         </a>
       </div>
     </section>
-    <div class="footer-bottom">© Electrophone Amine — Tous droits réservés · <a href="privacy/">Confidentialité</a> · <a href="cgu/">Conditions générales</a> · <button type="button" data-cookie-settings>Préférences cookies</button></div>
+    <div class="footer-bottom">© Electrophone Amine — <span data-i18n="rights">Tous droits réservés</span> · <a href="privacy/" data-i18n="privacy">Confidentialité</a> · <a href="cgu/" data-i18n="terms">Conditions générales</a> · <button type="button" data-cookie-settings data-i18n="cookies">Préférences cookies</button></div>
   </footer>
 
   <div id="productModal" class="modal" role="dialog" aria-modal="true" aria-label="Détails du produit" onclick="if(event.target===this)closeModal()">
@@ -172,11 +180,12 @@
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="frontend/js/store.js?v=french-catalog-v6"></script>
+  <script src="frontend/js/store.js?v=language-catalog-v1"></script>
   <script src="frontend/js/supabase-config.js?v=20261029c"></script>
   <script src="frontend/js/cloud-catalog.js?v=catalog-recovery-v1"></script>
+  <script src="frontend/js/language.js?v=language-v1"></script>
   <script src="frontend/js/admin-gate.js?v=hidden-admin-dot-20261120a"></script>
   <script src="frontend/js/consent.js"></script>
-  <script src="frontend/js/main.js?v=hidden-admin-dot-french-v1"></script>
+  <script src="frontend/js/main.js?v=language-v1"></script>
 </body>
 </html>
