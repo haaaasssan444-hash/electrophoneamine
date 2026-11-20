@@ -114,7 +114,7 @@
 
   function seedBranches() {
     if ((state.branches || []).length) return;
-    state.branches = Array.from({ length: 7 }, (_, index) => ({
+    state.branches = Array.from({ length: 4 }, (_, index) => ({
       id: `branch-${index + 1}`,
       name: `المحل ${index + 1}`,
       city: 'الدار البيضاء',

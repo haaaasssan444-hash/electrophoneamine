@@ -171,7 +171,7 @@
   function render() {
     const branches = {
       'branch-1': 'المحل 1', 'branch-2': 'المحل 2', 'branch-3': 'المحل 3',
-      'branch-4': 'المحل 4', 'branch-5': 'المحل 5', 'branch-6': 'المحل 6', 'branch-7': 'المحل 7'
+      'branch-4': 'المحل 4'
     };
     const summaries = accounts.map(account => ({ account, stats: employeeStats(account) }));
     document.getElementById('activeWorkerCount').textContent = String(accounts.filter(account => account.active !== false).length);
@@ -185,11 +185,16 @@
       ? String(summaries.reduce((sum, item) => sum + item.stats.stockUnits, 0))
       : '—';
     document.getElementById('accountsRows').innerHTML = summaries.length
-      ? summaries.map(({ account, stats }) => `<tr>
+      ? summaries.map(({ account, stats }) => {
+        const branchId = String(account.branchId || '');
+        const unknownBranchOption = branchId && !branches[branchId]
+          ? `<option value="${escapeHtml(branchId)}" selected>محل آخر (${escapeHtml(branchId)})</option>`
+          : '';
+        return `<tr>
           <td>${escapeHtml(account.username)}</td><td class="worker-account-name">${escapeHtml(account.name)}</td>
           <td>
             <select class="field-select account-branch-select" data-branch="${escapeHtml(account.id)}" aria-label="المحل الخاص بـ ${escapeHtml(account.name || account.username)}">
-              ${Object.entries(branches).map(([id, name]) => `<option value="${id}" ${account.branchId === id ? 'selected' : ''}>${name}</option>`).join('')}
+              ${unknownBranchOption}${Object.entries(branches).map(([id, name]) => `<option value="${id}" ${branchId === id ? 'selected' : ''}>${name}</option>`).join('')}
             </select>
           </td>
           <td>${activityAvailable ? stats.sales.length : '—'}</td>
@@ -204,7 +209,8 @@
             <button class="secondary-button danger-button" type="button" data-delete="${escapeHtml(account.id)}">حذف الحساب</button>
           </div></td>
         </tr>
-        <tr class="worker-details-row" data-details-row="${escapeHtml(account.id)}" hidden><td colspan="9">${renderDetails(stats)}</td></tr>`).join('')
+        <tr class="worker-details-row" data-details-row="${escapeHtml(account.id)}" hidden><td colspan="9">${renderDetails(stats)}</td></tr>`;
+      }).join('')
       : '<tr><td colspan="9"><div class="empty-state">لا توجد حسابات العمال</div></td></tr>';
   }
 
