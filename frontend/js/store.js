@@ -2523,7 +2523,7 @@
 
   function resolveImage(image) {
     if (typeof image !== 'string' || !image.startsWith('asset:')) return image || '';
-    if (!STORE_SCRIPT_URL) throw new Error('Impossible de déterminer le chemin de l'image du produit.');
+    if (!STORE_SCRIPT_URL) throw new Error("Impossible de déterminer le chemin de l’image du produit.");
     return new URL(`../assets/${image.slice('asset:'.length)}`, STORE_SCRIPT_URL).href;
   }
 
