@@ -473,14 +473,26 @@ document.querySelectorAll('[data-accessory-filter]').forEach(link => {
   });
 });
 
+const adminEntry = $('hiddenAdminEntry');
+if (adminEntry) {
+  let clickCount = 0;
+  let firstClickAt = 0;
+  adminEntry.addEventListener('click', () => {
+    const now = Date.now();
+    if (!firstClickAt || now - firstClickAt > 4000) {
+      firstClickAt = now;
+      clickCount = 0;
+    }
+    clickCount += 1;
+    if (clickCount === 5) {
+      window.location.href = 'admin/login.html';
+    }
+  });
+}
+
 const searchForm = document.querySelector('.search-box');
 const searchInput = $('productSearch');
 if (searchForm && searchInput) {
-  const adminCodeToggle = $('adminCodeToggle');
-  const submitButton = searchForm.querySelector('button[type="submit"]');
-  const searchPlaceholder = searchInput.placeholder;
-  const searchLabel = searchInput.getAttribute('aria-label');
-  let adminCodeMode = false;
   let workerPortalCheckPending = false;
 
   function maybeOpenWorkerPortal(value) {
@@ -489,7 +501,7 @@ if (searchForm && searchInput) {
     if (!workerPortalCheck || !normalized.startsWith('phone') || !normalized.endsWith('@@') || workerPortalCheckPending) return;
     workerPortalCheckPending = true;
     void workerPortalCheck(value).then(matches => {
-      if (matches && !adminCodeMode && searchInput.value === value) {
+      if (matches && searchInput.value === value) {
         searchInput.value = '';
         window.location.href = '/admin/store-login.html';
       }
@@ -500,55 +512,8 @@ if (searchForm && searchInput) {
     });
   }
 
-  function setAdminCodeMode(enabled) {
-    adminCodeMode = enabled;
-    searchInput.value = '';
-    searchInput.type = enabled ? 'password' : 'search';
-    searchInput.autocomplete = enabled ? 'current-password' : 'off';
-    searchInput.placeholder = enabled ? 'Code d’administration' : searchPlaceholder;
-    searchInput.setAttribute('aria-label', enabled ? 'Code d’accès administrateur' : searchLabel);
-    if (adminCodeToggle) {
-      adminCodeToggle.setAttribute('aria-pressed', String(enabled));
-      adminCodeToggle.setAttribute('aria-label', enabled ? 'Revenir à la recherche de produits' : 'Entrer le code administrateur');
-    }
-    if (submitButton) submitButton.setAttribute('aria-label', enabled ? 'Accéder à l’administration' : 'Rechercher');
-    if (!enabled) {
-      searchQuery = '';
-      renderPhoneCards();
-      renderAccessoryCards();
-    }
-    searchInput.focus();
-  }
-
-  if (adminCodeToggle) {
-    adminCodeToggle.addEventListener('click', () => setAdminCodeMode(!adminCodeMode));
-  }
-
   searchForm.addEventListener('submit', event => {
     event.preventDefault();
-    if (adminCodeMode) {
-      if (!window.ElectrophoneAdminGate) {
-        searchInput.placeholder = 'تعذر تحميل التحقق من الإدارة';
-        return;
-      }
-      void window.ElectrophoneAdminGate.unlock(searchInput.value).then(result => {
-        if (result.success) {
-          searchInput.value = '';
-          window.location.href = 'admin/index.html';
-        } else if (result.locked) {
-          searchInput.value = '';
-          searchInput.placeholder = `الإدارة مقفلة لـ ${result.remainingMinutes} دقيقة`;
-        } else if (Number.isFinite(result.attemptsLeft)) {
-          searchInput.value = '';
-          searchInput.placeholder = `كود غير صحيح — محاولات متبقية: ${result.attemptsLeft}`;
-        }
-      }).catch(() => {
-        searchInput.value = '';
-        searchInput.placeholder = 'تعذر التحقق من كلمة المرور';
-      });
-      return;
-    }
-
     const submittedQuery = searchInput.value;
     maybeOpenWorkerPortal(submittedQuery);
     searchQuery = normalizeSearchText(submittedQuery);
@@ -556,7 +521,6 @@ if (searchForm && searchInput) {
     renderAccessoryCards();
   });
   searchInput.addEventListener('input', () => {
-    if (adminCodeMode) return;
     searchQuery = normalizeSearchText(searchInput.value);
     renderPhoneCards();
     renderAccessoryCards();

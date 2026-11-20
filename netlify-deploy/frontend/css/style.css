@@ -32,8 +32,6 @@ body{
 .search-box input::placeholder{color:#6b6b6b}
 .search-box button{display:grid;place-items:center;flex:none;width:42px;height:100%;border:0;background:#fee2e2;color:#991b1b;cursor:pointer}
 .search-box button:hover{background:#fecaca}
-.search-box .admin-code-toggle{width:38px;background:#fff;color:#991b1b;border-inline-start:1px solid #fecaca}
-.search-box .admin-code-toggle:hover,.search-box .admin-code-toggle[aria-pressed="true"]{background:#fee2e2}
 .search-box svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
 .cart-btn{background:var(--red-dark);color:#fff;padding:8px 14px;border-radius:12px;text-decoration:none;font-weight:900}
 
@@ -64,6 +62,11 @@ body{
 .contact-copy h2{font-size:23px;font-weight:900;margin-top:3px}
 .contact-copy p{color:var(--muted);font-size:13px;margin-top:5px}
 .social-links{display:flex;justify-content:flex-end;gap:12px;flex-wrap:wrap}
+.social-links-wrap{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-width:0}
+.admin-secret-dot{position:relative;flex:none;width:24px;height:24px;padding:0;border:0;background:transparent;cursor:pointer}
+.admin-secret-dot::before{content:"";position:absolute;top:50%;left:50%;width:8px;height:8px;border-radius:50%;background:#c91d25;opacity:.72;transform:translate(-50%,-50%)}
+.admin-secret-dot:hover::before{opacity:1}
+.admin-secret-dot:focus-visible{outline:2px solid #991b1b;outline-offset:3px}
 .social-link{display:inline-flex;align-items:center;gap:9px;min-width:132px;padding:11px 15px;border:1px solid #fecaca;border-radius:14px;background:#fff;color:var(--ink);text-decoration:none;font-size:13px;font-weight:800;transition:transform .2s,border-color .2s,background .2s}
 .social-link:hover{transform:translateY(-3px);border-color:var(--red-dark);background:#fef2f2}
 .social-icon{width:29px;height:29px;border-radius:10px;display:grid;place-items:center;background:#fee2e2;font-size:19px;font-weight:900}
@@ -255,5 +258,6 @@ body{
   .mobile-map-arrow{margin-inline-start:auto;font-size:22px;font-weight:900;color:#991b1b}
   .hero-location-link{margin-top:20px}
   .social-links{width:100%;justify-content:stretch}
+  .social-links-wrap{width:100%}
   .social-link{flex:1;min-width:calc(50% - 8px);justify-content:center;padding:10px}
 }
