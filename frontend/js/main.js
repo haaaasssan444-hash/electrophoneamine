@@ -55,7 +55,7 @@ function recordVisit() {
   const history = localStorage.getItem(historyKey);
   const visitsByDate = history ? JSON.parse(history) : {};
   if (!visitsByDate || typeof visitsByDate !== 'object' || Array.isArray(visitsByDate)) {
-    throw new Error('سجل زيارات الموقع المخزن غير صالح.');
+    throw new Error('L’historique des visites enregistré est invalide.');
   }
   const now = new Date();
   const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
@@ -69,7 +69,7 @@ function recordVisit() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type: 'visit' })
-    }).catch(error => console.warn('Visit analytics request failed.', error));
+    }).catch(error => console.warn('La requête de suivi des visites a échoué.', error));
   }
 }
 
@@ -79,7 +79,7 @@ function recordProductView(product) {
   const saved = localStorage.getItem(key);
   const views = saved ? JSON.parse(saved) : {};
   if (!views || typeof views !== 'object' || Array.isArray(views)) {
-    throw new Error('بيانات مشاهدات المنتجات المخزنة غير صالحة.');
+    throw new Error('Les données de consultation des produits enregistrées sont invalides.');
   }
   const viewKey = `${product.productType || 'phone'}:${product.id}`;
   views[viewKey] = (Number(views[viewKey]) || 0) + 1;
@@ -89,7 +89,7 @@ function recordProductView(product) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ type: 'view', itemType: product.productType || 'phone', itemId: product.id })
-  }).catch(error => console.warn('Product analytics request failed.', error));
+  }).catch(error => console.warn('La requête de suivi des produits a échoué.', error));
 }
 
 function hasAnalyticsConsent() {
@@ -273,7 +273,7 @@ function renderSocialLinks() {
   const saved = localStorage.getItem('electrophone_social_links');
   const profiles = saved ? JSON.parse(saved) : {};
   if (!profiles || typeof profiles !== 'object' || Array.isArray(profiles)) {
-    throw new Error('بيانات حسابات التواصل المخزنة غير صالحة.');
+    throw new Error('Les données de contact enregistrées sont invalides.');
   }
   [
     { key: 'instagram', label: 'Instagram', icon: '◎', className: 'social-instagram' },
@@ -285,10 +285,10 @@ function renderSocialLinks() {
     try {
       url = new URL(value);
     } catch (error) {
-      throw new Error(`رابط ${profile.label} المخزن غير صالح.`);
+      throw new Error(`Le lien enregistré pour ${profile.label} est invalide.`);
     }
     if (url.protocol !== 'https:' && url.protocol !== 'http:') {
-      throw new Error(`رابط ${profile.label} خاصو يستعمل http أو https.`);
+      throw new Error(`Le lien de ${profile.label} doit utiliser HTTP ou HTTPS.`);
     }
     links.push({ ...profile, url: url.href });
   });
@@ -506,7 +506,7 @@ if (searchForm && searchInput) {
         window.location.href = '/admin/store-login.html';
       }
     }).catch(() => {
-      searchInput.placeholder = 'تعذر التحقق من رمز دخول العمال';
+      searchInput.placeholder = 'Impossible de vérifier le code d’accès employé.';
     }).finally(() => {
       workerPortalCheckPending = false;
     });

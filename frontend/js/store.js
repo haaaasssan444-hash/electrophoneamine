@@ -1232,7 +1232,7 @@
     const savedProducts = localStorage.getItem(KEY);
     const products = savedProducts === null ? [] : JSON.parse(savedProducts);
     if (!Array.isArray(products) || products.some(product => !product || typeof product !== 'object')) {
-      throw new Error('بيانات المنتجات المخزنة غير صالحة.');
+      throw new Error('Les données des produits enregistrées sont invalides.');
     }
     const existingIds = new Set(products.map(product => String(product.id)));
     const newProducts = FEATURED_PRODUCTS.filter(product => !existingIds.has(String(product.id)));
@@ -1529,7 +1529,7 @@
     const savedAccessories = localStorage.getItem('electrophone_accessories');
     const accessories = savedAccessories === null ? [] : JSON.parse(savedAccessories);
     if (!Array.isArray(accessories) || accessories.some(accessory => !accessory || typeof accessory !== 'object')) {
-      throw new Error('بيانات الإكسسوارات المخزنة غير صالحة.');
+      throw new Error('Les données des accessoires enregistrées sont invalides.');
     }
     if (!accessories.some(accessory => String(accessory.id) === 'accessory-fj-star-fj-a6')) {
       accessories.unshift({
@@ -1559,7 +1559,7 @@
     const savedAccessories = localStorage.getItem('electrophone_accessories');
     const accessories = savedAccessories === null ? [] : JSON.parse(savedAccessories);
     if (!Array.isArray(accessories) || accessories.some(accessory => !accessory || typeof accessory !== 'object')) {
-      throw new Error('بيانات الإكسسوارات المخزنة غير صالحة.');
+      throw new Error('Les données des accessoires enregistrées sont invalides.');
     }
     if (!accessories.some(accessory => String(accessory.id) === 'accessory-jbl-everest-980bt')) {
       accessories.unshift({
@@ -1588,7 +1588,7 @@
     const savedAccessories = localStorage.getItem('electrophone_accessories');
     const accessories = savedAccessories === null ? [] : JSON.parse(savedAccessories);
     if (!Array.isArray(accessories) || accessories.some(accessory => !accessory || typeof accessory !== 'object')) {
-      throw new Error('بيانات الإكسسوارات المخزنة غير صالحة.');
+      throw new Error('Les données des accessoires enregistrées sont invalides.');
     }
     if (!accessories.some(accessory => String(accessory.id) === 'accessory-awda-bl-a9')) {
       accessories.unshift({
@@ -1618,7 +1618,7 @@
     const savedAccessories = localStorage.getItem('electrophone_accessories');
     const accessories = savedAccessories === null ? [] : JSON.parse(savedAccessories);
     if (!Array.isArray(accessories) || accessories.some(accessory => !accessory || typeof accessory !== 'object')) {
-      throw new Error('بيانات الإكسسوارات المخزنة غير صالحة.');
+      throw new Error('Les données des accessoires enregistrées sont invalides.');
     }
     if (!accessories.some(accessory => String(accessory.id) === 'accessory-p9-pro-max-blue')) {
       accessories.unshift({
@@ -1648,7 +1648,7 @@
     const savedAccessories = localStorage.getItem('electrophone_accessories');
     const accessories = savedAccessories === null ? [] : JSON.parse(savedAccessories);
     if (!Array.isArray(accessories) || accessories.some(accessory => !accessory || typeof accessory !== 'object')) {
-      throw new Error('بيانات الإكسسوارات المخزنة غير صالحة.');
+      throw new Error('Les données des accessoires enregistrées sont invalides.');
     }
     if (!accessories.some(accessory => String(accessory.id) === 'accessory-p9-pro-max-white')) {
       accessories.unshift({
@@ -1678,7 +1678,7 @@
     const savedAccessories = localStorage.getItem('electrophone_accessories');
     const accessories = savedAccessories === null ? [] : JSON.parse(savedAccessories);
     if (!Array.isArray(accessories) || accessories.some(accessory => !accessory || typeof accessory !== 'object')) {
-      throw new Error('بيانات الإكسسوارات المخزنة غير صالحة.');
+      throw new Error('Les données des accessoires enregistrées sont invalides.');
     }
     if (!accessories.some(accessory => String(accessory.id) === 'accessory-cat-ear-viv-23m')) {
       accessories.unshift({
@@ -1708,7 +1708,7 @@
     const savedAccessories = localStorage.getItem('electrophone_accessories');
     const accessories = savedAccessories === null ? [] : JSON.parse(savedAccessories);
     if (!Array.isArray(accessories) || accessories.some(accessory => !accessory || typeof accessory !== 'object')) {
-      throw new Error('بيانات الإكسسوارات المخزنة غير صالحة.');
+      throw new Error('Les données des accessoires enregistrées sont invalides.');
     }
     if (!accessories.some(accessory => String(accessory.id) === 'accessory-smart-charger-45w')) {
       accessories.unshift({
@@ -1737,7 +1737,7 @@
     const savedAccessories = localStorage.getItem('electrophone_accessories');
     const accessories = savedAccessories === null ? [] : JSON.parse(savedAccessories);
     if (!Array.isArray(accessories) || accessories.some(accessory => !accessory || typeof accessory !== 'object')) {
-      throw new Error('بيانات الإكسسوارات المخزنة غير صالحة.');
+      throw new Error('Les données des accessoires enregistrées sont invalides.');
     }
     if (!accessories.some(accessory => String(accessory.id) === 'accessory-ohayo-oh-q24')) {
       accessories.unshift({
@@ -1766,7 +1766,7 @@
     const savedAccessories = localStorage.getItem('electrophone_accessories');
     const accessories = savedAccessories === null ? [] : JSON.parse(savedAccessories);
     if (!Array.isArray(accessories) || accessories.some(accessory => !accessory || typeof accessory !== 'object')) {
-      throw new Error('بيانات الإكسسوارات المخزنة غير صالحة.');
+      throw new Error('Les données des accessoires enregistrées sont invalides.');
     }
     if (!accessories.some(accessory => String(accessory.id) === 'accessory-fj-star-5a-charger')) {
       accessories.unshift({
@@ -1795,7 +1795,7 @@
     const savedAccessories = localStorage.getItem('electrophone_accessories');
     const accessories = savedAccessories === null ? [] : JSON.parse(savedAccessories);
     if (!Array.isArray(accessories) || accessories.some(accessory => !accessory || typeof accessory !== 'object')) {
-      throw new Error('بيانات الإكسسوارات المخزنة غير صالحة.');
+      throw new Error('Les données des accessoires enregistrées sont invalides.');
     }
     if (!accessories.some(accessory => String(accessory.id) === 'accessory-jawda-d14-qc4')) {
       accessories.unshift({
@@ -1824,7 +1824,7 @@
     const savedAccessories = localStorage.getItem('electrophone_accessories');
     const accessories = savedAccessories === null ? [] : JSON.parse(savedAccessories);
     if (!Array.isArray(accessories) || accessories.some(accessory => !accessory || typeof accessory !== 'object')) {
-      throw new Error('بيانات الإكسسوارات المخزنة غير صالحة.');
+      throw new Error('Les données des accessoires enregistrées sont invalides.');
     }
     if (!accessories.some(accessory => String(accessory.id) === 'accessory-samsung-25w-pd')) {
       accessories.unshift({
@@ -1853,7 +1853,7 @@
     const savedAccessories = localStorage.getItem('electrophone_accessories');
     const accessories = savedAccessories === null ? [] : JSON.parse(savedAccessories);
     if (!Array.isArray(accessories) || accessories.some(accessory => !accessory || typeof accessory !== 'object')) {
-      throw new Error('بيانات الإكسسوارات المخزنة غير صالحة.');
+      throw new Error('Les données des accessoires enregistrées sont invalides.');
     }
     if (!accessories.some(accessory => String(accessory.id) === 'accessory-uiron-cr34-car-charger')) {
       accessories.unshift({
@@ -1883,7 +1883,7 @@
     const savedAccessories = localStorage.getItem('electrophone_accessories');
     const accessories = savedAccessories === null ? [] : JSON.parse(savedAccessories);
     if (!Array.isArray(accessories) || accessories.some(accessory => !accessory || typeof accessory !== 'object')) {
-      throw new Error('بيانات الإكسسوارات المخزنة غير صالحة.');
+      throw new Error('Les données des accessoires enregistrées sont invalides.');
     }
     const packageImages = {
       'accessory-fj-star-fj-a6': 'asset:accessories/fj-star-fj-a6-package.jpg',
@@ -1910,7 +1910,7 @@
     const savedProfiles = localStorage.getItem('electrophone_social_links');
     const profiles = savedProfiles ? JSON.parse(savedProfiles) : {};
     if (!profiles || typeof profiles !== 'object' || Array.isArray(profiles)) {
-      throw new Error('بيانات حسابات التواصل المخزنة غير صالحة.');
+      throw new Error('Les données des comptes de contact enregistrées sont invalides.');
     }
     if (!profiles.instagram) {
       profiles.instagram = DEFAULT_INSTAGRAM_URL;
@@ -1923,7 +1923,7 @@
     const savedProfiles = localStorage.getItem('electrophone_social_links');
     const profiles = savedProfiles ? JSON.parse(savedProfiles) : {};
     if (!profiles || typeof profiles !== 'object' || Array.isArray(profiles)) {
-      throw new Error('بيانات حسابات التواصل المخزنة غير صالحة.');
+      throw new Error('Les données des comptes de contact enregistrées sont invalides.');
     }
     if (typeof profiles.instagram === 'string' && profiles.instagram.includes('/hassan_elmorabit0')) {
       profiles.instagram = DEFAULT_INSTAGRAM_URL;
@@ -1993,7 +1993,7 @@
       if (legacyProducts !== null) {
         const migratedProducts = JSON.parse(legacyProducts);
         if (!Array.isArray(migratedProducts)) {
-          throw new Error('بيانات المنتجات القديمة المخزنة غير صالحة.');
+          throw new Error('Les anciennes données de produits enregistrées sont invalides.');
         }
         saveProducts(migratedProducts);
         return migratedProducts.map(normalizeCatalogText);
@@ -2004,7 +2004,7 @@
 
     const products = JSON.parse(saved);
     if (!Array.isArray(products) || products.some(product => !product || typeof product !== 'object')) {
-      throw new Error('بيانات المنتجات المخزنة غير صالحة.');
+      throw new Error('Les données des produits enregistrées sont invalides.');
     }
     return products.map(normalizeCatalogText);
   }
@@ -2036,17 +2036,338 @@
     text = text
       .replace(/(?:\?|؟){2,}/g, '')
       .replace(/\bقيد التأكيد\b/g, '')
-      .replace(/غير محدد(?:ة|ين)?/g, '')
-      .replace(/تحديد الموديل مطلوب/g, 'موديل متوفر للطلب')
+      .replace(/غير محدد(?:ة|ين)?/g, 'non spécifié')
+      .replace(/تحديد الموديل مطلوب/g, 'Modèle à préciser')
       .replace(/حسب التفاصيل المتوفرة/g, '')
-      .replace(/\s*\((?:تأكيد الطراز|تأكيد النسخة)\)/g, '')
-      .replace(/\bتأكيد النسخة\b/g, '')
-      .replace(/\bتأكيد الطراز\b/g, '')
+      .replace(/\s*\(تأكيد الطراز\)/g, ' (modèle à confirmer)')
+      .replace(/\s*\(تأكيد النسخة\)/g, ' (version à confirmer)')
+      .replace(/تأكيد النسخة/g, 'version à confirmer')
+      .replace(/تأكيد الطراز/g, 'modèle à confirmer')
       .replace(/\s+[•،,]\s*[•،,]\s*/g, ' • ')
       .replace(/[()[\]{}]{2}/g, '')
       .replace(/\s{2,}/g, ' ')
       .trim();
+    text = text
+      .replace(/بحالة ممتازة/g, 'en excellent état')
+      .replace(/حالة ممتازة/g, 'excellent état')
+      .replace(/حالة جيدة جدا|جيدة جدا|جيد جدا/g, 'en très bon état')
+      .replace(/باللون الأحمر/g, 'en rouge')
+      .replace(/باللون الأزرق/g, 'en bleu')
+      .replace(/باللون الأسود/g, 'en noir')
+      .replace(/باللون الأبيض/g, 'en blanc')
+      .replace(/باللون الوردي/g, 'en rose')
+      .replace(/بلون /g, 'en couleur ')
+      .replace(/الأحمر/g, 'rouge')
+      .replace(/الأزرق/g, 'bleu')
+      .replace(/الأسود/g, 'noir')
+      .replace(/الأبيض/g, 'blanc')
+      .replace(/الرمادي/g, 'gris')
+      .replace(/الفضي/g, 'argenté')
+      .replace(/الوردي/g, 'rose')
+      .replace(/الداكن/g, 'foncé')
+      .replace(/داكنا/g, 'foncé')
+      .replace(/العادي/g, 'standard')
+      .replace(/البطارية/g, 'batterie')
+      .replace(/الخلفية/g, 'face arrière')
+      .replace(/كاميرات/g, 'appareils photo')
+      .replace(/نظام/g, 'système')
+      .replace(/الجانب/g, 'côté')
+      .replace(/الأسفل/g, 'bas')
+      .replace(/الواجهة/g, 'face avant')
+      .replace(/التوصيل/g, 'livraison')
+      .replace(/لجميع/g, 'pour toutes les')
+      .replace(/للكاميرا/g, 'pour l’appareil photo')
+      .replace(/والكابل/g, 'et le câble')
+      .replace(/والهاتف/g, 'et le téléphone')
+      .replace(/والمعالج/g, 'et le processeur')
+      .replace(/ومنفذ/g, 'et port')
+      .replace(/جميع مدن المغرب/g, 'toutes les villes du Maroc')
+      .replace(/و(?=\s*[A-Za-z])/g, 'et ');
     const translations = [
+      ['بحالة ممتازة', 'en excellent état'],
+      ['حالة ممتازة', 'Excellent état'],
+      ['مستعمل نظيف', 'Occasion propre'],
+      ['جديد تماماً', 'Neuf'],
+      ['جديد تماما', 'Neuf'],
+      ['ما تفتحش وما تصلحش', 'Jamais ouvert ni réparé'],
+      ['فالعلبة الأصلية', 'Dans la boîte d’origine'],
+      ['في العلبة الأصلية', 'Dans la boîte d’origine'],
+      ['العلبة الأصلية', 'boîte d’origine'],
+      ['أبيض ذهبي', 'blanc doré'],
+      ['أبيض ذهبي', 'blanc doré'],
+      ['معاه كابل أصلي', 'livré avec un câble d’origine'],
+      ['كابل أصلي', 'câble d’origine'],
+      ['شاحن سيارة سريع', 'Chargeur rapide allume-cigare'],
+      ['شاحن سيارة', 'Chargeur allume-cigare'],
+      ['شاشة Super Retina XDR', 'écran Super Retina XDR'],
+      ['شاشة Dynamic AMOLED 2X', 'écran Dynamic AMOLED 2X'],
+      ['كاميرات خلفية ثلاثية', 'triple appareil photo arrière'],
+      ['ثلاث كاميرات خلفية Pro', 'trois appareils photo arrière Pro'],
+      ['الحالة والملحقات خاصها تأكيد مباشر قبل النشر', 'L’état et les accessoires doivent être vérifiés avant publication'],
+      ['الحالة والملحقات خاصها تأكيد مباشر', 'L’état et les accessoires doivent être vérifiés directement'],
+      ['جديد 100% ومسدود فالكرتونة', 'neuf à 100 %, sous emballage'],
+      ['اسم الموديل حسب اسم المجلد؛ خاص التأكيد من إعدادات الجهاز', 'Modèle indiqué dans le nom du dossier, à confirmer dans les réglages de l’appareil'],
+      ['ما يمكنش تأكيد اسم', 'Impossible de confirmer le modèle'],
+      ['من الصور بوحدها', 'à partir des seules photos'],
+      ['وهادشي كيشير غالبا إلى', 'ce qui indique probablement'],
+      ['كيختلف حسب نسخة الجهاز والمنطقة', 'varie selon la version de l’appareil et la région'],
+      ['الموديل المحدد غير مذكور', 'Le modèle exact n’est pas indiqué'],
+      ['الموديل ما تحددش فاسم المجلد', 'Le modèle n’est pas précisé dans le nom du dossier'],
+      ['الموديل ما تحددش', 'Le modèle n’est pas précisé'],
+      ['الموديل غير محدد', 'Modèle non précisé'],
+      ['الموديل والسعة غير محددين', 'Le modèle et la capacité ne sont pas précisés'],
+      ['السعة والذاكرة حسب اسم المجلد', 'Capacité et mémoire selon le nom du dossier'],
+      ['تحقق من رقم الطراز والسعة والذاكرة', 'Vérifiez le numéro de modèle, la capacité et la mémoire'],
+      ['تحقق من السعة والذاكرة ورقم الطراز', 'Vérifiez la capacité, la mémoire et le numéro de modèle'],
+      ['تحقق من السعة وصحة البطارية', 'Vérifiez la capacité et l’état de santé de la batterie'],
+      ['تحقق من الاسم التجاري والسعة والذاكرة', 'Vérifiez le nom commercial, la capacité et la mémoire'],
+      ['حدد الموديل والسعة والذاكرة من إعدادات الهاتف قبل النشر', 'Précisez le modèle, la capacité et la mémoire dans les réglages avant publication'],
+      ['حدد الموديل والسعة والذاكرة من إعدادات الهاتف', 'Précisez le modèle, la capacité et la mémoire dans les réglages du téléphone'],
+      ['يرجى تأكيدها من إعدادات الهاتف', 'à confirmer dans les réglages du téléphone'],
+      ['خاص التأكد واش داخل مع الجهاز', 'à vérifier s’il est inclus avec l’appareil'],
+      ['خاص التأكد من الجهاز', 'à confirmer sur l’appareil'],
+      ['من Settings > General > About قبل النشر', 'dans Réglages > Général > Informations avant publication'],
+      ['من Settings > About phone قبل النشر', 'dans Réglages > À propos du téléphone avant publication'],
+      ['من إعدادات الهاتف قبل النشر', 'dans les réglages du téléphone avant publication'],
+      ['حسب اسم المجلد والصور', 'd’après le nom du dossier et les photos'],
+      ['حسب اسم المجلد كايقول', 'selon le nom du dossier'],
+      ['حسب اسم المجلد', 'selon le nom du dossier'],
+      ['المعالج كيختلف حسب نسخة الجهاز والمنطقة', 'Le processeur varie selon la version de l’appareil et la région'],
+      ['جميع مدن المغرب', 'toutes les villes du Maroc'],
+      ['صور ثلاث كاميرات', 'photos montrant trois caméras'],
+      ['شاشة Super Retina XDR', 'écran Super Retina XDR'],
+      ['شاشة Dynamic AMOLED 2X', 'écran Dynamic AMOLED 2X'],
+      ['تردد متكيف حتى', 'fréquence adaptative jusqu’à'],
+      ['الاسم الدقيق للون', 'nom exact de la couleur'],
+      ['الموديل المحدد', 'modèle exact'],
+      ['المنتجات', 'produits'],
+      ['خاصية', 'fonctionnalité'],
+      ['خاصها', 'doit être'],
+      ['خاصو', 'doit être'],
+      ['معاه', 'livré avec'],
+      ['معه', 'livré avec'],
+      ['باللون', 'en couleur'],
+      ['بسعة', 'avec une capacité de'],
+      ['ذاكرة RAM', 'mémoire RAM'],
+      ['صحة البطارية', 'état de santé de la batterie'],
+      ['بطارية أصلية', 'batterie d’origine'],
+      ['باللون الأحمر', 'en rouge'],
+      ['باللون الأزرق', 'en bleu'],
+      ['باللون الأسود', 'en noir'],
+      ['باللون الأبيض', 'en blanc'],
+      ['باللون الوردي', 'en rose'],
+      ['اللون الفضي/الأبيض', 'couleur argent/blanc'],
+      ['لون أبيض/فضي', 'couleur blanc/argent'],
+      ['لجميع الشبكات', 'tous les réseaux'],
+      ['التوصيل متوفر', 'Livraison disponible'],
+      ['تحديد الموديل مطلوب', 'Modèle à préciser'],
+      ['الموديل ما تحددش فاسم المجلد', 'Le modèle n’est pas précisé dans le nom du dossier'],
+      ['صور الهاتف حسب مجلد', 'Photos du téléphone selon le dossier'],
+      ['السعة غير محددة', 'capacité non précisée'],
+      ['الذاكرة غير محددة', 'mémoire non précisée'],
+      ['صورة الهاتف', 'photo du téléphone'],
+      ['ثلاثية', 'triple'],
+      ['تظهر', 'montre'],
+      ['يشير', 'indique'],
+      ['كيشير', 'indique'],
+      ['كتبيّن', 'montre'],
+      ['الموجود', 'présent'],
+      ['المتاحة', 'disponible'],
+      ['المتوفرة', 'disponible'],
+      ['الداكن', 'foncé'],
+      ['داكن', 'foncé'],
+      ['فاتحا', 'clair'],
+      ['فاتح', 'clair'],
+      ['ذهبي', 'doré'],
+      ['فضيا', 'argenté'],
+      ['فضي', 'argenté'],
+      ['رمادي', 'gris'],
+      ['أسود', 'noir'],
+      ['أبيض', 'blanc'],
+      ['أحمر', 'rouge'],
+      ['أزرق', 'bleu'],
+      ['أخضر', 'vert'],
+      ['وردي', 'rose'],
+      ['أرجواني', 'violet'],
+      ['الموديل', 'modèle'],
+      ['السعة', 'capacité'],
+      ['الذاكرة', 'mémoire'],
+      ['اللون', 'couleur'],
+      ['الصور', 'photos'],
+      ['الهاتف', 'téléphone'],
+      ['الجهاز', 'appareil'],
+      ['المنتج', 'produit'],
+      ['المجلد', 'dossier'],
+      ['المعالج', 'processeur'],
+      ['المعلومات', 'informations'],
+      ['الإعدادات', 'réglages'],
+      ['بطارية', 'batterie'],
+      ['البطارية', 'batterie'],
+      ['المغرب', 'Maroc'],
+      ['أنيق', 'élégant'],
+      ['عادي', 'standard'],
+      ['القديمة', 'ancienne'],
+      ['التجاري', 'commercial'],
+      ['ممتازة', 'excellent'],
+      ['مستعمل', 'occasion'],
+      ['كاميرا', 'appareil photo'],
+      ['شاشة', 'écran'],
+      ['رئيسية', 'principal'],
+      ['خلفية', 'arrière'],
+      ['رقم', 'numéro'],
+      ['رسمي', 'officiel'],
+      ['مباشر', 'direct'],
+      ['ساعة', 'heures'],
+      ['مدن', 'villes'],
+      ['مرفق', 'inclus'],
+      ['قلم', 'stylet'],
+      ['سريع', 'rapide'],
+      ['سماعات', 'écouteurs'],
+      ['سماعة', 'écouteur'],
+      ['لاسلكي', 'sans fil'],
+      ['درهم', 'DH'],
+      ['ضمان', 'garantie'],
+      ['الجميع', 'tous'],
+      ['يوم', 'jour'],
+      ['أيام', 'jours'],
+      ['الحالة والملحقات خاصها تأكيد مباشر قبل النشر', 'L’état et les accessoires doivent être vérifiés avant publication'],
+      ['الحالة والملحقات خاصها تأكيد مباشر', 'L’état et les accessoires doivent être vérifiés directement'],
+      ['الحالة والملحقات خاصها تأكيد', 'L’état et les accessoires doivent être vérifiés'],
+      ['يرجى تأكيدها من إعدادات الهاتف', 'à confirmer dans les réglages du téléphone'],
+      ['خاص التأكد واش داخل مع الجهاز', 'à vérifier s’il est inclus avec l’appareil'],
+      ['الموديل المحدد غير مذكور', 'Le modèle exact n’est pas indiqué'],
+      ['الموديل ما تحددش فاسم المجلد', 'Le modèle n’est pas précisé dans le nom du dossier'],
+      ['الموديل غير محدد', 'Modèle non précisé'],
+      ['الموديل والسعة غير محددين', 'Le modèle et la capacité ne sont pas précisés'],
+      ['اسم الموديل حسب اسم المجلد؛ خاص التأكيد من إعدادات الجهاز', 'Modèle indiqué dans le nom du dossier, à confirmer dans les réglages de l’appareil'],
+      ['صحة البطارية', 'état de santé de la batterie'],
+      ['حسب اسم المجلد والصور', 'd’après le nom du dossier et les photos'],
+      ['حسب اسم المجلد', 'selon le nom du dossier'],
+      ['من Settings > General > About قبل النشر', 'dans Réglages > Général > Informations avant publication'],
+      ['من Settings > About phone قبل النشر', 'dans Réglages > À propos du téléphone avant publication'],
+      ['من إعدادات الهاتف قبل النشر', 'dans les réglages du téléphone avant publication'],
+      ['تحقق من رقم الطراز والسعة والذاكرة', 'Vérifiez le numéro de modèle, la capacité et la mémoire'],
+      ['تحقق من السعة والذاكرة ورقم الطراز', 'Vérifiez la capacité, la mémoire et le numéro de modèle'],
+      ['تحقق من السعة وصحة البطارية', 'Vérifiez la capacité et l’état de santé de la batterie'],
+      ['تحقق من الاسم التجاري والسعة والذاكرة', 'Vérifiez le nom commercial, la capacité et la mémoire'],
+      ['حدد الموديل والسعة والذاكرة من إعدادات الهاتف قبل النشر', 'Précisez le modèle, la capacité et la mémoire dans les réglages avant publication'],
+      ['حدد الموديل والسعة والذاكرة من إعدادات الهاتف', 'Précisez le modèle, la capacité et la mémoire dans les réglages du téléphone'],
+      ['خاص التأكد من الجهاز', 'à confirmer sur l’appareil'],
+      ['ما يمكنش تأكيد اسم', 'Impossible de confirmer le modèle'],
+      ['من الصور بوحدها', 'à partir des seules photos'],
+      ['وهادشي كيشير غالبا إلى', 'ce qui indique probablement'],
+      ['كيختلف حسب نسخة الجهاز والمنطقة', 'varie selon la version de l’appareil et la région'],
+      ['خاص تأكيد مباشر', 'à confirmer directement'],
+      ['الموديل ما تحددش', 'Le modèle n’est pas précisé'],
+      ['السعة والذاكرة حسب اسم المجلد', 'Capacité et mémoire selon le nom du dossier'],
+      ['صور الهاتف حسب مجلد', 'Photos du téléphone selon le dossier'],
+      ['جميع مدن المغرب', 'toutes les villes du Maroc'],
+      ['الحالة والملحقات', 'l’état et les accessoires'],
+      ['صورة الهاتف', 'photo du téléphone'],
+      ['الاسم الدقيق للون', 'nom exact de la couleur'],
+      ['صحة البطارية', 'état de santé de la batterie'],
+      ['مواصفاته تشمل', 'ses caractéristiques comprennent'],
+      ['منفذ USB-C', 'port USB-C'],
+      ['بطارية أصلية', 'batterie d’origine'],
+      ['جديد 100% ومسدود فالكرتونة', 'neuf à 100 %, sous emballage'],
+      ['السعة غير محددة', 'capacité non précisée'],
+      ['الموديل والسعة غير محددين', 'modèle et capacité non précisés'],
+      ['ما تحددش فاسم المجلد', 'n’est pas précisé dans le nom du dossier'],
+      ['ما تحددتش فاسم المجلد', 'n’est pas précisée dans le nom du dossier'],
+      ['حسب اسم المجلد كايقول', 'selon le nom du dossier'],
+      ['حسب اسم المجلد والصور', 'selon le nom du dossier et les photos'],
+      ['باللون الأحمر', 'en rouge'],
+      ['باللون الأزرق', 'en bleu'],
+      ['باللون الأسود', 'en noir'],
+      ['باللون الأبيض', 'en blanc'],
+      ['باللون الوردي', 'en rose'],
+      ['اللون الفضي/الأبيض', 'couleur argent/blanc'],
+      ['لون أبيض/فضي', 'couleur blanc/argent'],
+      ['لجميع الشبكات', 'tous les réseaux'],
+      ['صور ثلاث كاميرات', 'photos montrant trois caméras'],
+      ['شاشة Super Retina XDR', 'écran Super Retina XDR'],
+      ['شاشة Dynamic AMOLED 2X', 'écran Dynamic AMOLED 2X'],
+      ['كاميرات خلفية ثلاثية', 'triple appareil photo arrière'],
+      ['كاميرات خلفية', 'appareils photo arrière'],
+      ['كاميرا رئيسية', 'appareil photo principal'],
+      ['ثلاث كاميرات خلفية Pro', 'trois appareils photo arrière Pro'],
+      ['تردد متكيف حتى', 'fréquence adaptative jusqu’à'],
+      ['بتردد', 'à une fréquence de'],
+      ['بقياس', 'de'],
+      ['بوصة', 'pouces'],
+      ['بسعة', 'avec une capacité de'],
+      ['ذاكرة RAM', 'mémoire RAM'],
+      ['ذاكرة', 'mémoire'],
+      ['الذاكرة', 'mémoire'],
+      ['حسب الصور', 'd’après les photos'],
+      ['حسب المجلد', 'selon le dossier'],
+      ['خاصها', 'doit être'],
+      ['خاصو', 'doit être'],
+      ['خاص', 'à vérifier'],
+      ['تحقق من', 'Vérifiez'],
+      ['يرجى', 'Veuillez'],
+      ['حدد', 'Précisez'],
+      ['التوصيل متوفر', 'Livraison disponible'],
+      ['بتردد', 'à une fréquence de'],
+      ['في إعدادات الهاتف', 'dans les réglages du téléphone'],
+      ['من إعدادات الهاتف', 'dans les réglages du téléphone'],
+      ['اسم الموديل', 'nom du modèle'],
+      ['الموديل', 'modèle'],
+      ['السعة', 'capacité'],
+      ['الذاكرة', 'mémoire'],
+      ['اللون', 'couleur'],
+      ['الصور', 'photos'],
+      ['الهاتف', 'téléphone'],
+      ['الجهاز', 'appareil'],
+      ['المنتج', 'produit'],
+      ['المجلد', 'dossier'],
+      ['المعالج', 'processeur'],
+      ['المعلومات', 'informations'],
+      ['الإعدادات', 'réglages'],
+      ['بطارية', 'batterie'],
+      ['البطارية', 'batterie'],
+      ['المغرب', 'Maroc'],
+      ['أنيق', 'élégant'],
+      ['عادي', 'standard'],
+      ['القديمة', 'ancienne'],
+      ['التجاري', 'commercial'],
+      ['الداكن', 'foncé'],
+      ['داكن', 'foncé'],
+      ['فاتح', 'clair'],
+      ['ذهبي', 'doré'],
+      ['فضي', 'argenté'],
+      ['رمادي', 'gris'],
+      ['أسود', 'noir'],
+      ['أبيض', 'blanc'],
+      ['أحمر', 'rouge'],
+      ['أزرق', 'bleu'],
+      ['أخضر', 'vert'],
+      ['وردي', 'rose'],
+      ['أرجواني', 'violet'],
+      ['ممتازة', 'excellent'],
+      ['مستعمل', 'occasion'],
+      ['خاصية', 'fonction'],
+      ['كاميرا', 'appareil photo'],
+      ['شاشة', 'écran'],
+      ['رئيسية', 'principal'],
+      ['خلفية', 'arrière'],
+      ['رقم', 'numéro'],
+      ['رسمي', 'officiel'],
+      ['مباشر', 'direct'],
+      ['ساعة', 'heures'],
+      ['مدن', 'villes'],
+      ['مثله', 'comme'],
+      ['مرفق', 'inclus'],
+      ['قلم', 'stylet'],
+      ['سريع', 'rapide'],
+      ['سماعات', 'écouteurs'],
+      ['سماعة', 'écouteur'],
+      ['لاسلكي', 'sans fil'],
+      ['درهم', 'DH'],
+      ['ضمان', 'garantie'],
+      ['الجميع', 'tous'],
+      ['يوم', 'jour'],
+      ['أيام', 'jours'],
       ['حالة ممتازة', 'Excellent état'],
       ['بحالة ممتازة', 'Excellent état'],
       ['مستعمل نظيف', 'Occasion propre'],
@@ -2131,6 +2452,47 @@
     translations.forEach(([arabic, french]) => {
       text = text.split(arabic).join(french);
     });
+    text = text.replace(/(^|[\s,;])و(?=\S)/g, '$1et ');
+    const remainingWords = {
+      'أبيض': 'blanc', 'أحمر': 'rouge', 'أزرق': 'bleu', 'أسود': 'noir',
+      'أصلي': 'd’origine', 'أصلية': 'd’origine', 'أنيق': 'élégant', 'أيام': 'jours',
+      'إعدادات': 'réglages', 'اسم': 'nom', 'الاستلام': 'livraison', 'البطارية': 'batterie',
+      'التوصيل': 'livraison', 'الثمن': 'prix', 'الجهة': 'face', 'الخلفية': 'arrière',
+      'الداكن': 'foncé', 'الدفع': 'paiement', 'الرمادي': 'gris', 'السعر': 'prix',
+      'الشبكات': 'réseaux', 'الصور': 'photos', 'العادي': 'standard', 'الفضي': 'argenté',
+      'المتاحة': 'disponibles', 'المجلد': 'dossier', 'المحدد': 'précisé', 'المحل': 'magasin',
+      'المغرب': 'Maroc', 'المنتج': 'produit', 'المنتجات': 'produits', 'الموديل': 'modèle',
+      'الهاتف': 'téléphone', 'الوردي': 'rose', 'باللون': 'en couleur', 'بتردد': 'à une fréquence de',
+      'بحالة': 'en état', 'بحجم': 'd’une taille de', 'بدقة': 'de', 'بسعة': 'd’une capacité de',
+      'بطارية': 'batterie', 'بقياس': 'de', 'بلون': 'en couleur', 'بوصة': 'pouces',
+      'تأكيدها': 'à confirmer', 'تصلحش': 'réparé', 'تظهر': 'montre', 'ثلاثية': 'triple',
+      'جدا': 'très', 'جديدة': 'neuve', 'جديد': 'neuf', 'جيدة': 'bon état', 'حالة': 'état',
+      'حتى': 'jusqu’à', 'حسب': 'selon', 'خاص': 'à vérifier', 'خاوي': 'vide',
+      'خدام': 'fonctionnel', 'خدامين': 'fonctionnels', 'داكن': 'foncé', 'داكنا': 'foncé',
+      'درهم': 'DH', 'ذهبي': 'doré', 'رئيسية': 'principal', 'رام': 'RAM', 'رسمي': 'officiel',
+      'رمادي': 'gris', 'زر': 'bouton', 'شاشة': 'écran', 'صحة': 'état de santé',
+      'ضمان': 'garantie', 'عادي': 'standard', 'عرض': 'offre', 'عند': 'à',
+      'غير': 'non', 'فاتح': 'clair', 'فاتورة': 'facture', 'فالكرتونة': 'dans la boîte',
+      'فضي': 'argenté', 'كابل': 'câble', 'كاميرا': 'appareil photo', 'كاميرات': 'appareils photo',
+      'كتبيّن': 'montre', 'كيشمل': 'inclut', 'لجميع': 'pour tous', 'للفحص': 'pour vérification',
+      'للكاميرا': 'pour l’appareil photo', 'لمدة': 'pendant', 'لون': 'couleur', 'لونا': 'une couleur',
+      'ما': 'ne', 'متوفر': 'disponible', 'مدن': 'villes', 'مذكور': 'indiqué', 'مزيان': 'bon',
+      'مستعمل': 'occasion', 'مسدود': 'scellé', 'مع': 'avec', 'معالج': 'processeur',
+      'معاه': 'livré avec', 'معلومات': 'informations', 'مفتوح': 'débloqué',
+      'ممتازة': 'excellent', 'من': 'de', 'نسبة': 'pourcentage', 'نظيف': 'propre',
+      'نقي': 'effacé', 'هاتف': 'téléphone', 'والأسفل': 'et le bas', 'والجانب': 'et le côté',
+      'و': ' et ', 'والكابل': 'et le câble', 'والهاتف': 'et le téléphone', 'والواجهة': 'et la face avant',
+      'وذاكرة': 'et mémoire', 'وردي': 'rose', 'وسعة': 'et capacité', 'وصحة': 'et état de santé',
+      'وضمان': 'et garantie', 'وفاتورة': 'et facture', 'وكاميرا': 'et appareil photo',
+      'ولون': 'et couleur', 'وما': 'et ne', 'ومسدود': 'et scellé', 'ومعالج': 'et processeur',
+      'ومنفذ': 'et port', 'ونظام': 'et système', 'يتضمن': 'inclut', 'يرجى': 'Veuillez',
+      'يوم': 'jour'
+    };
+    text = text.replace(/[\u0621-\u064A\u066E-\u06D3]+/g, token => {
+      if (remainingWords[token]) return remainingWords[token];
+      if (token.startsWith('و') && remainingWords[token.slice(1)]) return `et ${remainingWords[token.slice(1)]}`;
+      return token;
+    }).replace(/[،؛]/g, character => character === '،' ? ',' : ';');
     return text.replace(/\bبيانات\b/g, 'données')
       .replace(/\bبيانات المنتجات المخزنة غير صالحة\./g, 'Données des produits stockés non valides.')
       .replace(/\bغير صالح\./g, 'non valide.')
@@ -2161,7 +2523,7 @@
 
   function resolveImage(image) {
     if (typeof image !== 'string' || !image.startsWith('asset:')) return image || '';
-    if (!STORE_SCRIPT_URL) throw new Error('تعذر تحديد مسار صورة المنتج.');
+    if (!STORE_SCRIPT_URL) throw new Error('Impossible de déterminer le chemin de l'image du produit.');
     return new URL(`../assets/${image.slice('asset:'.length)}`, STORE_SCRIPT_URL).href;
   }
 

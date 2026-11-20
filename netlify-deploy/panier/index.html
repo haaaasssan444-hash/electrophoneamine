@@ -121,7 +121,7 @@ function render() {
   }
 
   const itemsHtml = cart.map((product, index) => {
-    const name = store.escapeHTML(product.name || 'Téléphone');
+    const name = store.escapeHTML(store.toFrenchCatalogText ? store.toFrenchCatalogText(product.name || 'Téléphone') : (product.name || 'Téléphone'));
     const image = store.escapeHTML(store.resolveImage(product.img || ''));
     const storage = store.escapeHTML(product.storage || '');
     return `
@@ -129,7 +129,7 @@ function render() {
         ${image ? `<img src="${image}" alt="${name}" width="88" height="88" loading="lazy" onerror="this.hidden=true">` : ''}
         <div class="item-info">
           <h3>${name}</h3>
-          <small>${storage ? `${storage} • ` : ''}${store.escapeHTML(product.condition || 'Disponible')} ✅</small>
+          <small>${storage ? `${storage} • ` : ''}${store.escapeHTML(store.toFrenchCatalogText ? store.toFrenchCatalogText(product.condition || 'Disponible') : (product.condition || 'Disponible'))} ✅</small>
           <div class="price" style="margin-top:6px">${formatPrice(product.price)}</div>
           <footer class="footer-bottom" style="padding:16px;text-align:center;color:#707070">
             <a href="../privacy/" style="color:#7f1d1d">Confidentialité</a> ·
@@ -197,7 +197,7 @@ function orderWhatsApp() {
     return;
   }
   const lines = cart.map(product =>
-    `- ${product.name || 'Téléphone'} - ${formatPrice(product.price)} x${Number(product.qty) || 1}`
+    `- ${store.toFrenchCatalogText ? store.toFrenchCatalogText(product.name || 'Téléphone') : (product.name || 'Téléphone')} - ${formatPrice(product.price)} x${Number(product.qty) || 1}`
   );
   const message = ['Bonjour, je souhaite commander :', ...lines, '', `Total : ${formatPrice(calcTotal())}`].join('\n');
   window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank', 'noopener');
