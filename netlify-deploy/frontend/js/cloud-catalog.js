@@ -55,9 +55,15 @@
         .limit(1);
       if (error) throw error;
       if (marker && marker.length) {
-        if (window.ElectrophoneStore) window.ElectrophoneStore.saveProducts([]);
-        localStorage.setItem('electrophone_accessories', '[]');
-        window.dispatchEvent(new CustomEvent('accessories:updated', { detail: [] }));
+        if (window.ElectrophoneStore) {
+          const seedPhones = window.ElectrophoneStore.getSeedProducts();
+          window.ElectrophoneStore.saveProducts(seedPhones);
+          const accessories = JSON.parse(localStorage.getItem('electrophone_accessories') || '[]');
+          await saveSharedCatalog(seedPhones, Array.isArray(accessories) ? accessories : []);
+          window.dispatchEvent(new CustomEvent('accessories:updated', {
+            detail: Array.isArray(accessories) ? accessories : []
+          }));
+        }
         return;
       }
 
