@@ -67,7 +67,7 @@ if (loginForm) {
   if (isAdminLocked()) {
     const remaining = Math.max(1, Math.ceil((getAdminLockUntil() - Date.now()) / 60000));
     input.disabled = true;
-    error.textContent = `الإدارة مقفلة مؤقتاً لمدة ${remaining} دقيقة بسبب كثرة المحاولات.`;
+    error.textContent = `L’administration est temporairement verrouillée pendant ${remaining} minutes en raison de trop nombreuses tentatives.`;
   }
   loginForm.addEventListener('submit', async event => {
     event.preventDefault();
@@ -87,11 +87,11 @@ if (loginForm) {
       if (attempts >= MAX_ADMIN_ATTEMPTS) {
         localStorage.setItem(ADMIN_LOCK_KEY, String(Date.now() + ADMIN_LOCK_DURATION_MS));
         input.disabled = true;
-        error.textContent = 'تم قفل الإدارة لمدة 30 دقيقة بسبب 20 محاولة خاطئة.';
+        error.textContent = 'L’administration est verrouillée pendant 30 minutes après 20 tentatives incorrectes.';
         return;
       }
       input.value = '';
-      error.textContent = `❌ Code d’accès incorrect. ${MAX_ADMIN_ATTEMPTS - attempts} محاولات متبقية.`;
+      error.textContent = `❌ Code d’accès incorrect. Il reste ${MAX_ADMIN_ATTEMPTS - attempts} tentatives.`;
       input.focus();
     } catch (exception) {
       error.textContent = exception.message || 'Une erreur est survenue. Vérifiez le code.';

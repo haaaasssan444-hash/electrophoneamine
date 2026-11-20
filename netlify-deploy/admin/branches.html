@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Gérez les magasins, les rapports et les transferts de stock Electrophone Amine à Casablanca. Cet espace est réservé au personnel autorisé. Connectez-vous.">
+  <meta property="og:type" content="website"><meta property="og:title" content="Gestion des magasins | Electrophone Amine - Administration"><meta property="og:description" content="Espace de gestion des magasins, rapports et transferts de stock, réservé au personnel Electrophone Amine."><meta property="og:image" content="https://marketphone.shop/frontend/assets/electrophone-amine-logo.jpg"><meta property="og:url" content="https://marketphone.shop/admin/branches.html"><meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.ico"><link rel="apple-touch-icon" href="../frontend/assets/electrophone-amine-logo.jpg">
+  <title>Gestion des magasins | Electrophone Amine - Administration</title>
+  <link rel="stylesheet" href="css/admin.css?v=branches-v1">
+  <link rel="stylesheet" href="css/branches.css?v=french-admin-v1">
+</head>
+<body class="admin-page branches-page">
+  <main class="main management-main">
+    <header class="store-admin-header">
+      <a class="store-brand" href="../index.html">Electrophone<span>Amine</span></a>
+      <nav>
+        <a href="index.html">Produits</a>
+        <a href="management.html">Ventes et stock</a>
+        <a href="stock.html">Stock</a>
+        <a href="analytics.html">📊 Statistiques des visites</a>
+        <a href="branches.html" class="active">Magasins</a>
+        <a href="accounts.html">Comptes employés</a>
+      </nav>
+      <button id="logoutTop" class="logout" type="button">Déconnexion</button>
+    </header>
+
+    <div class="branches-shell">
+      <aside class="branches-sidebar" aria-label="Sections">
+        <div class="branch-owner">
+          <span class="owner-avatar">EA</span>
+          <div><strong>Electrophone Amine</strong><small>Gestion des magasins</small></div>
+        </div>
+        <nav id="sectionNav" class="section-nav">
+          <button type="button" class="active" data-section="overview">📊 Vue d’ensemble</button>
+          <button type="button" data-section="sales">🧾 Ventes</button>
+          <button type="button" data-section="stock">📦 Stock</button>
+        </nav>
+      </aside>
+
+      <section class="branches-content">
+        <header class="branches-heading">
+          <div><p>Administration</p><h1 id="sectionTitle">Vue d’ensemble</h1></div>
+          <div class="heading-actions">
+            <label class="secondary-button import-button" for="importCsv">Importer un CSV</label>
+            <input id="importCsv" type="file" accept=".csv,text/csv" hidden>
+            <button id="addRow" class="secondary-button" type="button">+ Ligne</button>
+            <button id="clearRows" class="secondary-button" type="button">Effacer</button>
+            <button id="exportCsv" class="primary-button" type="button">Exporter en CSV</button>
+          </div>
+        </header>
+        <div id="sectionContent"></div>
+      </section>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../frontend/js/store.js?v=french-catalog-v3"></script>
+  <script src="../frontend/js/supabase-config.js?v=branches-v4"></script>
+  <script src="../frontend/js/cloud-catalog.js?v=20261110a"></script>
+  <script src="config/password.js?v=branches-v1"></script>
+  <script src="js/auth.js?v=french-admin-v1"></script>
+  <script src="js/branches.js?v=french-admin-v1"></script>
+</body>
+</html>

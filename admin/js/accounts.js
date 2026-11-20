@@ -52,7 +52,7 @@
     const message = document.getElementById('activityMessage');
     const refreshButton = document.getElementById('refreshWorkerActivity');
     message.dataset.state = 'loading';
-    message.textContent = 'جار تحميل بيانات المبيعات والمخزون...';
+    message.textContent = 'Chargement des données de ventes et de stock…';
     if (refreshButton) refreshButton.disabled = true;
     try {
       if (window.ElectrophoneCloud?.fetchTable) {
@@ -65,11 +65,11 @@
         }
         sales = loadedSales;
         stock = loadedStock;
-        message.textContent = 'بيانات جميع المبيعات والمخزون المسجلة في السحابة.';
+        message.textContent = 'Toutes les ventes et tout le stock enregistrés dans le cloud.';
       } else {
         sales = readLocalRows(SALES_KEY);
         stock = readLocalRows(STOCK_KEY);
-        message.textContent = 'البيانات المعروضة محفوظة على هذا الجهاز فقط.';
+        message.textContent = 'Les données affichées sont enregistrées uniquement sur cet appareil.';
       }
       activityAvailable = true;
       message.removeAttribute('data-state');
@@ -78,7 +78,7 @@
       stock = [];
       activityAvailable = false;
       message.dataset.state = 'error';
-      message.textContent = `تعذر تحميل بيانات الأداء: ${error.message || error}`;
+      message.textContent = `Impossible de charger les données de performance : ${error.message || error}`;
       console.warn('Worker activity load failed:', error);
     } finally {
       if (refreshButton) refreshButton.disabled = false;
@@ -110,7 +110,7 @@
     );
     const products = new Map();
     employeeSales.forEach(item => {
-      const name = String(item.product || 'منتج غير محدد').trim() || 'منتج غير محدد';
+      const name = String(item.product || 'Produit non spécifié').trim() || 'Produit non spécifié';
       const key = name.toLocaleLowerCase();
       const product = products.get(key) || { name, quantity: 0, transactions: 0, total: 0 };
       product.quantity += number(item.quantity, 1);
@@ -129,26 +129,26 @@
   }
 
   function money(value) {
-    return `${number(value).toLocaleString('ar-MA')} DH`;
+    return `${number(value).toLocaleString('fr-MA')} DH`;
   }
 
   function renderDetails(stats) {
-    if (!activityAvailable) return '<div class="empty-state">بيانات الأداء غير متاحة حالياً.</div>';
+    if (!activityAvailable) return '<div class="empty-state">Les données de performance sont actuellement indisponibles.</div>';
     const soldProducts = stats.products.length
-      ? `<div class="data-table-wrap"><table class="data-table"><thead><tr><th>المنتج</th><th>الكمية</th><th>العمليات</th><th>المبيعات</th></tr></thead><tbody>${stats.products.map(item => `<tr><td>${escapeHtml(item.name)}</td><td>${item.quantity}</td><td>${item.transactions}</td><td><strong>${money(item.total)}</strong></td></tr>`).join('')}</tbody></table></div>`
-      : '<div class="empty-state">لا توجد مبيعات مسجلة لهذا العامل.</div>';
+      ? `<div class="data-table-wrap"><table class="data-table"><thead><tr><th>Produit</th><th>Quantité</th><th>Transactions</th><th>Ventes</th></tr></thead><tbody>${stats.products.map(item => `<tr><td>${escapeHtml(item.name)}</td><td>${item.quantity}</td><td>${item.transactions}</td><td><strong>${money(item.total)}</strong></td></tr>`).join('')}</tbody></table></div>`
+      : '<div class="empty-state">Aucune vente enregistrée pour cet employé.</div>';
     const stockItems = stats.stock.length
-      ? `<div class="data-table-wrap"><table class="data-table"><thead><tr><th>المنتج</th><th>المرجع</th><th>الكمية</th><th>السعر</th><th>آخر تحديث</th></tr></thead><tbody>${stats.stock.map(item => `<tr><td>${escapeHtml(item.product || 'منتج غير محدد')}</td><td>${escapeHtml(item.sku || '—')}</td><td><strong>${number(item.quantity)}</strong></td><td>${money(item.price)}</td><td>${escapeHtml(dateLabel(item.updatedAt))}</td></tr>`).join('')}</tbody></table></div>`
-      : '<div class="empty-state">لا يوجد مخزون حالي مسجل لهذا العامل.</div>';
+      ? `<div class="data-table-wrap"><table class="data-table"><thead><tr><th>Produit</th><th>Référence</th><th>Quantité</th><th>Prix</th><th>Dernière mise à jour</th></tr></thead><tbody>${stats.stock.map(item => `<tr><td>${escapeHtml(item.product || 'Produit non spécifié')}</td><td>${escapeHtml(item.sku || '—')}</td><td><strong>${number(item.quantity)}</strong></td><td>${money(item.price)}</td><td>${escapeHtml(dateLabel(item.updatedAt))}</td></tr>`).join('')}</tbody></table></div>`
+      : '<div class="empty-state">Aucun stock actuel enregistré pour cet employé.</div>';
     return `<div class="worker-details-grid">
-      <section class="panel"><div class="panel-head"><h3>المنتجات التي باعها</h3></div>${soldProducts}</section>
-      <section class="panel"><div class="panel-head"><h3>المخزون المسجل عنده</h3></div>${stockItems}</section>
+      <section class="panel"><div class="panel-head"><h3>Produits vendus</h3></div>${soldProducts}</section>
+      <section class="panel"><div class="panel-head"><h3>Stock enregistré</h3></div>${stockItems}</section>
     </div>`;
   }
 
   function dateLabel(value) {
     const date = new Date(value);
-    return Number.isNaN(date.getTime()) ? '—' : date.toLocaleString('ar-MA');
+    return Number.isNaN(date.getTime()) ? '—' : date.toLocaleString('fr-MA');
   }
 
   async function save() {
@@ -156,13 +156,13 @@
     try {
       if (window.ElectrophoneCloud?.saveTable) {
         await window.ElectrophoneCloud.saveTable('store_accounts', accounts);
-        document.getElementById('accountsMessage').textContent = 'تم حفظ الحساب ✅';
+        document.getElementById('accountsMessage').textContent = 'Compte enregistré ✅';
       } else {
-        document.getElementById('accountsMessage').textContent = 'تم الحفظ على هذا الجهاز فقط — شغل الاتصال السحابي.';
+        document.getElementById('accountsMessage').textContent = 'Enregistré uniquement sur cet appareil — activez la connexion cloud.';
       }
     } catch (error) {
       const detail = error?.message || error?.details || error?.hint || String(error || '');
-      document.getElementById('accountsMessage').textContent = `تعذر الحفظ في السحابة${detail ? `: ${detail}` : '.'}`;
+      document.getElementById('accountsMessage').textContent = `Impossible d’enregistrer dans le cloud${detail ? ` : ${detail}` : '.'}`;
       console.warn('Store accounts cloud save failed:', error.message || error);
     }
     render();
@@ -170,8 +170,8 @@
 
   function render() {
     const branches = {
-      'branch-1': 'المحل 1', 'branch-2': 'المحل 2', 'branch-3': 'المحل 3',
-      'branch-4': 'المحل 4'
+      'branch-1': 'Magasin 1', 'branch-2': 'Magasin 2', 'branch-3': 'Magasin 3',
+      'branch-4': 'Magasin 4'
     };
     const summaries = accounts.map(account => ({ account, stats: employeeStats(account) }));
     document.getElementById('activeWorkerCount').textContent = String(accounts.filter(account => account.active !== false).length);
@@ -188,12 +188,12 @@
       ? summaries.map(({ account, stats }) => {
         const branchId = String(account.branchId || '');
         const unknownBranchOption = branchId && !branches[branchId]
-          ? `<option value="${escapeHtml(branchId)}" selected>محل آخر (${escapeHtml(branchId)})</option>`
+          ? `<option value="${escapeHtml(branchId)}" selected>Autre magasin (${escapeHtml(branchId)})</option>`
           : '';
         return `<tr>
           <td>${escapeHtml(account.username)}</td><td class="worker-account-name">${escapeHtml(account.name)}</td>
           <td>
-            <select class="field-select account-branch-select" data-branch="${escapeHtml(account.id)}" aria-label="المحل الخاص بـ ${escapeHtml(account.name || account.username)}">
+            <select class="field-select account-branch-select" data-branch="${escapeHtml(account.id)}" aria-label="Magasin de ${escapeHtml(account.name || account.username)}">
               ${unknownBranchOption}${Object.entries(branches).map(([id, name]) => `<option value="${id}" ${branchId === id ? 'selected' : ''}>${name}</option>`).join('')}
             </select>
           </td>
@@ -201,17 +201,17 @@
           <td><strong>${activityAvailable ? money(stats.revenue) : '—'}</strong></td>
           <td>${activityAvailable ? stats.unitsSold : '—'}</td>
           <td>${activityAvailable ? stats.stockUnits : '—'}</td>
-          <td><span class="status-badge ${account.active === false ? 'danger' : ''}">${account.active === false ? 'موقف' : 'نشط'}</span></td>
+          <td><span class="status-badge ${account.active === false ? 'danger' : ''}">${account.active === false ? 'Suspendu' : 'Actif'}</span></td>
           <td><div class="worker-row-actions">
-            <button class="secondary-button" type="button" data-details="${escapeHtml(account.id)}" aria-expanded="false">التفاصيل</button>
-            <button class="secondary-button" type="button" data-toggle="${escapeHtml(account.id)}">${account.active === false ? 'تفعيل' : 'تعطيل'}</button>
-            <button class="secondary-button" type="button" data-reset="${escapeHtml(account.id)}">تغيير كلمة المرور</button>
-            <button class="secondary-button danger-button" type="button" data-delete="${escapeHtml(account.id)}">حذف الحساب</button>
+            <button class="secondary-button" type="button" data-details="${escapeHtml(account.id)}" aria-expanded="false">Détails</button>
+            <button class="secondary-button" type="button" data-toggle="${escapeHtml(account.id)}">${account.active === false ? 'Activer' : 'Désactiver'}</button>
+            <button class="secondary-button" type="button" data-reset="${escapeHtml(account.id)}">Modifier le mot de passe</button>
+            <button class="secondary-button danger-button" type="button" data-delete="${escapeHtml(account.id)}">Supprimer le compte</button>
           </div></td>
         </tr>
         <tr class="worker-details-row" data-details-row="${escapeHtml(account.id)}" hidden><td colspan="9">${renderDetails(stats)}</td></tr>`;
       }).join('')
-      : '<tr><td colspan="9"><div class="empty-state">لا توجد حسابات العمال</div></td></tr>';
+      : '<tr><td colspan="9"><div class="empty-state">Aucun compte employé.</div></td></tr>';
   }
 
   function escapeHtml(value) {
@@ -223,7 +223,7 @@
     const username = document.getElementById('accountUsername').value.trim().toLowerCase();
     if (!username) return;
     if (accounts.some(account => String(account.username).toLowerCase() === username)) {
-      document.getElementById('accountsMessage').textContent = 'اسم المستخدم موجود بالفعل.';
+      document.getElementById('accountsMessage').textContent = 'Ce nom d’utilisateur existe déjà.';
       return;
     }
     const password = document.getElementById('accountPassword').value;
@@ -263,7 +263,7 @@
       if (!detailsRow) return;
       detailsRow.hidden = !detailsRow.hidden;
       detailsButton.setAttribute('aria-expanded', String(!detailsRow.hidden));
-      detailsButton.textContent = detailsRow.hidden ? 'التفاصيل' : 'إخفاء التفاصيل';
+      detailsButton.textContent = detailsRow.hidden ? 'Détails' : 'Masquer les détails';
       return;
     }
     if (!toggleButton && !resetButton && !deleteButton) return;
@@ -271,7 +271,7 @@
     const account = accounts.find(item => String(item.id) === String(id));
     if (!account) return;
     if (deleteButton) {
-      if (!confirm(`حذف حساب العامل "${account.name || account.username}" نهائياً؟`)) return;
+      if (!confirm(`Supprimer définitivement le compte de l’employé « ${account.name || account.username} » ?`)) return;
       accounts = accounts.filter(item => String(item.id) !== String(id));
       await save();
       return;
@@ -281,7 +281,7 @@
       await save();
       return;
     }
-    const password = prompt(`كلمة مرور جديدة للعامل ${account.name || account.username}:`);
+    const password = prompt(`Nouveau mot de passe pour ${account.name || account.username} :`);
     if (!password || password.trim().length < 4) return;
     const credentials = await window.StoreAuth.hashPassword(password.trim());
     account.passwordSalt = credentials.salt;
@@ -296,18 +296,18 @@
   document.getElementById('syncAccounts')?.addEventListener('click', async () => {
     const message = document.getElementById('accountsMessage');
     try {
-      if (!window.ElectrophoneCloud?.saveTable) throw new Error('الاتصال السحابي غير متاح');
+      if (!window.ElectrophoneCloud?.saveTable) throw new Error('La connexion cloud est indisponible.');
       await window.ElectrophoneCloud.saveTable('store_accounts', accounts);
       const cloud = await window.ElectrophoneCloud.fetchTable('store_accounts');
       if (Array.isArray(cloud)) {
         accounts = cloud;
         localStorage.setItem(ACCOUNT_KEY, JSON.stringify(accounts));
-        message.textContent = `تمت المزامنة ✅ (${accounts.length} حساب)`;
+        message.textContent = `Synchronisation terminée ✅ (${accounts.length} comptes)`;
       }
       render();
     } catch (error) {
       const detail = error?.message || error?.details || error?.hint || String(error || '');
-      message.textContent = `تعذر الاتصال السحابي${detail ? `: ${detail}` : '.'}`;
+      message.textContent = `Impossible de se connecter au cloud${detail ? ` : ${detail}` : '.'}`;
       console.warn('Worker account sync failed:', error.message || error);
     }
   });

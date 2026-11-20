@@ -2,25 +2,25 @@
   const state = { sales: [], stock: [], branches: [] };
   const defaultBranches = Array.from({ length: 4 }, (_, index) => ({
     id: `branch-${index + 1}`,
-    name: `المحل ${index + 1}`
+    name: `Magasin ${index + 1}`
   }));
   const $ = id => document.getElementById(id);
   const number = value => {
     const result = Number(value || 0);
     return Number.isFinite(result) ? result : 0;
   };
-  const money = value => `${Math.round(number(value)).toLocaleString('ar-MA')} DH`;
+  const money = value => `${Math.round(number(value)).toLocaleString('fr-MA')} DH`;
   const text = value => String(value == null ? '' : value).replace(/[&<>"']/g, char => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   })[char]);
   const branchLabel = id => {
     const branch = state.branches.find(item => String(item.id) === String(id))
       || defaultBranches.find(item => String(item.id) === String(id));
-    return branch?.name || (id ? `المحل ${String(id).replace(/^branch-/, '')}` : 'غير محدد');
+    return branch?.name || (id ? `Magasin ${String(id).replace(/^branch-/, '')}` : 'Non spécifié');
   };
   const workerId = item => String(item.workerId || item.ownerId || '');
-  const workerName = item => String(item.workerName || item.ownerName || 'غير محدد');
-  const productName = item => String(item.product || 'منتج غير محدد');
+  const workerName = item => String(item.workerName || item.ownerName || 'Non spécifié');
+  const productName = item => String(item.product || 'Produit non spécifié');
 
   function setStatus(message, error) {
     const status = $('managerStatus');
@@ -79,16 +79,16 @@
     });
     state.branches.filter(branch => defaultBranches.some(item => String(item.id) === String(branch.id)))
       .forEach(branch => branches.set(String(branch.id), branch.name || branchLabel(branch.id)));
-    branchSelect.innerHTML = '<option value="all">جميع المحلات</option>' +
+    branchSelect.innerHTML = '<option value="all">Tous les magasins</option>' +
       [...branches.entries()].sort((a, b) => a[1].localeCompare(b[1], 'ar'))
         .map(([id, name]) => `<option value="${text(id)}">${text(name)}</option>`).join('');
     const workers = new Map();
     [...state.sales, ...state.stock].forEach(item => {
       const id = workerId(item);
       const name = workerName(item);
-      if (id || name !== 'غير محدد') workers.set(id || name, name);
+      if (id || name !== 'Non spécifié') workers.set(id || name, name);
     });
-    workerSelect.innerHTML = '<option value="all">جميع العمال</option>' +
+    workerSelect.innerHTML = '<option value="all">Tous les employés</option>' +
       [...workers.entries()].sort((a, b) => a[1].localeCompare(b[1], 'ar'))
         .map(([id, name]) => `<option value="${text(id)}">${text(name)}</option>`).join('');
     if ([...branchSelect.options].some(option => option.value === previousBranch)) branchSelect.value = previousBranch;
@@ -120,7 +120,7 @@
     const productRows = [...products.values()].sort((a, b) => b.quantity - a.quantity);
     $('managerProductsRows').innerHTML = productRows.length
       ? productRows.map(item => `<tr><td><strong>${text(item.name)}</strong></td><td>${item.quantity}</td><td>${item.count}</td><td>${money(item.total)}</td></tr>`).join('')
-      : '<tr><td colspan="4" class="empty-state">ما كايناش مبيعات بهاد التصفية</td></tr>';
+      : '<tr><td colspan="4" class="empty-state">Aucune vente ne correspond à ces filtres.</td></tr>';
 
     const sortedSales = [...sales].sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
     $('managerSalesRows').innerHTML = sortedSales.length
@@ -131,7 +131,7 @@
           <td>${text(item.payment || '')}</td><td>${text(item.customer || '')}</td>
           <td>${text(workerName(item))}</td><td>${text(item.notes || '')}</td>
         </tr>`).join('')
-      : '<tr><td colspan="9" class="empty-state">ما كايناش مبيعات بهاد التصفية</td></tr>';
+      : '<tr><td colspan="9" class="empty-state">Aucune vente ne correspond à ces filtres.</td></tr>';
 
     const sortedStock = [...stock].sort((a, b) =>
       branchLabel(a.branchId).localeCompare(branchLabel(b.branchId), 'ar') || productName(a).localeCompare(productName(b), 'ar')
@@ -140,7 +140,7 @@
       ? sortedStock.map(item => {
           const quantity = number(item.quantity);
           const stateClass = quantity <= 0 ? 'out' : quantity <= 2 ? 'low' : 'available';
-          const label = quantity <= 0 ? 'نفد' : quantity <= 2 ? 'قليل' : 'متوفر';
+          const label = quantity <= 0 ? 'Épuisé' : quantity <= 2 ? 'Faible' : 'Disponible';
           return `<tr>
             <td>${text(branchLabel(item.branchId))}</td><td><strong>${text(productName(item))}</strong></td>
             <td>${text(item.sku || '')}</td><td>${quantity}</td><td>${money(item.price)}</td>
@@ -149,21 +149,21 @@
             <td>${text(workerName(item))}</td><td>${text(item.updatedAt || '')}</td>
           </tr>`;
         }).join('')
-      : '<tr><td colspan="9" class="empty-state">ما كاين حتى مخزون مسجل بهاد التصفية</td></tr>';
+      : '<tr><td colspan="9" class="empty-state">Aucun stock ne correspond à ces filtres.</td></tr>';
   }
 
   async function load() {
     const button = $('refreshManager');
     button.disabled = true;
-    setStatus('جار تحميل المبيعات والمخزون من السحابة...', false);
+    setStatus('Chargement des ventes et du stock depuis le cloud…', false);
     try {
-      if (!window.ElectrophoneCloud?.fetchTable) throw new Error('خدمة السحابة غير متاحة.');
+      if (!window.ElectrophoneCloud?.fetchTable) throw new Error('Le service cloud est indisponible.');
       const [sales, stock] = await withTimeout(Promise.all([
         window.ElectrophoneCloud.fetchTable('business_sales'),
         window.ElectrophoneCloud.fetchTable('business_stock')
-      ]), 12000, 'تجاوز تحميل البيانات المهلة المحددة.');
+      ]), 12000, 'Le délai de chargement des données est dépassé.');
       if (!Array.isArray(sales) || !Array.isArray(stock)) {
-        throw new TypeError('بيانات السحابة غير صالحة.');
+        throw new TypeError('Les données cloud sont invalides.');
       }
       state.sales = sales;
       state.stock = stock;
@@ -172,19 +172,19 @@
         const branches = await withTimeout(
           window.ElectrophoneCloud.fetchTable('business_branches'),
           4000,
-          'تحميل المحلات تجاوز المهلة.'
+          'Le délai de chargement des magasins est dépassé.'
         );
         if (Array.isArray(branches)) state.branches = branches;
       } catch (error) {
         state.branches = [];
-        branchWarning = ' تعذر تحميل أسماء المحلات؛ كيبانو بمعرفهم.';
+        branchWarning = ' Impossible de charger les noms des magasins ; leurs identifiants sont affichés.';
         console.warn('Manager branch labels unavailable:', error.message || error);
       }
       renderFilters();
       render();
-      setStatus(`تم تحديث البيانات من السحابة · ${new Date().toLocaleString('ar-MA')}${branchWarning}`, false);
+      setStatus(`Données actualisées depuis le cloud · ${new Date().toLocaleString('fr-MA')}${branchWarning}`, false);
     } catch (error) {
-      setStatus(`تعذر تحميل بيانات السحابة: ${error.message || error}. راجع الاتصال وإعدادات Supabase.`, true);
+      setStatus(`Impossible de charger les données cloud : ${error.message || error}. Vérifiez la connexion et les paramètres Supabase.`, true);
     } finally {
       button.disabled = false;
     }

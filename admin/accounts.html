@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="fr" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,43 +9,43 @@
   <link rel="icon" href="../favicon.ico"><link rel="apple-touch-icon" href="../frontend/assets/electrophone-amine-logo.jpg">
   <title>Comptes employés | Electrophone Amine - Administration</title>
   <link rel="stylesheet" href="css/admin.css?v=worker-v1">
-  <link rel="stylesheet" href="css/branches.css?v=worker-dashboard-20261118a">
+  <link rel="stylesheet" href="css/branches.css?v=french-admin-v1">
 </head>
 <body class="admin-page">
   <main class="management-main">
     <header class="store-admin-header">
       <a class="store-brand" href="../index.html">Electrophone<span>Amine</span></a>
-      <nav><a href="index.html">الإدارة</a><a href="management.html">المبيعات والمخزون</a><a href="branches.html">المحلات والتقارير</a><a href="accounts.html" class="active">حسابات العمال</a><a href="analytics.html">📊 إحصائيات الزيارات</a></nav>
-      <button id="ownerLogout" class="logout" type="button">تسجيل الخروج</button>
+      <nav><a href="index.html">Administration</a><a href="management.html">Ventes et stock</a><a href="branches.html">Magasins et rapports</a><a href="accounts.html" class="active">Comptes employés</a><a href="analytics.html">📊 Statistiques des visites</a></nav>
+      <button id="ownerLogout" class="logout" type="button">Déconnexion</button>
     </header>
     <div class="branches-content">
-      <header class="branches-heading"><div><p>إدارة الدخول والأداء</p><h1>حسابات العمال</h1></div><button id="syncAccounts" class="primary-button" type="button">مزامنة السحابة</button></header>
+      <header class="branches-heading"><div><p>Gestion des accès et des performances</p><h1>Comptes employés</h1></div><button id="syncAccounts" class="primary-button" type="button">Synchroniser le cloud</button></header>
       <section class="panel worker-activity-panel">
-        <div class="panel-head"><div><h2>ملخص أداء العمال</h2><small>إجمالي المبيعات المسجلة والمخزون المنسوب لكل عامل</small></div><button id="refreshWorkerActivity" class="secondary-button" type="button">تحديث البيانات</button></div>
-        <p id="activityMessage" class="activity-message" role="status" aria-live="polite">جار تحميل بيانات المبيعات والمخزون...</p>
+        <div class="panel-head"><div><h2>Résumé des performances des employés</h2><small>Total des ventes enregistrées et du stock attribué à chaque employé</small></div><button id="refreshWorkerActivity" class="secondary-button" type="button">Actualiser les données</button></div>
+        <p id="activityMessage" class="activity-message" role="status" aria-live="polite">Chargement des données de ventes et de stock…</p>
         <div class="metric-grid worker-metrics">
-          <article class="metric-card"><span>العمال النشطون</span><strong id="activeWorkerCount">0</strong></article>
-          <article class="metric-card"><span>إجمالي المبيعات</span><strong id="workerSalesTotal">—</strong></article>
-          <article class="metric-card"><span>الوحدات المباعة</span><strong id="workerUnitsSold">—</strong></article>
-          <article class="metric-card"><span>وحدات المخزون</span><strong id="workerStockUnits">—</strong></article>
+          <article class="metric-card"><span>Employés actifs</span><strong id="activeWorkerCount">0</strong></article>
+          <article class="metric-card"><span>Ventes totales</span><strong id="workerSalesTotal">—</strong></article>
+          <article class="metric-card"><span>Unités vendues</span><strong id="workerUnitsSold">—</strong></article>
+          <article class="metric-card"><span>Unités en stock</span><strong id="workerStockUnits">—</strong></article>
         </div>
       </section>
       <form id="accountForm" class="form-panel" style="grid-template-columns:repeat(4,minmax(0,1fr))">
-        <div class="field"><label>اسم المستخدم</label><input id="accountUsername" required></div>
-        <div class="field"><label>الاسم الكامل</label><input id="accountName" required></div>
-        <div class="field"><label>المحل</label><select id="accountBranch"><option value="branch-1">المحل 1</option><option value="branch-2">المحل 2</option><option value="branch-3">المحل 3</option><option value="branch-4">المحل 4</option></select></div>
-        <div class="field"><label>كلمة المرور</label><input id="accountPassword" type="password" required minlength="4"></div>
-        <div class="form-actions"><button class="primary-button" type="submit">إنشاء الحساب</button></div>
+        <div class="field"><label>Nom d’utilisateur</label><input id="accountUsername" required></div>
+        <div class="field"><label>Nom complet</label><input id="accountName" required></div>
+        <div class="field"><label>Magasin</label><select id="accountBranch"><option value="branch-1">Magasin 1</option><option value="branch-2">Magasin 2</option><option value="branch-3">Magasin 3</option><option value="branch-4">Magasin 4</option></select></div>
+        <div class="field"><label>Mot de passe</label><input id="accountPassword" type="password" required minlength="4"></div>
+        <div class="form-actions"><button class="primary-button" type="submit">Créer le compte</button></div>
       </form>
-      <div class="panel worker-accounts-panel"><div class="panel-head"><div><h2>العمال والمبيعات والمخزون</h2><small>اضغط على «التفاصيل» لمعرفة المنتجات المباعة والمخزون الحالي لكل عامل.</small></div><span id="accountsMessage"></span></div><div class="data-table-wrap"><table class="data-table worker-accounts-table"><thead><tr><th>المستخدم</th><th>الاسم</th><th>المحل</th><th>عمليات البيع</th><th>إجمالي المبيعات</th><th>الوحدات المباعة</th><th>وحدات المخزون</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="accountsRows"></tbody></table></div></div>
+      <div class="panel worker-accounts-panel"><div class="panel-head"><div><h2>Employés, ventes et stock</h2><small>Sélectionnez « Détails » pour consulter les produits vendus et le stock actuel de chaque employé.</small></div><span id="accountsMessage"></span></div><div class="data-table-wrap"><table class="data-table worker-accounts-table"><thead><tr><th>Utilisateur</th><th>Nom</th><th>Magasin</th><th>Ventes</th><th>Ventes totales</th><th>Unités vendues</th><th>Unités en stock</th><th>Statut</th><th>Actions</th></tr></thead><tbody id="accountsRows"></tbody></table></div></div>
     </div>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../frontend/js/supabase-config.js?v=worker-v10"></script>
   <script src="../frontend/js/cloud-catalog.js?v=20261110a"></script>
   <script src="config/password.js?v=worker-v1"></script>
-  <script src="js/auth.js?v=worker-v1"></script>
-  <script src="js/store-auth.js?v=worker-v12"></script>
-  <script src="js/accounts.js?v=worker-dashboard-20261118a"></script>
+  <script src="js/auth.js?v=french-admin-v1"></script>
+  <script src="js/store-auth.js?v=french-admin-v1"></script>
+  <script src="js/accounts.js?v=french-admin-v1"></script>
 </body>
 </html>

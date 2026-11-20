@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="fr" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,7 @@
   <link rel="icon" href="../favicon.ico"><link rel="apple-touch-icon" href="../frontend/assets/electrophone-amine-logo.jpg">
   <title>Ventes en magasin | Electrophone Amine - Administration</title>
   <link rel="stylesheet" href="css/admin.css?v=worker-v1">
-  <link rel="stylesheet" href="css/branches.css?v=worker-v10">
+  <link rel="stylesheet" href="css/branches.css?v=french-admin-v1">
   <style>
     .workstation-login-gate{position:fixed;inset:0;z-index:30;display:grid;place-items:center;background:rgba(15,23,42,.62);padding:18px;backdrop-filter:blur(5px)}
     .workstation-login-gate[hidden]{display:none}
@@ -22,70 +22,70 @@
   </style>
 </head>
 <body class="workstation-page">
-  <div id="workstationLoginGate" class="workstation-login-gate" role="dialog" aria-modal="true" aria-label="تسجيل دخول العامل">
+  <div id="workstationLoginGate" class="workstation-login-gate" role="dialog" aria-modal="true" aria-label="Connexion de l’employé">
     <form id="workstationLoginForm" class="workstation-login-box">
       <span class="owner-avatar">EA</span>
-      <h2>تسجيل دخول العامل</h2>
-      <p>دخل اسم المستخدم وكلمة المرور ثم يمكنك تسجيل المبيعات.</p>
-      <label for="workstationUsername">اسم المستخدم</label>
+      <h2>Connexion de l’employé</h2>
+      <p>Saisissez votre nom d’utilisateur et votre mot de passe pour enregistrer les ventes.</p>
+      <label for="workstationUsername">Nom d’utilisateur</label>
       <input id="workstationUsername" type="text" autocomplete="username" required autofocus>
-      <label for="workstationPassword">كلمة المرور</label>
+      <label for="workstationPassword">Mot de passe</label>
       <input id="workstationPassword" type="password" autocomplete="current-password" required>
       <p id="workstationLoginError" role="alert"></p>
-      <button type="submit">دخول وفتح صفحة المبيعات</button>
+      <button type="submit">Se connecter et ouvrir les ventes</button>
     </form>
   </div>
   <main class="branches-content" style="min-height:100vh;padding:18px;max-width:1400px;margin:auto">
     <header class="branches-heading">
-      <div><p>صفحة العامل</p><h1 id="storeTitle">المبيعات</h1></div>
-      <button id="workerLogout" class="secondary-button" type="button">تسجيل الخروج</button>
+      <div><p>Espace employé</p><h1 id="storeTitle">Ventes</h1></div>
+      <button id="workerLogout" class="secondary-button" type="button">Déconnexion</button>
     </header>
     <div class="metric-grid">
-      <article class="metric-card"><span>مبيعات اليوم</span><strong id="todaySales">0 DH</strong></article>
-      <article class="metric-card"><span>عمليات اليوم</span><strong id="todayCount">0</strong></article>
-      <article class="metric-card"><span>مبيعات الشهر</span><strong id="monthSales">0 DH</strong></article>
+      <article class="metric-card"><span>Ventes du jour</span><strong id="todaySales">0 DH</strong></article>
+      <article class="metric-card"><span>Transactions du jour</span><strong id="todayCount">0</strong></article>
+      <article class="metric-card"><span>Ventes du mois</span><strong id="monthSales">0 DH</strong></article>
     </div>
     <div class="panel" style="margin-bottom:14px">
-      <div class="panel-head"><h2>مخزون المحل</h2></div>
+      <div class="panel-head"><h2>Stock du magasin</h2></div>
       <div class="data-table-wrap" style="padding:14px">
         <form id="stockForm" class="form-panel" style="display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));margin:0">
-          <div class="field"><label>اسم المنتج</label><input id="stockProduct" type="text" required></div>
-          <div class="field"><label>المرجع / SKU</label><input id="stockSku" type="text"></div>
-          <div class="field"><label>الكمية</label><input id="stockQuantity" type="number" min="0" step="1" required></div>
-          <div class="field"><label>سعر البيع DH</label><input id="stockPrice" type="number" min="0" step="1"></div>
-          <div class="form-actions"><button id="saveStock" class="primary-button" type="button">حفظ المخزون</button></div>
+          <div class="field"><label>Nom du produit</label><input id="stockProduct" type="text" required></div>
+          <div class="field"><label>Référence / SKU</label><input id="stockSku" type="text"></div>
+          <div class="field"><label>Quantité</label><input id="stockQuantity" type="number" min="0" step="1" required></div>
+          <div class="field"><label>Prix de vente (DH)</label><input id="stockPrice" type="number" min="0" step="1"></div>
+          <div class="form-actions"><button id="saveStock" class="primary-button" type="button">Enregistrer le stock</button></div>
         </form>
-        <table class="data-table"><thead><tr><th>المنتج</th><th>المرجع</th><th>الكمية</th><th>سعر البيع</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="storeStockRows"></tbody></table>
+        <table class="data-table"><thead><tr><th>Produit</th><th>Référence</th><th>Quantité</th><th>Prix de vente</th><th>Statut</th><th>Actions</th></tr></thead><tbody id="storeStockRows"></tbody></table>
       </div>
     </div>
     <div class="excel-panel">
       <div class="excel-toolbar">
-        <span class="excel-cell-name">عملية بيع</span>
-        <button id="saveSale" class="primary-button" type="button" style="height:34px;margin-right:auto">حفظ البيع</button>
+        <span class="excel-cell-name">Nouvelle vente</span>
+        <button id="saveSale" class="primary-button" type="button" style="height:34px;margin-left:auto">Enregistrer la vente</button>
       </div>
       <div class="data-table-wrap" style="padding:14px">
         <form id="saleForm" class="form-panel" style="display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));margin:0">
-          <div class="field"><label>التاريخ والوقت</label><input id="saleDate" type="datetime-local"></div>
-          <div class="field"><label>اسم المنتج</label><input id="saleProduct" type="text" required></div>
-          <div class="field"><label>الكمية</label><input id="saleQuantity" type="number" min="1" step="1" value="1" required></div>
-          <div class="field"><label>المبلغ DH</label><input id="saleTotal" type="number" min="0" step="1" required></div>
-          <div class="field"><label>طريقة الدفع</label><select id="salePayment"><option>نقدا</option><option>تحويل بنكي</option><option>بطاقة</option></select></div>
-          <div class="field"><label>اسم العميل (اختياري)</label><input id="saleCustomer" type="text"></div>
-          <div class="field field-wide"><label>ملاحظات (اختياري)</label><input id="saleNotes" type="text"></div>
+          <div class="field"><label>Date et heure</label><input id="saleDate" type="datetime-local"></div>
+          <div class="field"><label>Nom du produit</label><input id="saleProduct" type="text" required></div>
+          <div class="field"><label>Quantité</label><input id="saleQuantity" type="number" min="1" step="1" value="1" required></div>
+          <div class="field"><label>Montant (DH)</label><input id="saleTotal" type="number" min="0" step="1" required></div>
+          <div class="field"><label>Mode de paiement</label><select id="salePayment"><option>Espèces</option><option>Virement bancaire</option><option>Carte</option></select></div>
+          <div class="field"><label>Nom du client (facultatif)</label><input id="saleCustomer" type="text"></div>
+          <div class="field field-wide"><label>Notes (facultatif)</label><input id="saleNotes" type="text"></div>
         </form>
       </div>
     </div>
     <div class="panel" style="margin-top:14px">
-      <div class="panel-head"><h2>مبيعات المحل المسجلة</h2></div>
+      <div class="panel-head"><h2>Ventes enregistrées du magasin</h2></div>
       <div class="data-table-wrap">
-        <table class="data-table"><thead><tr><th>التاريخ</th><th>المنتج</th><th>الكمية</th><th>المبلغ</th><th>الدفع</th><th>العميل</th><th>حذف</th></tr></thead><tbody id="storeSalesRows"></tbody></table>
+        <table class="data-table"><thead><tr><th>Date</th><th>Produit</th><th>Quantité</th><th>Montant</th><th>Paiement</th><th>Client</th><th>Supprimer</th></tr></thead><tbody id="storeSalesRows"></tbody></table>
       </div>
     </div>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../frontend/js/supabase-config.js?v=worker-v11"></script>
-  <script src="../frontend/js/cloud-catalog.js?v=workers-20261118a"></script>
-  <script src="js/store-auth.js?v=worker-v12"></script>
-  <script src="js/store-workstation.js?v=worker-v11"></script>
+  <script src="../frontend/js/cloud-catalog.js?v=20261110a"></script>
+  <script src="js/store-auth.js?v=french-admin-v1"></script>
+  <script src="js/store-workstation.js?v=french-admin-v1"></script>
 </body>
 </html>

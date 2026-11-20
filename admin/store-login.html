@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="fr" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,7 @@
   <link rel="icon" href="../favicon.ico"><link rel="apple-touch-icon" href="../frontend/assets/electrophone-amine-logo.jpg">
   <title>Connexion des employés | Electrophone Amine - Administration</title>
   <link rel="stylesheet" href="css/admin.css?v=worker-v1">
-  <link rel="stylesheet" href="css/branches.css?v=worker-v1">
+  <link rel="stylesheet" href="css/branches.css?v=french-admin-v1">
   <style>
     .worker-login{min-height:100vh;display:grid;place-items:center;background:linear-gradient(135deg,#f7f8fb,#fff1f2);padding:18px}
     .worker-login-box{width:min(410px,100%);padding:28px;border:1px solid #e5e7eb;border-radius:18px;background:#fff;box-shadow:0 18px 50px rgba(15,23,42,.10)}
@@ -24,19 +24,19 @@
   <main class="worker-login">
     <form id="workerLoginForm" class="worker-login-box">
       <span class="owner-avatar">EA</span>
-      <h1>دخول العامل</h1>
-      <p>سجل دخولك لتسجيل مبيعات المحل ديالك.</p>
-      <label for="workerUsername">اسم المستخدم</label>
+      <h1>Connexion employé</h1>
+      <p>Connectez-vous pour enregistrer les ventes du magasin.</p>
+      <label for="workerUsername">Nom d’utilisateur</label>
       <input id="workerUsername" type="text" autocomplete="username" required>
-      <label for="workerPassword">كلمة المرور</label>
+      <label for="workerPassword">Mot de passe</label>
       <input id="workerPassword" type="password" autocomplete="current-password" required>
       <p id="workerLoginError" class="worker-login-error" role="alert"></p>
-      <button type="submit">دخول</button>
+      <button type="submit">Se connecter</button>
     </form>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../frontend/js/supabase-config.js?v=worker-v9"></script>
   <script src="../frontend/js/cloud-catalog.js?v=20261110a"></script>
-  <script src="js/store-auth.js?v=worker-v12"></script>
+  <script src="js/store-auth.js?v=french-admin-v1"></script>
 </body>
 </html>

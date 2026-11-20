@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="fr" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,45 +9,45 @@
   <link rel="icon" href="../favicon.ico"><link rel="apple-touch-icon" href="../frontend/assets/electrophone-amine-logo.jpg">
   <title>Gestion des magasins | Electrophone Amine - Administration</title>
   <link rel="stylesheet" href="css/admin.css?v=branches-v1">
-  <link rel="stylesheet" href="css/branches.css?v=branches-v4">
+  <link rel="stylesheet" href="css/branches.css?v=french-admin-v1">
 </head>
 <body class="admin-page branches-page">
   <main class="main management-main">
     <header class="store-admin-header">
       <a class="store-brand" href="../index.html">Electrophone<span>Amine</span></a>
       <nav>
-        <a href="index.html">المنتجات</a>
-        <a href="management.html">المبيعات والمخزون</a>
-        <a href="stock.html">المخزون</a>
-        <a href="analytics.html">📊 إحصائيات الزيارات</a>
-        <a href="branches.html" class="active">المحلات</a>
-        <a href="accounts.html">حسابات العمال</a>
+        <a href="index.html">Produits</a>
+        <a href="management.html">Ventes et stock</a>
+        <a href="stock.html">Stock</a>
+        <a href="analytics.html">📊 Statistiques des visites</a>
+        <a href="branches.html" class="active">Magasins</a>
+        <a href="accounts.html">Comptes employés</a>
       </nav>
-      <button id="logoutTop" class="logout" type="button">تسجيل الخروج</button>
+      <button id="logoutTop" class="logout" type="button">Déconnexion</button>
     </header>
 
     <div class="branches-shell">
-      <aside class="branches-sidebar" aria-label="القسم">
+      <aside class="branches-sidebar" aria-label="Sections">
         <div class="branch-owner">
           <span class="owner-avatar">EA</span>
-          <div><strong>Electrophone Amine</strong><small>نظام إدارة المحلات</small></div>
+          <div><strong>Electrophone Amine</strong><small>Gestion des magasins</small></div>
         </div>
         <nav id="sectionNav" class="section-nav">
-          <button type="button" class="active" data-section="overview">📊 نظرة عامة</button>
-          <button type="button" data-section="sales">🧾 المبيعات</button>
-          <button type="button" data-section="stock">📦 المخزون</button>
+          <button type="button" class="active" data-section="overview">📊 Vue d’ensemble</button>
+          <button type="button" data-section="sales">🧾 Ventes</button>
+          <button type="button" data-section="stock">📦 Stock</button>
         </nav>
       </aside>
 
       <section class="branches-content">
         <header class="branches-heading">
-          <div><p>لوحة الإدارة</p><h1 id="sectionTitle">نظرة عامة</h1></div>
+          <div><p>Administration</p><h1 id="sectionTitle">Vue d’ensemble</h1></div>
           <div class="heading-actions">
-            <label class="secondary-button import-button" for="importCsv">استيراد CSV</label>
+            <label class="secondary-button import-button" for="importCsv">Importer un CSV</label>
             <input id="importCsv" type="file" accept=".csv,text/csv" hidden>
-            <button id="addRow" class="secondary-button" type="button">+ سطر</button>
-            <button id="clearRows" class="secondary-button" type="button">مسح</button>
-            <button id="exportCsv" class="primary-button" type="button">تصدير CSV</button>
+            <button id="addRow" class="secondary-button" type="button">+ Ligne</button>
+            <button id="clearRows" class="secondary-button" type="button">Effacer</button>
+            <button id="exportCsv" class="primary-button" type="button">Exporter en CSV</button>
           </div>
         </header>
         <div id="sectionContent"></div>
@@ -55,11 +55,11 @@
     </div>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="../frontend/js/store.js?v=20261110b"></script>
+  <script src="../frontend/js/store.js?v=french-catalog-v3"></script>
   <script src="../frontend/js/supabase-config.js?v=branches-v4"></script>
   <script src="../frontend/js/cloud-catalog.js?v=20261110a"></script>
   <script src="config/password.js?v=branches-v1"></script>
-  <script src="js/auth.js?v=branches-v1"></script>
-  <script src="js/branches.js?v=branches-v4"></script>
+  <script src="js/auth.js?v=french-admin-v1"></script>
+  <script src="js/branches.js?v=french-admin-v1"></script>
 </body>
 </html>

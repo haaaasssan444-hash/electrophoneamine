@@ -1,47 +1,47 @@
 (() => {
   const schemas = {
     branches: {
-      title: 'المحلات', table: 'business_branches',
+      title: 'Magasins', table: 'business_branches',
       columns: [
-        ['name', 'اسم المحل'], ['city', 'المدينة'], ['address', 'العنوان'],
-        ['phone', 'الهاتف'], ['status', 'الحالة (نشط/موقوف)']
+        ['name', 'Nom du magasin'], ['city', 'Ville'], ['address', 'Adresse'],
+        ['phone', 'Téléphone'], ['status', 'Statut (actif/suspendu)']
       ]
     },
     sales: {
-      title: 'المبيعات', table: 'business_sales',
+      title: 'Ventes', table: 'business_sales',
       columns: [
-        ['date', 'التاريخ'], ['branchId', 'المحل'], ['customer', 'العميل'],
-        ['product', 'المنتج'], ['quantity', 'الكمية'], ['total', 'المبلغ DH'],
-        ['payment', 'الدفع (نقدا/تحويل/بطاقة)'], ['workerName', 'العامل']
+        ['date', 'Date'], ['branchId', 'Magasin'], ['customer', 'Client'],
+        ['product', 'Produit'], ['quantity', 'Quantité'], ['total', 'Montant DH'],
+        ['payment', 'Paiement (espèces/virement/carte)'], ['workerName', 'Employé']
       ]
     },
     stock: {
-      title: 'المخزون', table: 'business_stock',
+      title: 'Stock', table: 'business_stock',
       columns: [
-        ['branchId', 'المحل'], ['product', 'المنتج'], ['sku', 'المرجع'],
-        ['quantity', 'الكمية'], ['cost', 'سعر التكلفة'], ['price', 'سعر البيع']
+        ['branchId', 'Magasin'], ['product', 'Produit'], ['sku', 'Référence'],
+        ['quantity', 'Quantité'], ['cost', 'Coût'], ['price', 'Prix de vente']
       ]
     },
     customers: {
-      title: 'العملاء', table: 'business_customers',
-      columns: [['name', 'اسم العميل'], ['phone', 'الهاتف'], ['branchId', 'المحل'], ['notes', 'ملاحظات']]
+      title: 'Clients', table: 'business_customers',
+      columns: [['name', 'Nom du client'], ['phone', 'Téléphone'], ['branchId', 'Magasin'], ['notes', 'Notes']]
     },
     suppliers: {
-      title: 'الموردون', table: 'business_suppliers',
-      columns: [['name', 'اسم المورد'], ['company', 'الشركة'], ['phone', 'الهاتف'], ['balance', 'الرصيد DH'], ['notes', 'ملاحظات']]
+      title: 'Fournisseurs', table: 'business_suppliers',
+      columns: [['name', 'Nom du fournisseur'], ['company', 'Entreprise'], ['phone', 'Téléphone'], ['balance', 'Solde DH'], ['notes', 'Notes']]
     },
     expenses: {
-      title: 'المصاريف', table: 'business_expenses',
+      title: 'Dépenses', table: 'business_expenses',
       columns: [
-        ['date', 'التاريخ'], ['branchId', 'المحل'], ['category', 'التصنيف'],
-        ['description', 'البيان'], ['amount', 'المبلغ DH']
+        ['date', 'Date'], ['branchId', 'Magasin'], ['category', 'Catégorie'],
+        ['description', 'Description'], ['amount', 'Montant DH']
       ]
     },
     employees: {
-      title: 'الموظفون', table: 'business_employees',
+      title: 'Employés', table: 'business_employees',
       columns: [
-        ['name', 'اسم الموظف'], ['phone', 'الهاتف'], ['branchId', 'المحل'],
-        ['role', 'الدور'], ['salary', 'الراتب DH'], ['status', 'الحالة']
+        ['name', 'Nom de l’employé'], ['phone', 'Téléphone'], ['branchId', 'Magasin'],
+        ['role', 'Rôle'], ['salary', 'Salaire DH'], ['status', 'Statut']
       ]
     }
   };
@@ -58,7 +58,7 @@
     const result = Number(String(value ?? '').replace(/[^0-9.-]/g, ''));
     return Number.isFinite(result) ? result : 0;
   };
-  const money = value => `${number(value).toLocaleString('ar-MA')} DH`;
+  const money = value => `${number(value).toLocaleString('fr-MA')} DH`;
   const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 
   function readLocal(section) {
@@ -76,7 +76,7 @@
         if (cloud.length || !items.length) items = cloud;
       }
     } catch (error) {
-      console.warn(`تعذر تحميل ${schemas[section].title}:`, error.message || error);
+      console.warn(`Impossible de charger ${schemas[section].title} :`, error.message || error);
     }
     state[section] = items;
     localStorage.setItem(localKeys[section], JSON.stringify(items));
@@ -87,7 +87,7 @@
     try {
       if (window.ElectrophoneCloud?.saveTable) await window.ElectrophoneCloud.saveTable(schemas[section].table, state[section]);
     } catch (error) {
-      console.warn(`تم الحفظ محلياً فقط:`, error.message || error);
+      console.warn('Enregistrement effectué uniquement sur cet appareil :', error.message || error);
     }
   }
 
@@ -98,7 +98,7 @@
 
   function branchChoices() {
     const items = activeBranches();
-    return `<option value="">غير محدد</option>${items.map(branch => `<option value="${escapeHtml(branch.id)}">${escapeHtml(branch.name)}</option>`).join('')}`;
+    return `<option value="">Non spécifié</option>${items.map(branch => `<option value="${escapeHtml(branch.id)}">${escapeHtml(branch.name)}</option>`).join('')}`;
   }
 
   function activeBranches() {
@@ -116,11 +116,11 @@
     if ((state.branches || []).length) return;
     state.branches = Array.from({ length: 4 }, (_, index) => ({
       id: `branch-${index + 1}`,
-      name: `المحل ${index + 1}`,
-      city: 'الدار البيضاء',
+      name: `Magasin ${index + 1}`,
+      city: 'Casablanca',
       address: '',
       phone: '',
-      status: 'نشط'
+      status: 'Actif'
     }));
     localStorage.setItem(localKeys.branches, JSON.stringify(state.branches));
     saveSection('branches');
@@ -150,11 +150,11 @@
       <div class="metric-grid" id="excelMetrics"></div>
       ${['sales', 'stock'].includes(section) ? `
       <div class="panel branch-filter-panel">
-        <div class="panel-head"><h2>التنقل بين المحلات</h2><label>المحل: <select id="branchFilter">${'<option value="all">جميع المحلات</option>'}${branchChoices().replace('<option value="">غير محدد</option>', '')}</select></label></div>
+        <div class="panel-head"><h2>Navigation entre les magasins</h2><label>Magasin : <select id="branchFilter">${'<option value="all">Tous les magasins</option>'}${branchChoices().replace('<option value="">Non spécifié</option>', '')}</select></label></div>
       </div>` : ''}
       <div class="excel-panel">
-        <div class="excel-toolbar"><span id="excelCellName" class="excel-cell-name">A1</span><input id="excelFormula" class="excel-formula" type="text" aria-label="محتوى الخلية"></div>
-        <div class="excel-scroll"><table class="excel-table"><thead><tr><th></th>${schema.columns.map(([, label]) => `<th>${escapeHtml(label)}</th>`).join('')}<th>حذف</th></tr></thead><tbody id="excelBody"></tbody><tfoot id="excelFoot"></tfoot></table></div>
+        <div class="excel-toolbar"><span id="excelCellName" class="excel-cell-name">A1</span><input id="excelFormula" class="excel-formula" type="text" aria-label="Contenu de la cellule"></div>
+        <div class="excel-scroll"><table class="excel-table"><thead><tr><th></th>${schema.columns.map(([, label]) => `<th>${escapeHtml(label)}</th>`).join('')}<th>Supprimer</th></tr></thead><tbody id="excelBody"></tbody><tfoot id="excelFoot"></tfoot></table></div>
       </div>`;
     const branchFilter = document.getElementById('branchFilter');
     if (branchFilter) {
@@ -186,13 +186,13 @@
     const panel = document.createElement('div');
     panel.className = 'panel stock-transfer-panel';
     panel.innerHTML = `
-      <div class="panel-head"><h2>نقل مخزون بين المحلات</h2></div>
+      <div class="panel-head"><h2>Transférer du stock entre magasins</h2></div>
       <div class="form-panel">
-        <div class="field"><label>من المحل</label><select id="transferFrom">${branchChoices()}</select></div>
-        <div class="field"><label>إلى المحل</label><select id="transferTo">${branchChoices()}</select></div>
-        <div class="field"><label>المنتج</label><input id="transferProduct" type="text" placeholder="اسم المنتج"></div>
-        <div class="field"><label>الكمية</label><input id="transferQuantity" type="number" min="1" step="1"></div>
-        <div class="form-actions"><button id="transferStock" class="primary-button" type="button">تنفيذ النقل</button></div>
+        <div class="field"><label>Depuis le magasin</label><select id="transferFrom">${branchChoices()}</select></div>
+        <div class="field"><label>Vers le magasin</label><select id="transferTo">${branchChoices()}</select></div>
+        <div class="field"><label>Produit</label><input id="transferProduct" type="text" placeholder="Nom du produit"></div>
+        <div class="field"><label>Quantité</label><input id="transferQuantity" type="number" min="1" step="1"></div>
+        <div class="form-actions"><button id="transferStock" class="primary-button" type="button">Effectuer le transfert</button></div>
       </div>`;
     const excelPanel = content.querySelector('.excel-panel');
     excelPanel?.before(panel);
@@ -205,7 +205,7 @@
     const product = document.getElementById('transferProduct').value.trim().toLowerCase();
     const quantity = number(document.getElementById('transferQuantity').value);
     if (!fromId || !toId || fromId === toId || !product || quantity <= 0) {
-      alert('اختر المحلين، والمنتج، وكمية صحيحة.');
+      alert('Sélectionnez deux magasins différents, un produit et une quantité valide.');
       return;
     }
     const source = (state.stock || []).find(item =>
@@ -213,7 +213,7 @@
       String(item.product || '').trim().toLowerCase() === product
     );
     if (!source || number(source.quantity) < quantity) {
-      alert('الكمية غير متوفرة في المحل المصدر.');
+      alert('La quantité demandée n’est pas disponible dans le magasin source.');
       return;
     }
     source.quantity = number(source.quantity) - quantity;
@@ -258,16 +258,16 @@
       <tr>
         <th>${rowIndex + 1}</th>
         ${schema.columns.map(([key], columnIndex) => `<td><div class="excel-cell" contenteditable="true" spellcheck="false" data-row="${rowIndex}" data-key="${key}" data-column="${columnIndex}" aria-label="${escapeHtml(schema.columns[columnIndex][1])}">${escapeHtml(displayValue(section, key, item[key]))}</div></td>`).join('')}
-        <td class="excel-row-delete"><button type="button" data-delete-row="${rowIndex}" aria-label="حذف السطر">×</button></td>
-      </tr>`).join('') || '<tr><td colspan="100"><div class="empty-state">أضف سطراً جديداً من زر + سطر</div></td></tr>';
+        <td class="excel-row-delete"><button type="button" data-delete-row="${rowIndex}" aria-label="Supprimer la ligne">×</button></td>
+      </tr>`).join('') || '<tr><td colspan="100"><div class="empty-state">Ajoutez une ligne avec le bouton « + Ligne ».</div></td></tr>';
     if (foot) {
       if (section === 'sales') {
         const quantity = visible.reduce((sum, row) => sum + number(row.item.quantity), 0);
         const total = visible.reduce((sum, row) => sum + number(row.item.total), 0);
-        foot.innerHTML = `<tr class="excel-total-row"><th>المجموع</th><td colspan="4"></td><td><strong>${quantity}</strong></td><td><strong>${money(total)}</strong></td><td colspan="2"></td></tr>`;
+        foot.innerHTML = `<tr class="excel-total-row"><th>Total</th><td colspan="4"></td><td><strong>${quantity}</strong></td><td><strong>${money(total)}</strong></td><td colspan="2"></td></tr>`;
       } else if (section === 'stock') {
         const quantity = visible.reduce((sum, row) => sum + number(row.item.quantity), 0);
-        foot.innerHTML = `<tr class="excel-total-row"><th>المجموع</th><td colspan="3"></td><td><strong>${quantity}</strong> وحدة</td><td colspan="3"></td></tr>`;
+        foot.innerHTML = `<tr class="excel-total-row"><th>Total</th><td colspan="3"></td><td><strong>${quantity}</strong> unités</td><td colspan="3"></td></tr>`;
       } else {
         foot.innerHTML = '';
       }
@@ -286,21 +286,21 @@
       const filtered = selectedBranch === 'all' ? sales : sales.filter(item => String(item.branchId) === String(selectedBranch));
       const total = filtered.reduce((sum, item) => sum + number(item.total), 0);
       const quantity = filtered.reduce((sum, item) => sum + number(item.quantity), 0);
-      metrics.innerHTML = `<article class="metric-card"><span>عدد العمليات</span><strong>${filtered.length}</strong></article><article class="metric-card"><span>الكمية المباعة</span><strong>${quantity}</strong></article><article class="metric-card"><span>إجمالي المبيعات</span><strong>${money(total)}</strong></article>`;
+      metrics.innerHTML = `<article class="metric-card"><span>Transactions</span><strong>${filtered.length}</strong></article><article class="metric-card"><span>Quantité vendue</span><strong>${quantity}</strong></article><article class="metric-card"><span>Ventes totales</span><strong>${money(total)}</strong></article>`;
     } else if (section === 'expenses') {
       const total = expenses.reduce((sum, item) => sum + number(item.amount), 0);
-      metrics.innerHTML = `<article class="metric-card"><span>عدد المصاريف</span><strong>${expenses.length}</strong></article><article class="metric-card"><span>إجمالي المصاريف</span><strong>${money(total)}</strong></article>`;
+      metrics.innerHTML = `<article class="metric-card"><span>Nombre de dépenses</span><strong>${expenses.length}</strong></article><article class="metric-card"><span>Dépenses totales</span><strong>${money(total)}</strong></article>`;
     } else if (section === 'stock') {
       const selectedBranch = branchFilters.stock || 'all';
       const filtered = selectedBranch === 'all' ? stock : stock.filter(item => String(item.branchId) === String(selectedBranch));
       const units = filtered.reduce((sum, item) => sum + number(item.quantity), 0);
-      metrics.innerHTML = `<article class="metric-card"><span>عدد المنتجات</span><strong>${filtered.length}</strong></article><article class="metric-card"><span>إجمالي الوحدات</span><strong>${units}</strong></article>`;
+      metrics.innerHTML = `<article class="metric-card"><span>Nombre de produits</span><strong>${filtered.length}</strong></article><article class="metric-card"><span>Unités totales</span><strong>${units}</strong></article>`;
     } else if (section === 'employees') {
       const salaries = employees.reduce((sum, item) => sum + number(item.salary), 0);
-      metrics.innerHTML = `<article class="metric-card"><span>عدد الموظفين</span><strong>${employees.length}</strong></article><article class="metric-card"><span>كتلة الرواتب</span><strong>${money(salaries)}</strong></article>`;
+      metrics.innerHTML = `<article class="metric-card"><span>Nombre d’employés</span><strong>${employees.length}</strong></article><article class="metric-card"><span>Masse salariale</span><strong>${money(salaries)}</strong></article>`;
     } else {
       const count = (state[section] || []).length;
-      metrics.innerHTML = `<article class="metric-card"><span>عدد السجلات</span><strong>${count}</strong></article>`;
+      metrics.innerHTML = `<article class="metric-card"><span>Nombre d’enregistrements</span><strong>${count}</strong></article>`;
     }
   }
 
@@ -335,27 +335,27 @@
     const totalSales = sales.reduce((sum, item) => sum + number(item.total), 0);
     const totalExpenses = expenses.reduce((sum, item) => sum + number(item.amount), 0);
     const units = stock.reduce((sum, item) => sum + number(item.quantity), 0);
-    title.textContent = 'نظرة عامة';
+    title.textContent = 'Vue d’ensemble';
     content.innerHTML = `
       <div class="metric-grid">
-        <article class="metric-card"><span>المحلات</span><strong>${branches.length}</strong><small>المحلات المسجلة</small></article>
-        <article class="metric-card"><span>المبيعات</span><strong>${money(totalSales)}</strong><small>${sales.length} عملية</small></article>
-        <article class="metric-card"><span>المخزون</span><strong>${units}</strong><small>وحدة متوفرة</small></article>
-        <article class="metric-card"><span>العمال</span><strong>${accounts.filter(item => item.active !== false).length}</strong><small>حساب عامل نشط</small></article>
-        <article class="metric-card"><span>الصافي</span><strong>${money(totalSales - totalExpenses)}</strong><small>بعد المصاريف المسجلة</small></article>
+        <article class="metric-card"><span>Magasins</span><strong>${branches.length}</strong><small>Magasins enregistrés</small></article>
+        <article class="metric-card"><span>Ventes</span><strong>${money(totalSales)}</strong><small>${sales.length} transactions</small></article>
+        <article class="metric-card"><span>Stock</span><strong>${units}</strong><small>Unités disponibles</small></article>
+        <article class="metric-card"><span>Employés</span><strong>${accounts.filter(item => item.active !== false).length}</strong><small>Comptes employés actifs</small></article>
+        <article class="metric-card"><span>Net</span><strong>${money(totalSales - totalExpenses)}</strong><small>Après les dépenses enregistrées</small></article>
       </div>
-      <div class="panel"><div class="panel-head"><h2>المبيعات والمخزون والعمال حسب المحل</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>المحل</th><th>المبيعات</th><th>المخزون</th><th>العمال</th><th>المصاريف</th><th>الصافي</th></tr></thead><tbody>${branches.map(branch => {
+      <div class="panel"><div class="panel-head"><h2>Ventes, stock et employés par magasin</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>Magasin</th><th>Ventes</th><th>Stock</th><th>Employés</th><th>Dépenses</th><th>Net</th></tr></thead><tbody>${branches.map(branch => {
         const id = String(branch.id);
         const branchSales = sales.filter(item => String(item.branchId) === id).reduce((sum, item) => sum + number(item.total), 0);
         const branchExpenses = expenses.filter(item => String(item.branchId) === id).reduce((sum, item) => sum + number(item.amount), 0);
         const branchUnits = stock.filter(item => String(item.branchId) === id).reduce((sum, item) => sum + number(item.quantity), 0);
         const workerCount = accounts.filter(item => String(item.branchId) === id && item.active !== false).length;
-        return `<tr><td>${escapeHtml(branch.name)}</td><td>${money(branchSales)}</td><td><strong>${branchUnits}</strong> وحدة</td><td><strong>${workerCount}</strong> عامل</td><td>${money(branchExpenses)}</td><td><strong>${money(branchSales - branchExpenses)}</strong></td></tr>`;
+        return `<tr><td>${escapeHtml(branch.name)}</td><td>${money(branchSales)}</td><td><strong>${branchUnits}</strong> unités</td><td><strong>${workerCount}</strong> employés</td><td>${money(branchExpenses)}</td><td><strong>${money(branchSales - branchExpenses)}</strong></td></tr>`;
       }).join('')}</tbody></table></div></div>`;
   }
 
   function renderReports() {
-    title.textContent = 'التقارير';
+    title.textContent = 'Rapports';
     const sales = state.sales || [];
     const expenses = state.expenses || [];
     const stock = state.stock || [];
@@ -363,13 +363,13 @@
     const totalExpenses = expenses.reduce((sum, item) => sum + number(item.amount), 0);
     const daily = {};
     sales.forEach(item => {
-      const key = String(item.date || '').slice(0, 10) || 'غير محدد';
+      const key = String(item.date || '').slice(0, 10) || 'Non spécifié';
       daily[key] = (daily[key] || 0) + number(item.total);
     });
     const branchNames = Object.fromEntries((state.branches || []).map(branch => [String(branch.id), branch.name]));
     const workerTotals = {};
     sales.forEach(item => {
-      const workerName = String(item.workerName || 'عامل غير محدد');
+      const workerName = String(item.workerName || 'Employé non spécifié');
       const key = `${workerName}|${String(item.branchId || '')}`;
       if (!workerTotals[key]) workerTotals[key] = { workerName, branchId: String(item.branchId || ''), total: 0, count: 0 };
       workerTotals[key].total += number(item.total);
@@ -377,25 +377,25 @@
     });
     content.innerHTML = `
       <div class="metric-grid">
-        <article class="metric-card"><span>إجمالي المبيعات</span><strong>${money(totalSales)}</strong></article>
-        <article class="metric-card"><span>إجمالي المصاريف</span><strong>${money(totalExpenses)}</strong></article>
-        <article class="metric-card"><span>صافي النتيجة</span><strong>${money(totalSales - totalExpenses)}</strong></article>
-        <article class="metric-card"><span>عدد العمليات</span><strong>${sales.length}</strong></article>
+        <article class="metric-card"><span>Ventes totales</span><strong>${money(totalSales)}</strong></article>
+        <article class="metric-card"><span>Dépenses totales</span><strong>${money(totalExpenses)}</strong></article>
+        <article class="metric-card"><span>Résultat net</span><strong>${money(totalSales - totalExpenses)}</strong></article>
+        <article class="metric-card"><span>Transactions</span><strong>${sales.length}</strong></article>
       </div>
       <div class="report-grid">
-      <div class="panel"><div class="panel-head"><h2>أداء المحلات</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>المحل</th><th>المبيعات</th></tr></thead><tbody>${(state.branches || []).map(branch => {
+      <div class="panel"><div class="panel-head"><h2>Performances des magasins</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>Magasin</th><th>Ventes</th></tr></thead><tbody>${(state.branches || []).map(branch => {
         const branchSales = sales.filter(item => String(item.branchId) === String(branch.id)).reduce((sum, item) => sum + number(item.total), 0);
         return `<tr><td>${escapeHtml(branch.name)}</td><td>${money(branchSales)}</td></tr>`;
       }).join('')}</tbody></table></div></div>
-      <div class="panel"><div class="panel-head"><h2>أداء العمال المرتبط بالمحلات</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>العامل</th><th>المحل</th><th>عدد العمليات</th><th>المبيعات</th></tr></thead><tbody>${Object.values(workerTotals).sort((a,b) => b.total-a.total).map(item => `<tr><td>${escapeHtml(item.workerName)}</td><td>${escapeHtml(branchNames[item.branchId] || item.branchId || 'غير محدد')}</td><td>${item.count}</td><td><strong>${money(item.total)}</strong></td></tr>`).join('') || '<tr><td colspan="4">لا توجد مبيعات مرتبطة بالعمال</td></tr>'}</tbody></table></div></div>
-      <div class="panel"><div class="panel-head"><h2>المبيعات اليومية</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>اليوم</th><th>المبيعات</th><th>عدد العمليات</th></tr></thead><tbody>${Object.entries(daily).sort((a,b) => b[0].localeCompare(a[0])).map(([date,total]) => `<tr><td>${escapeHtml(date)}</td><td>${money(total)}</td><td>${sales.filter(item => String(item.date || '').slice(0,10) === date).length}</td></tr>`).join('') || '<tr><td colspan="3">لا توجد مبيعات</td></tr>'}</tbody></table></div></div>
-      <div class="panel"><div class="panel-head"><h2>المخزون حسب المحل والمنتج</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>المحل</th><th>المنتج</th><th>المرجع</th><th>الكمية</th><th>آخر عامل</th></tr></thead><tbody>${stock.map(item => `<tr><td>${escapeHtml(branchNames[String(item.branchId)] || item.branchId)}</td><td>${escapeHtml(item.product)}</td><td>${escapeHtml(item.sku)}</td><td><strong>${Number(item.quantity || 0)}</strong></td><td>${escapeHtml(item.workerName)}</td></tr>`).join('') || '<tr><td colspan="5">لا يوجد مخزون مسجل</td></tr>'}</tbody></table></div></div>
+      <div class="panel"><div class="panel-head"><h2>Performances des employés par magasin</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>Employé</th><th>Magasin</th><th>Transactions</th><th>Ventes</th></tr></thead><tbody>${Object.values(workerTotals).sort((a,b) => b.total-a.total).map(item => `<tr><td>${escapeHtml(item.workerName)}</td><td>${escapeHtml(branchNames[item.branchId] || item.branchId || 'Non spécifié')}</td><td>${item.count}</td><td><strong>${money(item.total)}</strong></td></tr>`).join('') || '<tr><td colspan="4">Aucune vente associée à un employé.</td></tr>'}</tbody></table></div></div>
+      <div class="panel"><div class="panel-head"><h2>Ventes quotidiennes</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>Jour</th><th>Ventes</th><th>Transactions</th></tr></thead><tbody>${Object.entries(daily).sort((a,b) => b[0].localeCompare(a[0])).map(([date,total]) => `<tr><td>${escapeHtml(date)}</td><td>${money(total)}</td><td>${sales.filter(item => String(item.date || '').slice(0,10) === date).length}</td></tr>`).join('') || '<tr><td colspan="3">Aucune vente.</td></tr>'}</tbody></table></div></div>
+      <div class="panel"><div class="panel-head"><h2>Stock par magasin et produit</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>Magasin</th><th>Produit</th><th>Référence</th><th>Quantité</th><th>Dernier employé</th></tr></thead><tbody>${stock.map(item => `<tr><td>${escapeHtml(branchNames[String(item.branchId)] || item.branchId)}</td><td>${escapeHtml(item.product)}</td><td>${escapeHtml(item.sku)}</td><td><strong>${Number(item.quantity || 0)}</strong></td><td>${escapeHtml(item.workerName)}</td></tr>`).join('') || '<tr><td colspan="5">Aucun stock enregistré.</td></tr>'}</tbody></table></div></div>
       </div>`;
   }
 
   async function renderSection(section) {
     currentSection = section;
-    title.textContent = section === 'reports' ? 'التقارير' : section === 'overview' ? 'نظرة عامة' : schemas[section].title;
+    title.textContent = section === 'reports' ? 'Rapports' : section === 'overview' ? 'Vue d’ensemble' : schemas[section].title;
     const headingActions = document.querySelector('.heading-actions');
     if (headingActions) headingActions.hidden = !['sales', 'stock'].includes(section);
     if (section === 'overview') renderOverview();
@@ -425,7 +425,7 @@
     if (cell) selectCell(cell);
     const deleteButton = event.target.closest('[data-delete-row]');
     if (deleteButton && schemas[currentSection]) {
-      if (!confirm('حذف هذا السطر؟')) return;
+      if (!confirm('Supprimer cette ligne ?')) return;
       state[currentSection].splice(Number(deleteButton.dataset.deleteRow), 1);
       saveSection(currentSection);
       renderRows(currentSection);
@@ -497,7 +497,7 @@
 
   document.getElementById('clearRows').addEventListener('click', () => {
     if (!schemas[currentSection]) return;
-    if (!confirm(`مسح جميع سجلات قسم ${schemas[currentSection].title}؟`)) return;
+    if (!confirm(`Effacer tous les enregistrements de la section ${schemas[currentSection].title} ?`)) return;
     state[currentSection] = [];
     saveSection(currentSection);
     renderRows(currentSection);

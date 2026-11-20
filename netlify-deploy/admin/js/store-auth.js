@@ -49,12 +49,12 @@
         const accounts = await sessionAccounts();
         const account = accounts.find(item => String(item.username).toLowerCase() === username && item.active !== false);
         if (!account || !account.passwordSalt || !account.passwordHash) {
-          error.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة.';
+          error.textContent = 'Nom d’utilisateur ou mot de passe incorrect.';
           return;
         }
         const result = await hashPassword(password, account.passwordSalt);
         if (result.hash !== account.passwordHash) {
-          error.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة.';
+          error.textContent = 'Nom d’utilisateur ou mot de passe incorrect.';
           return;
         }
         localStorage.setItem(SESSION_KEY, JSON.stringify({
@@ -66,7 +66,7 @@
         }));
         location.href = 'store-workstation.html';
       } catch (exception) {
-        error.textContent = exception.message || 'تعذر تسجيل الدخول.';
+        error.textContent = exception.message || 'Impossible de se connecter.';
       }
     });
   }

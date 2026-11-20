@@ -1,6 +1,6 @@
 (function () {
-  const countFormatter = new Intl.NumberFormat('ar-MA');
-  const dateFormatter = new Intl.DateTimeFormat('ar-MA', {
+  const countFormatter = new Intl.NumberFormat('fr-MA');
+  const dateFormatter = new Intl.DateTimeFormat('fr-MA', {
     day: '2-digit',
     month: 'short',
     timeZone: 'UTC'
@@ -25,7 +25,7 @@
   function readCount(value, label) {
     const count = Number(value);
     if (!Number.isFinite(count) || count < 0) {
-      throw new Error(`قيمة غير صالحة في الإحصائيات: ${label}`);
+      throw new Error(`Valeur invalide dans les statistiques : ${label}`);
     }
     return Math.floor(count);
   }
@@ -56,7 +56,7 @@
 
     elements.chart.innerHTML = days.map(day => {
       const height = day.count ? Math.max(3, Math.round(day.count / maximum * 100)) : 0;
-      return `<div class="daily-point" role="listitem" aria-label="${escapeHtml(day.key)}: ${countFormatter.format(day.count)} زيارة">
+      return `<div class="daily-point" role="listitem" aria-label="${escapeHtml(day.key)} : ${countFormatter.format(day.count)} visites">
         <span class="daily-count">${countFormatter.format(day.count)}</span>
         <span class="daily-bar-track"><span class="daily-bar" style="--bar-height:${height}%"></span></span>
         <span class="daily-date">${escapeHtml(day.label)}</span>
@@ -70,11 +70,11 @@
       .map(([key, value]) => {
         const separator = key.indexOf(':');
         if (separator < 0 || !isRecord(value)) {
-          throw new Error('بيانات مشاهدات المنتجات غير صالحة.');
+          throw new Error('Les données de consultation des produits sont invalides.');
         }
         return {
           id: key.slice(separator + 1),
-          type: key.slice(0, separator) === 'accessory' ? 'إكسسوار' : 'هاتف',
+          type: key.slice(0, separator) === 'accessory' ? 'Accessoire' : 'Téléphone',
           total: readCount(value.total, `views.${key}.total`)
         };
       })
@@ -86,20 +86,20 @@
     );
     elements.topProducts.innerHTML = products.length
       ? products.map(product => `<tr><td>${escapeHtml(product.id || '—')}</td><td>${product.type}</td><td>${countFormatter.format(product.total)}</td></tr>`).join('')
-      : '<tr><td colspan="3" class="analytics-empty">ما كايناش مشاهدات مسجلة دابا.</td></tr>';
+      : '<tr><td colspan="3" class="analytics-empty">Aucune consultation enregistrée pour le moment.</td></tr>';
   }
 
   function setUnavailable(message) {
-    elements.status.textContent = 'الإحصائيات غير متاحة';
+    elements.status.textContent = 'Statistiques indisponibles';
     elements.status.classList.add('error');
     elements.total.textContent = '—';
     elements.today.textContent = '—';
     elements.productViews.textContent = '—';
-    elements.updated.textContent = 'آخر تحديث: —';
+    elements.updated.textContent = 'Dernière mise à jour : —';
     elements.chart.replaceChildren();
     elements.chartEmpty.hidden = false;
-    elements.chartEmpty.textContent = 'ما قدرناش نحمّلو بيانات الزيارات.';
-    elements.topProducts.innerHTML = '<tr><td colspan="3" class="analytics-empty">البيانات غير متاحة.</td></tr>';
+    elements.chartEmpty.textContent = 'Impossible de charger les données de visites.';
+    elements.topProducts.innerHTML = '<tr><td colspan="3" class="analytics-empty">Données indisponibles.</td></tr>';
     elements.error.textContent = message;
     elements.error.hidden = false;
   }
@@ -107,20 +107,20 @@
   async function loadAnalytics() {
     elements.refresh.disabled = true;
     elements.status.classList.remove('error');
-    elements.status.textContent = 'جاري تحميل الإحصائيات…';
+    elements.status.textContent = 'Chargement des statistiques…';
     elements.error.hidden = true;
 
     try {
       const response = await fetch('/api/analytics', { cache: 'no-store' });
       if (!response.ok) {
-        throw new Error(`تعذر جلب الإحصائيات (HTTP ${response.status}). تأكد من تشغيل API التحليلات على الاستضافة.`);
+        throw new Error(`Impossible de récupérer les statistiques (HTTP ${response.status}). Vérifiez que l’API Analytics est active sur l’hébergement.`);
       }
 
       const analytics = await response.json();
       if (!isRecord(analytics)
         || !isRecord(analytics.visitorsDaily)
         || !isRecord(analytics.views)) {
-        throw new Error('استجابة API الإحصائيات غير صالحة.');
+        throw new Error('La réponse de l’API des statistiques est invalide.');
       }
 
       const total = readCount(analytics.visitorsTotal, 'visitorsTotal');
@@ -133,11 +133,11 @@
 
       const updatedAt = analytics.updatedAt ? new Date(analytics.updatedAt) : null;
       elements.updated.textContent = updatedAt && Number.isFinite(updatedAt.getTime())
-        ? `آخر تحديث: ${new Intl.DateTimeFormat('ar-MA', { dateStyle: 'medium', timeStyle: 'short' }).format(updatedAt)}`
-        : 'ما تسجلات حتى زيارة';
-      elements.status.textContent = 'تم تحديث الإحصائيات';
+        ? `Dernière mise à jour : ${new Intl.DateTimeFormat('fr-MA', { dateStyle: 'medium', timeStyle: 'short' }).format(updatedAt)}`
+        : 'Aucune visite enregistrée';
+      elements.status.textContent = 'Statistiques actualisées';
     } catch (error) {
-      setUnavailable(error.message || 'تعذر تحميل الإحصائيات.');
+      setUnavailable(error.message || 'Impossible de charger les statistiques.');
     } finally {
       elements.refresh.disabled = false;
     }

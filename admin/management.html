@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="fr" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex,nofollow">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta name="description" content="لوحة المدير لمتابعة مبيعات العمال والمخزون المسجل في جميع المحلات.">
+  <meta name="description" content="Tableau de bord du responsable pour suivre les ventes des employés et le stock enregistré dans les magasins.">
   <link rel="icon" href="../favicon.ico">
-  <title>إدارة المبيعات والمخزون | Electrophone Amine</title>
+  <title>Gestion des ventes et du stock | Electrophone Amine</title>
   <link rel="stylesheet" href="css/admin.css?v=manager-v1">
-  <link rel="stylesheet" href="css/branches.css?v=manager-v1">
+  <link rel="stylesheet" href="css/branches.css?v=french-admin-v1">
   <link rel="stylesheet" href="css/management.css?v=manager-v1">
 </head>
 <body class="admin-page">
@@ -17,54 +17,54 @@
     <header class="store-admin-header">
       <a class="store-brand" href="../index.html">Electrophone<span>Amine</span></a>
       <nav>
-        <a href="index.html">الإدارة</a>
-        <a href="management.html" class="active">المبيعات والمخزون</a>
-        <a href="accounts.html">حسابات العمال</a>
-        <a href="stock.html">مخزون المتجر</a>
+        <a href="index.html">Administration</a>
+        <a href="management.html" class="active">Ventes et stock</a>
+        <a href="accounts.html">Comptes employés</a>
+        <a href="stock.html">Stock du magasin</a>
       </nav>
-      <button id="logoutTop" class="logout" type="button">تسجيل الخروج</button>
+      <button id="logoutTop" class="logout" type="button">Déconnexion</button>
     </header>
     <div class="branches-content manager-content">
       <header class="branches-heading">
-        <div><p>لوحة المدير</p><h1>إدارة المبيعات والمخزون</h1></div>
-        <button id="refreshManager" class="primary-button" type="button">تحديث البيانات</button>
+        <div><p>Tableau de bord du responsable</p><h1>Gestion des ventes et du stock</h1></div>
+        <button id="refreshManager" class="primary-button" type="button">Actualiser les données</button>
       </header>
-      <p id="managerStatus" class="activity-message" role="status" aria-live="polite">جار تحميل البيانات المشتركة...</p>
+      <p id="managerStatus" class="activity-message" role="status" aria-live="polite">Chargement des données partagées…</p>
 
-      <section class="panel manager-filters" aria-label="تصفية البيانات">
-        <div class="field"><label for="filterFrom">من تاريخ</label><input id="filterFrom" type="date"></div>
-        <div class="field"><label for="filterTo">إلى تاريخ</label><input id="filterTo" type="date"></div>
-        <div class="field"><label for="filterBranch">المحل</label><select id="filterBranch"><option value="all">جميع المحلات</option></select></div>
-        <div class="field"><label for="filterWorker">العامل</label><select id="filterWorker"><option value="all">جميع العمال</option></select></div>
-        <div class="field"><label for="filterProduct">المنتج</label><input id="filterProduct" type="search" placeholder="قلب على منتج"></div>
+      <section class="panel manager-filters" aria-label="Filtres des données">
+        <div class="field"><label for="filterFrom">Du</label><input id="filterFrom" type="date"></div>
+        <div class="field"><label for="filterTo">Au</label><input id="filterTo" type="date"></div>
+        <div class="field"><label for="filterBranch">Magasin</label><select id="filterBranch"><option value="all">Tous les magasins</option></select></div>
+        <div class="field"><label for="filterWorker">Employé</label><select id="filterWorker"><option value="all">Tous les employés</option></select></div>
+        <div class="field"><label for="filterProduct">Produit</label><input id="filterProduct" type="search" placeholder="Rechercher un produit"></div>
       </section>
 
-      <section class="metric-grid manager-metrics" aria-label="ملخص المبيعات والمخزون">
-        <article class="metric-card"><span>مجموع المبيعات</span><strong id="managerSalesTotal">—</strong><small>حسب التصفية</small></article>
-        <article class="metric-card"><span>عمليات البيع</span><strong id="managerSalesCount">—</strong><small>عملية مسجلة</small></article>
-        <article class="metric-card"><span>الوحدات المباعة</span><strong id="managerSoldUnits">—</strong><small>وحدة</small></article>
-        <article class="metric-card"><span>الوحدات المتوفرة</span><strong id="managerStockUnits">—</strong><small>في المخزون المسجل</small></article>
-        <article class="metric-card"><span>منتجات نفدت</span><strong id="managerOutCount">—</strong><small>الكمية صفر</small></article>
+      <section class="metric-grid manager-metrics" aria-label="Résumé des ventes et du stock">
+        <article class="metric-card"><span>Ventes totales</span><strong id="managerSalesTotal">—</strong><small>Selon les filtres</small></article>
+        <article class="metric-card"><span>Transactions</span><strong id="managerSalesCount">—</strong><small>Transactions enregistrées</small></article>
+        <article class="metric-card"><span>Unités vendues</span><strong id="managerSoldUnits">—</strong><small>Unités</small></article>
+        <article class="metric-card"><span>Unités disponibles</span><strong id="managerStockUnits">—</strong><small>Dans le stock enregistré</small></article>
+        <article class="metric-card"><span>Produits épuisés</span><strong id="managerOutCount">—</strong><small>Quantité nulle</small></article>
       </section>
 
       <section class="panel">
-        <div class="panel-head"><div><h2>المنتجات المباعة</h2><small>الكمية وإجمالي المبيعات لكل منتج</small></div></div>
+        <div class="panel-head"><div><h2>Produits vendus</h2><small>Quantité et ventes totales par produit</small></div></div>
         <div class="data-table-wrap">
-          <table class="data-table"><thead><tr><th>المنتج</th><th>الكمية المباعة</th><th>عدد العمليات</th><th>إجمالي المبيعات</th></tr></thead><tbody id="managerProductsRows"><tr><td colspan="4" class="empty-state">جار التحميل...</td></tr></tbody></table>
+          <table class="data-table"><thead><tr><th>Produit</th><th>Quantité vendue</th><th>Transactions</th><th>Ventes totales</th></tr></thead><tbody id="managerProductsRows"><tr><td colspan="4" class="empty-state">Chargement…</td></tr></tbody></table>
         </div>
       </section>
 
       <section class="panel">
-        <div class="panel-head"><div><h2>تفاصيل المبيعات</h2><small>كل عملية مسجلة مع المحل والعامل</small></div></div>
+        <div class="panel-head"><div><h2>Détail des ventes</h2><small>Chaque transaction enregistrée, avec son magasin et son employé</small></div></div>
         <div class="data-table-wrap">
-          <table class="data-table"><thead><tr><th>التاريخ</th><th>المحل</th><th>المنتج</th><th>الكمية</th><th>المبلغ</th><th>الدفع</th><th>العميل</th><th>العامل</th><th>ملاحظات</th></tr></thead><tbody id="managerSalesRows"><tr><td colspan="9" class="empty-state">جار التحميل...</td></tr></tbody></table>
+          <table class="data-table"><thead><tr><th>Date</th><th>Magasin</th><th>Produit</th><th>Quantité</th><th>Montant</th><th>Paiement</th><th>Client</th><th>Employé</th><th>Notes</th></tr></thead><tbody id="managerSalesRows"><tr><td colspan="9" class="empty-state">Chargement…</td></tr></tbody></table>
         </div>
       </section>
 
       <section class="panel">
-        <div class="panel-head"><div><h2>المخزون الحالي</h2><small>المخزون الذي سجله العمال في كل محل</small></div></div>
+        <div class="panel-head"><div><h2>Stock actuel</h2><small>Stock enregistré par les employés dans chaque magasin</small></div></div>
         <div class="data-table-wrap">
-          <table class="data-table"><thead><tr><th>المحل</th><th>المنتج</th><th>المرجع</th><th>الكمية</th><th>سعر البيع</th><th>قيمة المخزون</th><th>الحالة</th><th>آخر عامل</th><th>آخر تحديث</th></tr></thead><tbody id="managerStockRows"><tr><td colspan="9" class="empty-state">جار التحميل...</td></tr></tbody></table>
+          <table class="data-table"><thead><tr><th>Magasin</th><th>Produit</th><th>Référence</th><th>Quantité</th><th>Prix de vente</th><th>Valeur du stock</th><th>Statut</th><th>Dernier employé</th><th>Dernière mise à jour</th></tr></thead><tbody id="managerStockRows"><tr><td colspan="9" class="empty-state">Chargement…</td></tr></tbody></table>
         </div>
       </section>
     </div>
@@ -73,7 +73,7 @@
   <script src="../frontend/js/supabase-config.js?v=manager-v1"></script>
   <script src="../frontend/js/cloud-catalog.js?v=20261110a"></script>
   <script src="config/password.js?v=manager-v1"></script>
-  <script src="js/auth.js?v=manager-v1"></script>
-  <script src="js/management.js?v=manager-v1"></script>
+  <script src="js/auth.js?v=french-admin-v1"></script>
+  <script src="js/management.js?v=french-admin-v1"></script>
 </body>
 </html>

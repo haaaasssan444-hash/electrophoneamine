@@ -8,7 +8,7 @@
   let sales = [];
   let stock = [];
   let editingStockId = null;
-  const money = value => `${Number(value || 0).toLocaleString('ar-MA')} DH`;
+  const money = value => `${Number(value || 0).toLocaleString('fr-MA')} DH`;
 
   function readSales() {
     try {
@@ -80,7 +80,7 @@
   }
 
   function render() {
-    document.getElementById('storeTitle').textContent = session?.name || session?.username ? `مبيعات ${session.name || session.username}` : 'مبيعات المحل';
+    document.getElementById('storeTitle').textContent = session?.name || session?.username ? `Ventes de ${session.name || session.username}` : 'Ventes du magasin';
     const branchSales = session?.branchId
       ? sales.filter(item => String(item.branchId) === String(session.branchId))
       : [];
@@ -96,9 +96,9 @@
       ? [...branchSales].reverse().map(item => `<tr>
           <td>${item.date ? String(item.date).replace('T', ' ') : ''}</td><td>${escapeHtml(item.product)}</td><td>${escapeHtml(item.quantity || 1)}</td>
           <td><strong>${money(item.total)}</strong></td><td>${escapeHtml(item.payment)}</td><td>${escapeHtml(item.customer)}</td>
-          <td><button type="button" class="row-actions delete" data-sale-delete="${escapeHtml(item.id)}" style="border:0;border-radius:7px;background:#fee2e2;color:#991b1b;padding:5px 8px">حذف</button></td>
+          <td><button type="button" class="row-actions delete" data-sale-delete="${escapeHtml(item.id)}" style="border:0;border-radius:7px;background:#fee2e2;color:#991b1b;padding:5px 8px">Supprimer</button></td>
         </tr>`).join('')
-      : '<tr><td colspan="7"><div class="empty-state">لا توجد مبيعات مسجلة لهذا المحل</div></td></tr>';
+      : '<tr><td colspan="7"><div class="empty-state">Aucune vente enregistrée pour ce magasin.</div></td></tr>';
     const branchStock = session?.branchId
       ? stock.filter(item => String(item.branchId) === String(session.branchId))
       : [];
@@ -108,9 +108,9 @@
         ? branchStock.map(item => {
           const ownerId = item.ownerId || item.workerId;
           const editable = !ownerId || String(ownerId) === String(session?.id);
-          return `<tr><td>${escapeHtml(item.product)}</td><td>${escapeHtml(item.sku)}</td><td><strong>${Number(item.quantity || 0)}</strong></td><td>${money(item.price)}</td><td>${Number(item.quantity || 0) > 0 ? 'متوفر' : 'نفد'}</td><td>${editable ? `<button type="button" class="secondary-button" data-stock-edit="${escapeHtml(item.id)}">تعديل</button>` : ''}</td></tr>`;
+          return `<tr><td>${escapeHtml(item.product)}</td><td>${escapeHtml(item.sku)}</td><td><strong>${Number(item.quantity || 0)}</strong></td><td>${money(item.price)}</td><td>${Number(item.quantity || 0) > 0 ? 'Disponible' : 'Épuisé'}</td><td>${editable ? `<button type="button" class="secondary-button" data-stock-edit="${escapeHtml(item.id)}">Modifier</button>` : ''}</td></tr>`;
         }).join('')
-        : '<tr><td colspan="6"><div class="empty-state">لم يتم إدخال مخزون لهذا المحل بعد</div></td></tr>';
+        : '<tr><td colspan="6"><div class="empty-state">Aucun stock n’a encore été ajouté pour ce magasin.</div></td></tr>';
     }
   }
 
@@ -122,7 +122,7 @@
   document.getElementById('saveSale').addEventListener('click', async () => {
     if (!session?.branchId) {
       loginGate.hidden = false;
-      document.getElementById('workstationLoginError').textContent = 'سجل الدخول أولاً قبل حفظ البيع.';
+      document.getElementById('workstationLoginError').textContent = 'Connectez-vous avant d’enregistrer une vente.';
       return;
     }
     const form = document.getElementById('saleForm');
@@ -163,7 +163,7 @@
   document.getElementById('saveStock').addEventListener('click', async () => {
     if (!session?.branchId) {
       loginGate.hidden = false;
-      document.getElementById('workstationLoginError').textContent = 'سجل الدخول أولاً قبل تعديل المخزون.';
+      document.getElementById('workstationLoginError').textContent = 'Connectez-vous avant de modifier le stock.';
       return;
     }
     const product = document.getElementById('stockProduct').value.trim();
@@ -179,7 +179,7 @@
       );
       const ownerId = existing?.ownerId || existing?.workerId;
       if (existing && ownerId && String(ownerId) !== String(session.id)) {
-        alert('لا يمكنك تعديل مخزون أدخله عامل آخر.');
+        alert('Vous ne pouvez pas modifier le stock saisi par un autre employé.');
         return;
       }
     } else {
@@ -189,7 +189,7 @@
       );
       const ownerId = existing?.ownerId || existing?.workerId;
       if (existing && ownerId && String(ownerId) !== String(session.id)) {
-        alert('هذا المخزون مسجل بواسطة عامل آخر ولا يمكن تعديله.');
+        alert('Ce stock a été enregistré par un autre employé et ne peut pas être modifié.');
         return;
       }
     }
@@ -233,7 +233,7 @@
     if (!item) return;
     const ownerId = item.ownerId || item.workerId;
     if (ownerId && String(ownerId) !== String(session.id)) {
-      alert('لا يمكنك تعديل مخزون أدخله عامل آخر.');
+      alert('Vous ne pouvez pas modifier le stock saisi par un autre employé.');
       return;
     }
     editingStockId = String(item.id);
@@ -249,7 +249,7 @@
     if (!button) return;
     const item = sales.find(sale => String(sale.id) === String(button.dataset.saleDelete));
     if (!item || String(item.branchId) !== String(session.branchId)) return;
-    if (!confirm('حذف عملية البيع؟')) return;
+    if (!confirm('Supprimer cette vente ?')) return;
     sales = sales.filter(sale => String(sale.id) !== String(button.dataset.saleDelete));
     await saveSales();
   });
@@ -263,7 +263,7 @@
         document.getElementById('workstationPassword').value
       );
       if (!authenticated) {
-        error.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة.';
+        error.textContent = 'Nom d’utilisateur ou mot de passe incorrect.';
         return;
       }
       session = authenticated;
@@ -272,7 +272,7 @@
       document.getElementById('workstationPassword').value = '';
       await loadSales();
     } catch (exception) {
-      error.textContent = exception.message || 'تعذر تسجيل الدخول.';
+      error.textContent = exception.message || 'Impossible de se connecter.';
     }
   });
   document.getElementById('workerLogout').addEventListener('click', window.StoreAuth.logoutWorker);
